@@ -1,22 +1,7 @@
 import { useRouter } from 'next/router';
 
-interface HeaderProps {
-  onMenuClick: () => void;
-}
-
-const PAGE_TITLES: Record<string, string> = {
-  '/dashboard': 'Dashboard',
-  '/referrals': 'Referrals',
-  '/patients': 'Patients',
-  '/hbc': 'Home-Based Care',
-  '/reports': 'Reports',
-  '/analytics': 'Analytics',
-  '/settings': 'Settings',
-};
-
-export default function Header({ onMenuClick }: HeaderProps) {
+export default function Header() {
   const router = useRouter();
-  const title = PAGE_TITLES[router.pathname] || 'Dashboard';
 
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn');
@@ -24,58 +9,96 @@ export default function Header({ onMenuClick }: HeaderProps) {
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex justify-between items-center">
-      {/* Left — hamburger (mobile only) + title */}
-      <div className="flex items-center gap-3">
-        <button
-          onClick={onMenuClick}
-          className="md:hidden p-2 rounded-lg hover:bg-gray-100"
-          aria-label="Open menu"
-        >
-          <svg
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#1a1a2e"
-            strokeWidth="2"
-            strokeLinecap="round"
-          >
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="18" x2="21" y2="18" />
-          </svg>
-        </button>
-
-        <div>
-          <h2 className="text-base md:text-xl font-semibold text-[#1a1a2e] m-0">
-            {title}
-          </h2>
-          <p className="hidden sm:block text-xs md:text-sm text-gray-500 mt-0.5">
-            Welcome back, Admin
-          </p>
-        </div>
+    <header style={styles.header}>
+      <div>
+        <h2 style={styles.title}>Dashboard</h2>
+        <p style={styles.subtitle}>Welcome back, Admin</p>
       </div>
-
-      {/* Right — user + logout */}
-      <div className="flex items-center gap-3 md:gap-5">
-        <div className="hidden md:flex items-center gap-3">
-          <div className="text-right">
-            <p className="text-sm font-medium text-gray-800 m-0">ADMIN</p>
-            <p className="text-xs text-gray-500 mt-0.5">Administrator</p>
+      
+      <div style={styles.rightSection}>
+        <div style={styles.userInfo}>
+          <div style={styles.userText}>
+            <p style={styles.userName}>ADMIN</p>
+            <p style={styles.userRole}>Administrator</p>
           </div>
-          <div className="w-9 h-9 md:w-10 md:h-10 bg-blue-600 rounded-full flex items-center justify-center">
-            <span className="text-white text-sm font-bold">MM</span>
+          <div style={styles.avatar}>
+            <span style={styles.avatarText}>MM</span>
           </div>
         </div>
-
-        <button
-          onClick={handleLogout}
-          className="px-3 md:px-4 py-2 bg-red-600 text-white rounded-md text-xs md:text-sm font-medium hover:bg-red-700 transition-colors"
-        >
+        
+        <button onClick={handleLogout} style={styles.logoutButton}>
           Logout
         </button>
       </div>
     </header>
   );
 }
+
+const styles = {
+  header: {
+    backgroundColor: 'white',
+    borderBottom: '1px solid #e0e0e0',
+    padding: '16px 24px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: '20px',
+    fontWeight: '600' as const,
+    margin: 0,
+    color: '#1a1a2e',
+  },
+  subtitle: {
+    fontSize: '14px',
+    color: '#666',
+    margin: '4px 0 0',
+  },
+  rightSection: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '20px',
+  },
+  userInfo: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+  },
+  userText: {
+    textAlign: 'right' as const,
+  },
+  userName: {
+    fontSize: '14px',
+    fontWeight: '500' as const,
+    margin: 0,
+    color: '#333',
+  },
+  userRole: {
+    fontSize: '12px',
+    color: '#888',
+    margin: '2px 0 0',
+  },
+  avatar: {
+    width: '40px',
+    height: '40px',
+    backgroundColor: '#2563eb',
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarText: {
+    color: 'white',
+    fontWeight: 'bold' as const,
+    fontSize: '14px',
+  },
+  logoutButton: {
+    padding: '8px 16px',
+    backgroundColor: '#dc2626',
+    color: 'white',
+    border: 'none',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontSize: '14px',
+  },
+};

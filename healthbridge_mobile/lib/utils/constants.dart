@@ -1,7 +1,7 @@
 class AppConstants {
   // Colors
-  static const int primaryBlue = 0xFF1E3A8A; // <--- CHANGED TO DARK NAVY
-  static const int darkNavy = 0xFF0F172A;    // Even darker for gradients
+  static const int primaryBlue = 0xFF1E3A8A;
+  static const int darkNavy = 0xFF0F172A;
   static const int successGreen = 0xFF10B981;
   static const int dangerRed = 0xFFEF4444;
   static const int warningOrange = 0xFFF59E0B;
@@ -21,27 +21,16 @@ class UserRole {
   static const String patient = 'PATIENT';
 }
 
-/// ⚠️ IMPORTANT — Token Server Configuration
+/// Token Server Configuration
 ///
-/// Your laptop runs the Next.js backend that generates Agora tokens.
-/// Phones must be on the SAME Wi-Fi as the laptop to reach this IP.
+/// The Next.js backend that generates Agora tokens is hosted on Vercel.
+/// It is publicly reachable, so phones can be on ANY network (Wi-Fi,
+/// mobile data, different countries — doesn't matter).
 ///
-/// When your laptop's LAN IP changes (which happens whenever you switch
-/// Wi-Fi networks), you only need to update `_laptopIp` below.
-/// Everything else in the app uses `ApiConfig.baseUrl` automatically.
-///
-/// To find your current laptop IP on Windows:
-///   1. Open PowerShell
-///   2. Run:  ipconfig
-///   3. Look for "IPv4 Address" under your Wi-Fi adapter
+/// To redeploy after making changes to the server:
+///   git push
+/// Vercel auto-deploys within ~1 minute.
 class ApiConfig {
-  // 👇👇👇 UPDATE THIS ONE LINE WHEN YOUR LAPTOP IP CHANGES 👇👇👇
-  static const String _laptopIp = '10.0.1.77';
-  static const String _port = '3000';
-
-  // Full base URL
-  static const String baseUrl = 'http://$_laptopIp:$_port';
-
-  // Agora token endpoint (used by chat screens before starting a call)
+  static const String baseUrl = 'https://health-bridge-orpin.vercel.app';
   static const String agoraTokenEndpoint = '$baseUrl/api/agora-token';
 }

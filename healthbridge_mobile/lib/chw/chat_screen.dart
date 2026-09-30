@@ -25,6 +25,13 @@ class _ChatScreenState extends State<ChatScreen> {
   final ChatService _chatService = ChatService();
   final CallService _callService = CallService();
 
+  /// Convert a Firebase UID (string) into a positive integer UID
+  /// that Agora accepts. Agora requires distinct UIDs per user in
+  /// the same channel, so we hash the string.
+  int _uidFromString(String firebaseUid) {
+    return firebaseUid.hashCode.abs() % 1000000000 + 1;
+  }
+
   void _sendMessage() {
     if (_messageController.text.trim().isEmpty) return;
 
@@ -118,10 +125,10 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  // --- Fetch the Agora Token using ApiConfig ---
-  Future<String> _getAgoraToken(String channelName) async {
+  // --- Fetch the Agora Token using ApiConfig (now with uid) ---
+  Future<String> _getAgoraToken(String channelName, int uid) async {
     final response = await http.get(
-      Uri.parse('${ApiConfig.agoraTokenEndpoint}?channel=$channelName'),
+      Uri.parse('${ApiConfig.agoraTokenEndpoint}?channel=$channelName&uid=$uid'),
     );
     final data = jsonDecode(response.body);
     return data['token'] as String;
@@ -131,9 +138,11 @@ class _ChatScreenState extends State<ChatScreen> {
   void _startVoiceCall() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final String currentUserId = authProvider.user?.uid ?? '';
-    final String channelName = _chatService.generateCallChannel(currentUserId, widget.chatWithId);
+    final String channelName =
+        _chatService.generateCallChannel(currentUserId, widget.chatWithId);
 
-    final token = await _getAgoraToken(channelName);
+    final int myUid = _uidFromString(currentUserId);
+    final token = await _getAgoraToken(channelName, myUid);
 
     final String callId = await _callService.startCall(
       callerId: currentUserId,
@@ -151,6 +160,7 @@ class _ChatScreenState extends State<ChatScreen> {
           callWithName: widget.chatWithName,
           token: token,
           callId: callId,
+          uid: myUid,
         ),
       ),
     );
@@ -160,9 +170,11 @@ class _ChatScreenState extends State<ChatScreen> {
   void _startVideoCall() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final String currentUserId = authProvider.user?.uid ?? '';
-    final String channelName = _chatService.generateCallChannel(currentUserId, widget.chatWithId);
+    final String channelName =
+        _chatService.generateCallChannel(currentUserId, widget.chatWithId);
 
-    final token = await _getAgoraToken(channelName);
+    final int myUid = _uidFromString(currentUserId);
+    final token = await _getAgoraToken(channelName, myUid);
 
     final String callId = await _callService.startCall(
       callerId: currentUserId,
@@ -180,6 +192,7 @@ class _ChatScreenState extends State<ChatScreen> {
           appId: AgoraConfig.appId,
           token: token,
           callId: callId,
+          uid: myUid,
         ),
       ),
     );

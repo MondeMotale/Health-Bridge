@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -8,7 +9,8 @@ class VoiceCallScreen extends StatefulWidget {
   final String channelName;
   final String callWithName;
   final String token;
-  final String callId; // <--- NEW
+  final String callId;
+  final int uid; // <--- NEW: unique per user
 
   const VoiceCallScreen({
     super.key,
@@ -16,6 +18,7 @@ class VoiceCallScreen extends StatefulWidget {
     required this.callWithName,
     required this.token,
     required this.callId,
+    required this.uid,
   });
 
   @override
@@ -27,6 +30,11 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
   bool _isMuted = false;
   final CallService _callService = CallService();
   bool _callEnded = false;
+
+  // --- Call state ---
+  bool _connected = false;
+  Duration _callDuration = Duration.zero;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -40,13 +48,46 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
     _engine = createAgoraRtcEngine();
     await _engine!.initialize(RtcEngineContext(appId: AgoraConfig.appId));
 
+    _engine!.registerEventHandler(
+      RtcEngineEventHandler(
+        onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
+          if (!mounted) return;
+          setState(() {
+            _connected = true;
+          });
+          // Start the call timer only when we've truly joined
+          _timer?.cancel();
+          _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+            if (mounted) {
+              setState(() {
+                _callDuration += const Duration(seconds: 1);
+              });
+            }
+          });
+        },
+        onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
+          // Remote peer joined — nothing extra needed for voice
+        },
+        onUserOffline: (
+          RtcConnection connection,
+          int remoteUid,
+          UserOfflineReasonType reason,
+        ) {
+          // Remote hung up — end our side too
+          _endCall();
+        },
+      ),
+    );
+
     await _engine!.enableAudio();
-    await _engine!.setChannelProfile(ChannelProfileType.channelProfileCommunication);
+    await _engine!.setChannelProfile(
+      ChannelProfileType.channelProfileCommunication,
+    );
 
     await _engine!.joinChannel(
       token: widget.token,
       channelId: widget.channelName,
-      uid: 0,
+      uid: widget.uid, // <--- use the assigned uid
       options: const ChannelMediaOptions(),
     );
   }
@@ -61,6 +102,7 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
   Future<void> _endCall() async {
     if (_callEnded) return;
     _callEnded = true;
+    _timer?.cancel();
     await _callService.endCall(widget.callId);
     await _engine?.leaveChannel();
     await _engine?.release();
@@ -69,12 +111,19 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
 
   @override
   void dispose() {
+    _timer?.cancel();
     if (!_callEnded) {
       _callService.endCall(widget.callId);
     }
     _engine?.leaveChannel();
     _engine?.release();
     super.dispose();
+  }
+
+  String _formatDuration(Duration d) {
+    final m = d.inMinutes.toString().padLeft(2, '0');
+    final s = (d.inSeconds % 60).toString().padLeft(2, '0');
+    return '$m:$s';
   }
 
   @override
@@ -96,18 +145,26 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
               backgroundColor: const Color(0xFF1E3A8A),
               child: Text(
                 widget.callWithName.isNotEmpty ? widget.callWithName[0] : '?',
-                style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Colors.white),
+                style: const TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
             const SizedBox(height: 20),
             Text(
               widget.callWithName,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Connecting...',
-              style: TextStyle(color: Colors.white70),
+            Text(
+              _connected ? _formatDuration(_callDuration) : 'Connecting...',
+              style: const TextStyle(color: Colors.white70, fontSize: 16),
             ),
             const SizedBox(height: 40),
 
@@ -140,7 +197,11 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
                       color: Color(0xFFEF4444),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.call_end, color: Colors.white, size: 32),
+                    child: const Icon(
+                      Icons.call_end,
+                      color: Colors.white,
+                      size: 32,
+                    ),
                   ),
                 ),
               ],

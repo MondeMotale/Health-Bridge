@@ -58,9 +58,7 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
                           lastDate: DateTime.now().add(const Duration(days: 365)),
                         );
                         if (picked != null) {
-                          setState(() {
-                            selectedDate = picked;
-                          });
+                          setState(() => selectedDate = picked);
                         }
                       },
                     ),
@@ -74,9 +72,7 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
                           initialTime: selectedTime,
                         );
                         if (picked != null) {
-                          setState(() {
-                            selectedTime = picked;
-                          });
+                          setState(() => selectedTime = picked);
                         }
                       },
                     ),
@@ -98,7 +94,6 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
                         onPressed: _isSubmitting
                             ? null
                             : () async {
-                                // Validate the location
                                 if (locationController.text.trim().isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text('Please enter a location.')),
@@ -106,12 +101,9 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
                                   return;
                                 }
 
-                                setState(() {
-                                  _isSubmitting = true;
-                                });
+                                setState(() => _isSubmitting = true);
 
                                 try {
-                                  // Create the request in Firestore
                                   await FirebaseFirestore.instance.collection('appointment_requests').add({
                                     'patientId': patientUid,
                                     'patientName': patientName,
@@ -125,7 +117,10 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
                                   if (context.mounted) {
                                     Navigator.of(context).pop();
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text('Request sent! Your CHW will confirm.'), backgroundColor: Colors.green),
+                                      const SnackBar(
+                                        content: Text('Request sent! Your CHW will confirm.'),
+                                        backgroundColor: Colors.green,
+                                      ),
                                     );
                                   }
                                 } catch (e) {
@@ -136,9 +131,7 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
                                   }
                                 } finally {
                                   if (context.mounted) {
-                                    setState(() {
-                                      _isSubmitting = false;
-                                    });
+                                    setState(() => _isSubmitting = false);
                                   }
                                 }
                               },
@@ -177,52 +170,267 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
       ),
       body: patientUid == null
           ? const Center(child: Text('User not logged in'))
-          : StreamBuilder<List<Appointment>>(
-              stream: FirestoreService().getAppointmentsForPatient(patientUid),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                final appointments = snapshot.data ?? [];
-
-                if (appointments.isEmpty) {
-                  return const Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.event_busy, size: 80, color: Colors.grey),
-                        SizedBox(height: 16),
-                        Text('No appointments yet.', style: TextStyle(fontSize: 18, color: Colors.grey)),
-                        SizedBox(height: 8),
-                        Text('Tap the + button to request one.', style: TextStyle(color: Colors.grey)),
-                      ],
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // ---------- SECTION 1: CONFIRMED APPOINTMENTS ----------
+                  const Text(
+                    '📅 My Appointments',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1A1A2E),
                     ),
-                  );
-                }
+                  ),
+                  const SizedBox(height: 12),
+                  StreamBuilder<List<Appointment>>(
+                    stream: FirestoreService().getAppointmentsForPatient(patientUid),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: CircularProgressIndicator(),
+                        ));
+                      }
 
-                return ListView.separated(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: appointments.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 12),
-                  itemBuilder: (context, index) {
-                    final appt = appointments[index];
-                    return _buildAppointmentCard(appt);
-                  },
-                );
-              },
+                      final appointments = snapshot.data ?? [];
+
+                      if (appointments.isEmpty) {
+                        return _buildEmptyCard('No upcoming appointments.');
+                      }
+
+                      return Column(
+                        children: appointments
+                            .map((appt) => _buildAppointmentCard(appt))
+                            .toList(),
+                      );
+                    },
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // ---------- SECTION 2: PENDING REQUESTS ----------
+                  const Text(
+                    '⏳ Pending Requests',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1A1A2E),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('appointment_requests')
+                        .where('patientId', isEqualTo: patientUid)
+                        .where('status', isEqualTo: 'Pending')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const SizedBox();
+                      }
+
+                      final pending = snapshot.data?.docs ?? [];
+                      if (pending.isEmpty) {
+                        return _buildEmptyCard('No pending requests.');
+                      }
+
+                      return Column(
+                        children: pending.map((doc) {
+                          final data = doc.data() as Map<String, dynamic>;
+                          return _buildPendingCard(data);
+                        }).toList(),
+                      );
+                    },
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // ---------- SECTION 3: DECLINED REQUESTS ----------
+                  const Text(
+                    '❌ Declined Requests',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1A1A2E),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('appointment_requests')
+                        .where('patientId', isEqualTo: patientUid)
+                        .where('status', isEqualTo: 'Declined')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const SizedBox();
+                      }
+
+                      final declined = snapshot.data?.docs ?? [];
+                      if (declined.isEmpty) {
+                        return _buildEmptyCard('No declined requests. 🎉');
+                      }
+
+                      return Column(
+                        children: declined.map((doc) {
+                          final data = doc.data() as Map<String, dynamic>;
+                          return _buildDeclinedCard(data);
+                        }).toList(),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'patient_request_fab',
-        onPressed: () {
-          _showRequestAppointmentDialog(patientUid ?? '');
-        },
+        onPressed: () => _showRequestAppointmentDialog(patientUid ?? ''),
         backgroundColor: const Color(0xFF1E3A8A),
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
 
+  // ---------- Empty placeholder card ----------
+  Widget _buildEmptyCard(String text) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(text, style: const TextStyle(color: Colors.grey)),
+    );
+  }
+
+  // ---------- Pending request card ----------
+  Widget _buildPendingCard(Map<String, dynamic> data) {
+    final DateTime? dt = data['requestedDate'] != null
+        ? DateTime.tryParse(data['requestedDate'])
+        : null;
+    final String dateStr = dt != null ? DateFormat('MMM d, yyyy').format(dt) : 'Unknown date';
+    final String timeStr = data['requestedTime'] ?? 'Unknown time';
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border(left: BorderSide(color: Colors.orange.shade400, width: 4)),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 6, offset: const Offset(0, 2)),
+        ],
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.access_time, color: Colors.orange, size: 28),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('$dateStr at $timeStr',
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                const SizedBox(height: 4),
+                Text(data['location'] ?? 'No location',
+                    style: const TextStyle(color: Colors.grey, fontSize: 13)),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.orange.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Text('Pending',
+                style: TextStyle(color: Colors.orange, fontSize: 12, fontWeight: FontWeight.w600)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ---------- Declined request card ----------
+  Widget _buildDeclinedCard(Map<String, dynamic> data) {
+    final DateTime? dt = data['requestedDate'] != null
+        ? DateTime.tryParse(data['requestedDate'])
+        : null;
+    final String dateStr = dt != null ? DateFormat('MMM d, yyyy').format(dt) : 'Unknown date';
+    final String timeStr = data['requestedTime'] ?? 'Unknown time';
+    final String reason = data['declinedReason'] ?? 'No reason provided';
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border(left: BorderSide(color: Colors.red.shade400, width: 4)),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 6, offset: const Offset(0, 2)),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.cancel, color: Colors.red, size: 24),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('$dateStr at $timeStr',
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                    const SizedBox(height: 4),
+                    Text(data['location'] ?? 'No location',
+                        style: const TextStyle(color: Colors.grey, fontSize: 13)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.red.withValues(alpha: 0.06),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.red.withValues(alpha: 0.2)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Reason:',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.red,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  reason,
+                  style: const TextStyle(fontSize: 14, color: Color(0xFF1A1A2E)),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ---------- Confirmed appointment card (existing style) ----------
   Widget _buildAppointmentCard(Appointment appointment) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -260,7 +468,9 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: appointment.status == 'Scheduled' ? const Color(0xFF10B981).withValues(alpha: 0.1) : Colors.orange.withValues(alpha: 0.1),
+              color: appointment.status == 'Scheduled'
+                  ? const Color(0xFF10B981).withValues(alpha: 0.1)
+                  : Colors.orange.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(

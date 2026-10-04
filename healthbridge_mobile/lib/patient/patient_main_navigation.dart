@@ -128,6 +128,13 @@ class _PatientMainNavigationState extends State<PatientMainNavigation> {
       return const Scaffold(body: Center(child: Text('Please log in')));
     }
 
+    // ⭐ Wire up the tab-switching callback used by PatientHomeScreen
+    PatientHomeScreen.bottomNavCallback = (index) {
+      if (mounted) {
+        setState(() => _selectedIndex = index);
+      }
+    };
+
     return Scaffold(
       body: Stack(
         children: [

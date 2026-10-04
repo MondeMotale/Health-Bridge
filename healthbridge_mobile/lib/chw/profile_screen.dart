@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../auth/auth_provider.dart';
 import '../services/profile_service.dart';
 import '../models/user.dart';
+import 'my_availability_screen.dart'; // <--- NEW
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -13,7 +14,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final ProfileService _profileService = ProfileService();
-  
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
@@ -21,7 +22,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   bool _isEditing = false;
   bool _isLoading = true;
-  // REMOVED: ChwProfile? _profile;  <--- This was never read
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (mounted) {
         setState(() {
           _isLoading = false;
-          
+
           if (profile != null) {
             _nameController.text = profile.displayName;
             _phoneController.text = profile.phoneNumber;
@@ -68,13 +68,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
 
       await _profileService.saveProfile(updatedProfile);
-      
+
       if (mounted) {
         setState(() {
           _isEditing = false;
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile updated successfully!'), backgroundColor: Colors.green),
+          const SnackBar(
+            content: Text('Profile updated successfully!'),
+            backgroundColor: Colors.green,
+          ),
         );
       }
     }
@@ -133,7 +136,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   child: Center(
                     child: Text(
-                      _nameController.text.isNotEmpty ? _nameController.text[0].toUpperCase() : '?',
+                      _nameController.text.isNotEmpty
+                          ? _nameController.text[0].toUpperCase()
+                          : '?',
                       style: const TextStyle(
                         fontSize: 48,
                         fontWeight: FontWeight.bold,
@@ -155,8 +160,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.email, color: Color(0xFF6B7280)),
-                title: const Text('Email Address', style: TextStyle(color: Color(0xFF6B7280))),
-                subtitle: Text(authProvider.user?.email ?? 'No email', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                title: const Text('Email Address',
+                    style: TextStyle(color: Color(0xFF6B7280))),
+                subtitle: Text(
+                  authProvider.user?.email ?? 'No email',
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
               ),
               const SizedBox(height: 16),
 
@@ -185,9 +194,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               // --- BUTTONS: Smaller and more professional ---
               if (!_isEditing) ...[
+                // ⭐ NEW: My Availability button
                 SizedBox(
-                  width: 200, // Smaller width
-                  height: 44, // Shorter height
+                  width: 200,
+                  height: 44,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MyAvailabilityScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.schedule, size: 18),
+                    label: const Text('My Availability',
+                        style: TextStyle(fontSize: 14)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: const Color(0xFF1E3A8A),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                      side: const BorderSide(color: Color(0xFF1E3A8A)),
+                      elevation: 0,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                // Existing: Back to Dashboard
+                SizedBox(
+                  width: 200,
+                  height: 44,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushReplacementNamed(context, '/main');
@@ -195,19 +233,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF1E3A8A),
                       foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
                       elevation: 0,
                       side: const BorderSide(color: Color(0xFF1E3A8A)),
                     ),
-                    child: const Text('Back to Dashboard', style: TextStyle(fontSize: 14)),
+                    child: const Text('Back to Dashboard',
+                        style: TextStyle(fontSize: 14)),
                   ),
                 ),
                 const SizedBox(height: 12),
               ],
 
+              // Log Out button
               SizedBox(
-                width: 200, // Same smaller width
-                height: 44, // Shorter height
+                width: 200,
+                height: 44,
                 child: ElevatedButton.icon(
                   onPressed: () async {
                     await authProvider.logout();
@@ -220,7 +261,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFEF4444),
                     foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
                     elevation: 0,
                   ),
                 ),
@@ -242,7 +284,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(color: Color(0xFF6B7280), fontWeight: FontWeight.w500)),
+        Text(label,
+            style: const TextStyle(
+                color: Color(0xFF6B7280), fontWeight: FontWeight.w500)),
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
@@ -264,7 +308,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(color: Color(0xFF1E3A8A)),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           ),
           style: TextStyle(
             fontWeight: _isEditing ? FontWeight.normal : FontWeight.w500,

@@ -15,30 +15,14 @@
         { "level": "Severe",   "systolic": "≥ 180",   "diastolic": "≥ 110"   }
       ],
       "targetBP": "Systolic < 140 mmHg and diastolic < 90 mmHg",
-      "phases": [
-        "Step 1 — Lifestyle modification",
-        "Step 2 — Add thiazide/thiazide-like diuretic",
-        "Step 3 — Add second antihypertensive",
-        "Step 4 — Increase dose of second medicine",
-        "Step 5 — Add third antihypertensive",
-        "Step 6 — Increase dose of third medicine",
-        "Step 7 — Add fourth medicine (spironolactone) — refer if uncontrolled"
-      ],
+      "phases": ["Step 1 — Lifestyle modification", "Step 2 — Add thiazide/thiazide-like diuretic", "Step 3 — Add second antihypertensive", "Step 4 — Increase dose of second medicine", "Step 5 — Add third antihypertensive", "Step 6 — Increase dose of third medicine", "Step 7 — Add fourth medicine (spironolactone) — refer if uncontrolled"],
       "medications": [
         { "name": "Hydrochlorothiazide", "dosage": "12.5 mg", "frequency": "Once daily", "duration": "Ongoing", "phase": "Step 2", "notes": "Contraindicated in gout, pregnancy, severe liver impairment, eGFR < 30 mL/min.", "isClinical": false },
         { "name": "Amlodipine", "dosage": "5 mg (can increase to 10 mg)", "frequency": "Once daily", "duration": "Ongoing", "phase": "Step 3 / Step 4", "notes": "Long-acting calcium channel blocker. Avoid in untreated heart failure.", "isClinical": false },
         { "name": "Enalapril", "dosage": "10 mg (can increase to 20 mg)", "frequency": "Once daily", "duration": "Ongoing", "phase": "Step 3 / Step 4", "notes": "ACE-inhibitor. Contraindicated in pregnancy, renal artery stenosis, angioedema history, hyperkalaemia, eGFR < 30.", "isClinical": false },
         { "name": "Spironolactone", "dosage": "25 mg", "frequency": "Once daily", "duration": "Ongoing", "phase": "Step 7", "notes": "Doctor-initiated only. Monitor serum potassium. Do NOT use with potassium supplements or NSAIDs.", "isClinical": true }
       ],
-      "lifestyleAdvice": [
-        "Stop smoking",
-        "Maintain ideal weight",
-        "Salt restriction — avoid processed foods",
-        "Increase potassium intake from fresh fruits and vegetables",
-        "Reduce alcohol to ≤ 2 drinks/day for males, ≤ 1 for females",
-        "Healthy eating plan (low fat, high fibre)",
-        "Regular moderate aerobic exercise — 30 minutes, 5–7×/week"
-      ],
+      "lifestyleAdvice": ["Stop smoking", "Maintain ideal weight", "Salt restriction — avoid processed foods", "Increase potassium intake from fresh fruits and vegetables", "Reduce alcohol to ≤ 2 drinks/day for males, ≤ 1 for females", "Healthy eating plan (low fat, high fibre)", "Regular moderate aerobic exercise — 30 minutes, 5–7×/week"],
       "monitoring": {
         "everyVisit": ["Weight", "Blood pressure"],
         "baseline": ["Serum creatinine and eGFR", "Urine protein", "BMI", "Serum potassium (if on ACE-I or eGFR < 30)"],
@@ -46,27 +30,9 @@
         "annually": ["Finger prick glucose", "Urine protein", "Serum creatinine"]
       },
       "followUpSchedule": "Monthly until stable. Then every 3–6 months.",
-      "warningSigns": [
-        "Severe headache with blurred vision",
-        "Chest pain / unstable angina",
-        "Shortness of breath",
-        "Neurological signs",
-        "Signs of renal failure"
-      ],
-      "referralCriteria": [
-        "Young adults (< 30 years)",
-        "BP uncontrolled on 4 medicines",
-        "Pregnancy",
-        "Organ damage signs",
-        "Severe adverse drug reactions",
-        "Hypertensive urgency/emergency",
-        "eGFR < 30 mL/min"
-      ],
-      "emergencyProtocol": {
-        "trigger": "Systolic >180 and/or diastolic >130 WITH organ damage symptoms",
-        "immediateAction": "Amlodipine 10 mg oral as single dose. If pulmonary oedema: Furosemide 40 mg IV.",
-        "outcome": "Refer immediately to hospital"
-      },
+      "warningSigns": ["Severe headache with blurred vision", "Chest pain / unstable angina", "Shortness of breath", "Neurological signs", "Signs of renal failure"],
+      "referralCriteria": ["Young adults (< 30 years)", "BP uncontrolled on 4 medicines", "Pregnancy", "Organ damage signs", "Severe adverse drug reactions", "Hypertensive urgency/emergency", "eGFR < 30 mL/min"],
+      "emergencyProtocol": { "trigger": "Systolic >180 and/or diastolic >130 WITH organ damage symptoms", "immediateAction": "Amlodipine 10 mg oral as single dose. If pulmonary oedema: Furosemide 40 mg IV.", "outcome": "Refer immediately to hospital" },
       "specialCases": [
         { "case": "Elderly", "note": "Initiate medicine only when BP > 160/90. Lower slowly." },
         { "case": "Pregnancy", "note": "See Section 6.4.2" },
@@ -94,51 +60,16 @@
         { "name": "Gliclazide", "dosage": "30 mg starting", "frequency": "Once daily with breakfast", "duration": "Ongoing", "phase": "Step 2", "notes": "Preferred in the elderly. Only if HbA1c > 8% despite maximal metformin.", "isClinical": false },
         { "name": "Insulin (intermediate to long-acting)", "dosage": "10 units starting", "frequency": "Evening before bed", "duration": "Ongoing", "phase": "Step 3", "notes": "Doctor-initiated. STOP sulphonylurea when insulin started.", "isClinical": true }
       ],
-      "lifestyleAdvice": [
-        "Regular, evenly-spaced meals with small portions",
-        "Strict carbohydrate control",
-        "Discourage processed/refined carbs",
-        "Aim for 5 servings of fruit/vegetables per day",
-        "Eat oily fish 2–3× per week",
-        "Salt: ≤ half teaspoon per day",
-        "30 minutes physical activity, 5× per week",
-        "Stop smoking; limit alcohol",
-        "Foot care — inspect feet daily",
-        "Wear a medical notification bracelet"
-      ],
-      "portionGuide": {
-        "protein": "Size of your palm (about 90 g or ½ cup)",
-        "fruitsVegStarch": "No larger than your clenched fist (1 cup)",
-        "healthyFats": "Size of thumb tip (1 teaspoon)",
-        "hardCheeseOrPeanutButter": "Length of your thumb (1 tablespoon)"
-      },
+      "lifestyleAdvice": ["Regular, evenly-spaced meals with small portions", "Strict carbohydrate control", "Discourage processed/refined carbs", "Aim for 5 servings of fruit/vegetables per day", "Eat oily fish 2–3× per week", "Salt: ≤ half teaspoon per day", "30 minutes physical activity, 5× per week", "Stop smoking; limit alcohol", "Foot care — inspect feet daily", "Wear a medical notification bracelet"],
+      "portionGuide": { "protein": "Size of your palm (about 90 g or ½ cup)", "fruitsVegStarch": "No larger than your clenched fist (1 cup)", "healthyFats": "Size of thumb tip (1 teaspoon)", "hardCheeseOrPeanutButter": "Length of your thumb (1 tablespoon)" },
       "monitoring": {
         "everyVisit": ["Finger-prick blood glucose", "Weight", "Blood pressure"],
         "baseline": ["Serum creatinine and eGFR", "Urine protein", "BMI", "Blood lipids", "Foot examination", "Eye examination"],
         "annually": ["Serum creatinine and eGFR", "Urine protein", "HbA1c (3–6 monthly)", "Eye examination", "Foot examination"]
       },
       "followUpSchedule": "Monthly until stable. Then every 3–6 months.",
-      "warningSigns": [
-        "Blood glucose < 4 mmol/L (hypoglycaemia)",
-        "Altered level of consciousness",
-        "Acidotic breathing (DKA)",
-        "Dehydration, hypotension",
-        "Nausea, vomiting, abdominal pain",
-        "Ketonuria (> 1+)",
-        "Hyperglycaemia > 25 mmol/L",
-        "Sudden vision deterioration"
-      ],
-      "referralCriteria": [
-        "Acidotic breathing",
-        "Dehydration + hypotension",
-        "Nausea/vomiting/abdominal pain",
-        "Ketonuria (> 1+)",
-        "Hyperglycaemia > 25 mmol/L",
-        "Pregnancy",
-        "eGFR < 30",
-        "Ischaemic heart disease",
-        "Vision loss"
-      ],
+      "warningSigns": ["Blood glucose < 4 mmol/L (hypoglycaemia)", "Altered level of consciousness", "Acidotic breathing (DKA)", "Dehydration, hypotension", "Nausea, vomiting, abdominal pain", "Ketonuria (> 1+)", "Hyperglycaemia > 25 mmol/L", "Sudden vision deterioration"],
+      "referralCriteria": ["Acidotic breathing", "Dehydration + hypotension", "Nausea/vomiting/abdominal pain", "Ketonuria (> 1+)", "Hyperglycaemia > 25 mmol/L", "Pregnancy", "eGFR < 30", "Ischaemic heart disease", "Vision loss"],
       "emergencyProtocol": {
         "trigger": "Altered consciousness, acidotic breathing, dehydration, ketonuria, or glucose > 25 mmol/L",
         "classification": [
@@ -174,37 +105,15 @@
         { "name": "Isoniazid (TPT)", "dosage": "300 mg", "frequency": "Once daily", "duration": "12 months", "phase": "TB Preventive Therapy", "notes": "Give to all adult PLHIV without active TB.", "isClinical": false },
         { "name": "Pyridoxine", "dosage": "25 mg", "frequency": "Once daily", "duration": "Full duration of TPT", "phase": "TPT adjunct", "notes": "Prevents isoniazid-induced neuropathy.", "isClinical": false }
       ],
-      "lifestyleAdvice": [
-        "Take your ART at the same time every day",
-        "Never skip doses — resistance develops quickly",
-        "Use condoms during sexual intercourse",
-        "Disclose your HIV status to a trusted person",
-        "Join a support group",
-        "Eat a balanced diet",
-        "Stop smoking; limit alcohol",
-        "Get your flu vaccine annually",
-        "Attend every appointment"
-      ],
+      "lifestyleAdvice": ["Take your ART at the same time every day", "Never skip doses — resistance develops quickly", "Use condoms during sexual intercourse", "Disclose your HIV status to a trusted person", "Join a support group", "Eat a balanced diet", "Stop smoking; limit alcohol", "Get your flu vaccine annually", "Attend every appointment"],
       "monitoring": {
         "baseline": ["WHO staging", "CD4 count", "CrAg if CD4 <200", "Cotrimoxazole if CD4 <200", "TB screen", "Sputum TB-NAAT", "Serum creatinine", "HBsAg", "Cervical cancer screening"],
         "onART": ["VL at 3 and 10 months, then annually", "CD4 at 10 months", "Creatinine (if on TDF)", "FBC (if on AZT)", "Weight, BP, adherence at every visit"]
       },
       "followUpSchedule": "VL at 3 and 10 months, then annually if suppressed.",
-      "warningSigns": [
-        "New cough > 2 weeks", "Fever with night sweats and weight loss", "Severe headache with neck stiffness",
-        "Difficulty swallowing", "Blurred vision", "Confusion or seizures", "Severe diarrhoea > 2 weeks",
-        "Shortness of breath", "New purple/dark skin patches"
-      ],
-      "referralCriteria": [
-        "DTG resistance on testing", "Suspected cryptococcal meningitis", "TB meningitis (defer ART 8 weeks)",
-        "Cryptococcal meningitis (defer ART 4-6 weeks)", "Virological failure on TLD", "Suspected IRIS",
-        "eGFR < 30", "Pregnancy", "Severe adverse drug reactions"
-      ],
-      "emergencyProtocol": {
-        "trigger": "Fever + neck stiffness, altered consciousness, or severe dyspnoea",
-        "immediateAction": "Assess ABCDE. Refer urgently for LP and CSF CrAg if meningitis suspected. Do not stop ART if suspected IRIS.",
-        "outcome": "Most HIV-related emergencies need hospital referral."
-      },
+      "warningSigns": ["New cough > 2 weeks", "Fever with night sweats and weight loss", "Severe headache with neck stiffness", "Difficulty swallowing", "Blurred vision", "Confusion or seizures", "Severe diarrhoea > 2 weeks", "Shortness of breath", "New purple/dark skin patches"],
+      "referralCriteria": ["DTG resistance on testing", "Suspected cryptococcal meningitis", "TB meningitis (defer ART 8 weeks)", "Cryptococcal meningitis (defer ART 4-6 weeks)", "Virological failure on TLD", "Suspected IRIS", "eGFR < 30", "Pregnancy", "Severe adverse drug reactions"],
+      "emergencyProtocol": { "trigger": "Fever + neck stiffness, altered consciousness, or severe dyspnoea", "immediateAction": "Assess ABCDE. Refer urgently for LP and CSF CrAg if meningitis suspected. Do not stop ART if suspected IRIS.", "outcome": "Most HIV-related emergencies need hospital referral." },
       "specialCases": [
         { "case": "Pregnancy or breastfeeding", "note": "Initiate ART immediately with TLD." },
         { "case": "TB co-infection", "note": "Start TB first. CD4 <50: ART within 2 weeks; CD4 ≥50: defer 8 weeks." },
@@ -275,28 +184,8 @@
       "treatmentDurationText": "6 months (2 months intensive + 4 months continuation)",
       "phases": ["Intensive phase (Months 1–2) — RHZE", "Continuation phase (Months 3–6) — RH", "Cure — smear-negative at month 5 or 6"],
       "medications": [
-        {
-          "name": "RHZE — Rifampicin + Isoniazid + Pyrazinamide + Ethambutol", "dosage": "Weight-based", "frequency": "Once daily", "duration": "2 months", "phase": "Intensive phase",
-          "notes": "4-in-1 tablet. Take in ONE dose. Urine may turn orange. Rifampicin reduces oral contraceptive efficacy.",
-          "isClinical": false,
-          "weightBands": [
-            { "weight": "30–37 kg", "dose": "2 tablets daily" },
-            { "weight": "38–54 kg", "dose": "3 tablets daily" },
-            { "weight": "55–70 kg", "dose": "4 tablets daily" },
-            { "weight": "≥ 71 kg",   "dose": "5 tablets daily" }
-          ]
-        },
-        {
-          "name": "RH — Rifampicin + Isoniazid", "dosage": "Weight-based", "frequency": "Once daily", "duration": "4 months", "phase": "Continuation phase",
-          "notes": "Two formulations: RH 150/75 and RH 300/150.",
-          "isClinical": false,
-          "weightBands": [
-            { "weight": "30–37 kg", "dose": "2 tablets RH 150/75" },
-            { "weight": "38–54 kg", "dose": "3 tablets RH 150/75" },
-            { "weight": "55–70 kg", "dose": "2 tablets RH 300/150" },
-            { "weight": "≥ 71 kg",   "dose": "2 tablets RH 300/150" }
-          ]
-        },
+        { "name": "RHZE — Rifampicin + Isoniazid + Pyrazinamide + Ethambutol", "dosage": "Weight-based", "frequency": "Once daily", "duration": "2 months", "phase": "Intensive phase", "notes": "4-in-1 tablet. Take in ONE dose. Urine may turn orange. Rifampicin reduces oral contraceptive efficacy.", "isClinical": false, "weightBands": [ { "weight": "30–37 kg", "dose": "2 tablets daily" }, { "weight": "38–54 kg", "dose": "3 tablets daily" }, { "weight": "55–70 kg", "dose": "4 tablets daily" }, { "weight": "≥ 71 kg", "dose": "5 tablets daily" } ] },
+        { "name": "RH — Rifampicin + Isoniazid", "dosage": "Weight-based", "frequency": "Once daily", "duration": "4 months", "phase": "Continuation phase", "notes": "Two formulations: RH 150/75 and RH 300/150.", "isClinical": false, "weightBands": [ { "weight": "30–37 kg", "dose": "2 tablets RH 150/75" }, { "weight": "38–54 kg", "dose": "3 tablets RH 150/75" }, { "weight": "55–70 kg", "dose": "2 tablets RH 300/150" }, { "weight": "≥ 71 kg", "dose": "2 tablets RH 300/150" } ] },
         { "name": "Pyridoxine", "dosage": "25 mg", "frequency": "Once daily", "duration": "6 months", "phase": "Adjunct", "notes": "Prevents isoniazid-induced neuropathy.", "isClinical": false }
       ],
       "lifestyleAdvice": ["Take all TB tablets every day", "Do not stop even if you feel better", "Cover your mouth when you cough", "Open windows, let in sunlight", "Eat well; stop smoking; limit alcohol", "Attend every follow-up", "Inform close contacts"],
@@ -308,11 +197,7 @@
       "followUpSchedule": "Monthly review. Sputum smear at month 2, 5, 6.",
       "warningSigns": ["Yellow eyes or skin", "Dark brown urine", "Severe nausea/vomiting", "New skin rash", "Tingling", "Persistent fever or cough", "Coughing up blood"],
       "referralCriteria": ["Disseminated TB", "TB meningitis", "DR-TB", "Smear positive at month 2", "Treatment failure", "Severe adverse reactions", "TB in children <12", "Pregnancy"],
-      "emergencyProtocol": {
-        "trigger": "Disseminated TB, TB meningitis, or severe adverse reaction",
-        "immediateAction": "Refer same day. STOP all TB medicines if suspected hepatitis.",
-        "outcome": "Life-threatening if not treated promptly."
-      },
+      "emergencyProtocol": { "trigger": "Disseminated TB, TB meningitis, or severe adverse reaction", "immediateAction": "Refer same day. STOP all TB medicines if suspected hepatitis.", "outcome": "Life-threatening if not treated promptly." },
       "specialCases": [
         { "case": "HIV co-infection", "note": "Start TB first; add ART based on CD4. Double DTG dose while on rifampicin." },
         { "case": "Renal impairment", "note": "Ethambutol and pyrazinamide 3× weekly." },
@@ -330,28 +215,8 @@
       "treatmentDurationText": "6 months (2 months intensive + 4 months continuation)",
       "phases": ["Intensive phase — RHZE", "Continuation phase — RH"],
       "medications": [
-        {
-          "name": "RHZE", "dosage": "Weight-based", "frequency": "Once daily", "duration": "2 months", "phase": "Intensive phase",
-          "notes": "4-in-1 tablet. Take in ONE dose.",
-          "isClinical": false,
-          "weightBands": [
-            { "weight": "30–37 kg", "dose": "2 tablets daily" },
-            { "weight": "38–54 kg", "dose": "3 tablets daily" },
-            { "weight": "55–70 kg", "dose": "4 tablets daily" },
-            { "weight": "≥ 71 kg",   "dose": "5 tablets daily" }
-          ]
-        },
-        {
-          "name": "RH", "dosage": "Weight-based", "frequency": "Once daily", "duration": "4 months", "phase": "Continuation phase",
-          "notes": "Two formulations: RH 150/75 and RH 300/150.",
-          "isClinical": false,
-          "weightBands": [
-            { "weight": "30–37 kg", "dose": "2 tablets RH 150/75" },
-            { "weight": "38–54 kg", "dose": "3 tablets RH 150/75" },
-            { "weight": "55–70 kg", "dose": "2 tablets RH 300/150" },
-            { "weight": "≥ 71 kg",   "dose": "2 tablets RH 300/150" }
-          ]
-        },
+        { "name": "RHZE", "dosage": "Weight-based", "frequency": "Once daily", "duration": "2 months", "phase": "Intensive phase", "notes": "4-in-1 tablet. Take in ONE dose.", "isClinical": false, "weightBands": [ { "weight": "30–37 kg", "dose": "2 tablets daily" }, { "weight": "38–54 kg", "dose": "3 tablets daily" }, { "weight": "55–70 kg", "dose": "4 tablets daily" }, { "weight": "≥ 71 kg", "dose": "5 tablets daily" } ] },
+        { "name": "RH", "dosage": "Weight-based", "frequency": "Once daily", "duration": "4 months", "phase": "Continuation phase", "notes": "Two formulations: RH 150/75 and RH 300/150.", "isClinical": false, "weightBands": [ { "weight": "30–37 kg", "dose": "2 tablets RH 150/75" }, { "weight": "38–54 kg", "dose": "3 tablets RH 150/75" }, { "weight": "55–70 kg", "dose": "2 tablets RH 300/150" }, { "weight": "≥ 71 kg", "dose": "2 tablets RH 300/150" } ] },
         { "name": "Pyridoxine", "dosage": "25 mg", "frequency": "Once daily", "duration": "6 months", "phase": "Adjunct", "notes": "Prevents isoniazid neuropathy.", "isClinical": false }
       ],
       "lifestyleAdvice": ["Take all TB tablets every day", "Do not stop even if you feel better", "Cover your mouth when you cough", "Eat well; stop smoking; limit alcohol", "Inform close contacts"],
@@ -363,11 +228,7 @@
       "followUpSchedule": "Monthly review. Sputum smear at 2, 5, 6 months.",
       "warningSigns": ["Yellow eyes", "Dark urine", "Severe nausea", "Skin rash", "Tingling", "Persistent fever or cough"],
       "referralCriteria": ["Disseminated TB", "TB meningitis", "DR-TB", "Treatment failure", "Severe adverse reactions", "TB in children <12", "Pregnancy"],
-      "emergencyProtocol": {
-        "trigger": "Disseminated TB, TB meningitis, or severe adverse reaction",
-        "immediateAction": "Refer same day. STOP TB medicines if hepatitis suspected.",
-        "outcome": "Life-threatening if not treated promptly."
-      },
+      "emergencyProtocol": { "trigger": "Disseminated TB, TB meningitis, or severe adverse reaction", "immediateAction": "Refer same day. STOP TB medicines if hepatitis suspected.", "outcome": "Life-threatening if not treated promptly." },
       "specialCases": [
         { "case": "HIV co-infection", "note": "Start TB first; add ART based on CD4." },
         { "case": "Pregnancy", "note": "First-line drugs safe. Give pyridoxine." }
@@ -403,11 +264,7 @@
       "followUpSchedule": "Review every 3 months. If >2 courses of oral prednisone in 6 months, refer to doctor.",
       "warningSigns": ["Reliever needed > 4× per day", "Waking up at night", "Unable to speak full sentences", "Bluish lips or fingertips", "Drowsiness or confusion"],
       "referralCriteria": ["Children <6 years", ">2 courses oral prednisone in 6 months", "Brittle asthma", "Inadequate control on Step 2 or 3", "Diagnosis uncertain"],
-      "emergencyProtocol": {
-        "trigger": "Severe or life-threatening asthma attack",
-        "immediateAction": "See J46 — Status asthmaticus for full protocol.",
-        "outcome": "Refer urgently after initial treatment."
-      },
+      "emergencyProtocol": { "trigger": "Severe or life-threatening asthma attack", "immediateAction": "See J46 — Status asthmaticus for full protocol.", "outcome": "Refer urgently after initial treatment." },
       "inhalerTechnique": {
         "mdi": "1. Remove cap and shake.\n2. Breathe out gently.\n3. Seal lips around mouthpiece.\n4. Press canister and breathe in slowly (3–5 sec).\n5. Hold breath 10 sec.\n6. Wait 30 sec between puffs.\n7. Rinse mouth after steroid inhaler.",
         "spacer": "1. Shake inhaler, insert into spacer.\n2. Seal lips around mouthpiece.\n3. Press canister ONCE.\n4. Breathe in and out slowly 5–6 times.\n5. Wait 30 sec between puffs.\n6. Wash spacer weekly, air-dry.",
@@ -480,11 +337,7 @@
       "followUpSchedule": "Review within 1–2 weeks after attack.",
       "warningSigns": ["Unable to speak in full sentences", "Bluish lips", "Drowsiness or confusion", "Silent chest", "Bradycardia", "O2 sat <90%", "Poor response to salbutamol"],
       "referralCriteria": ["All severe or life-threatening attacks", "Poor response to initial treatment", "PEFR <75% predicted at 15–30 min"],
-      "emergencyProtocol": {
-        "trigger": "Severe or life-threatening asthma attack",
-        "immediateAction": "Sit upright. Oxygen. Salbutamol 400–1000 mcg every 20–30 min. Add ipratropium if poor response. Prednisone 40 mg (or hydrocortisone 100 mg IV). Refer urgently. NEVER sedate.",
-        "outcome": "Life-threatening — refer urgently."
-      },
+      "emergencyProtocol": { "trigger": "Severe or life-threatening asthma attack", "immediateAction": "Sit upright. Oxygen. Salbutamol 400–1000 mcg every 20–30 min. Add ipratropium if poor response. Prednisone 40 mg (or hydrocortisone 100 mg IV). Refer urgently. NEVER sedate.", "outcome": "Life-threatening — refer urgently." },
       "specialCases": [
         { "case": "COPD exacerbation", "note": "Treat the same; oxygen with care (24–28%)." },
         { "case": "Pulmonary oedema", "note": "Consider in patients >50 with first-time wheeze." },
@@ -505,17 +358,7 @@
         { "name": "Oral Rehydration Solution (ORS)", "dosage": "Plan B: 80 mL/kg over 4 h. Plan A: 10 mL/kg after each stool", "frequency": "Frequent small sips", "duration": "Until diarrhoea stops", "phase": "Rehydration", "notes": "Cup-and-spoon method. If vomiting, wait 10 min, continue slowly.", "isClinical": false },
         { "name": "Homemade SSS", "dosage": "½ tsp salt + 8 tsp sugar in 1 L boiled/cooled water", "frequency": "As needed at home", "duration": "Until diarrhoea stops", "phase": "Home rehydration", "notes": "Discard after 24 hours.", "isClinical": false },
         { "name": "Zinc — children", "dosage": "10 mg", "frequency": "Once daily", "duration": "14 days", "phase": "Children", "notes": "Give zinc to ALL children with acute diarrhoea.", "isClinical": false },
-        {
-          "name": "Loperamide — adults", "dosage": "4 mg initially, then 2 mg after each stool", "frequency": "As required", "duration": "Up to 48 hours", "phase": "Adults (no blood)",
-          "notes": "NOT for children. NOT for bloody diarrhoea.",
-          "isClinical": false,
-          "weightBands": [
-            { "weight": "34–39 kg", "dose": "Max 10 mg/day (5 tablets)" },
-            { "weight": "40–46 kg", "dose": "Max 12 mg/day (6 tablets)" },
-            { "weight": "47–53 kg", "dose": "Max 14 mg/day (7 tablets)" },
-            { "weight": "≥ 54 kg",   "dose": "Max 16 mg/day (8 tablets)" }
-          ]
-        },
+        { "name": "Loperamide — adults", "dosage": "4 mg initially, then 2 mg after each stool", "frequency": "As required", "duration": "Up to 48 hours", "phase": "Adults (no blood)", "notes": "NOT for children. NOT for bloody diarrhoea.", "isClinical": false, "weightBands": [ { "weight": "34–39 kg", "dose": "Max 10 mg/day (5 tablets)" }, { "weight": "40–46 kg", "dose": "Max 12 mg/day (6 tablets)" }, { "weight": "47–53 kg", "dose": "Max 14 mg/day (7 tablets)" }, { "weight": "≥ 54 kg", "dose": "Max 16 mg/day (8 tablets)" } ] },
         { "name": "Ceftriaxone (before referral)", "dosage": "100 mg/kg/dose", "frequency": "Single dose", "duration": "Once", "phase": "Neonates with severe dehydration OR children with SAM", "notes": "Only before referral in high-risk groups.", "isClinical": true }
       ],
       "lifestyleAdvice": ["Keep giving ORS/SSS even if patient vomits", "Continue feeding", "Give small frequent meals", "Give zinc to children for 14 full days", "Wash hands with soap", "Boil drinking water if unsure", "Return IMMEDIATELY if warning signs"],
@@ -523,11 +366,7 @@
       "followUpSchedule": "Return immediately if: no improvement, poor drinking, blood in stool, fever, sunken eyes. Follow up in 5 days if diarrhoea persists.",
       "warningSigns": ["Lethargic or unconscious", "Sunken eyes", "Not able to drink", "Slow skin pinch (≥2 sec)", "Blood in stool", "High fever", "Intractable vomiting", "Convulsions", "Persistent diarrhoea (7+ days)"],
       "referralCriteria": ["Severe dehydration (Plan C)", "Plan B failure at 8 hours", "Danger signs", "Dysentery in <12 months", "Malnourished children", "Persistent diarrhoea >14 days", "Neonates"],
-      "emergencyProtocol": {
-        "trigger": "Severe dehydration (Plan C)",
-        "immediateAction": "Ringers lactate or NaCl 0.9% IV, 20 mL/kg rapidly. If SAM: 10 mL/kg over 10 min. Repeat up to twice if weak pulse. Continue 20 mL/kg hourly × 5 h. Give ORS as soon as child can drink. Refer urgently.",
-        "outcome": "Life-threatening — refer urgently."
-      },
+      "emergencyProtocol": { "trigger": "Severe dehydration (Plan C)", "immediateAction": "Ringers lactate or NaCl 0.9% IV, 20 mL/kg rapidly. If SAM: 10 mL/kg over 10 min. Repeat up to twice if weak pulse. Continue 20 mL/kg hourly × 5 h. Give ORS as soon as child can drink. Refer urgently.", "outcome": "Life-threatening — refer urgently." },
       "specialCases": [
         { "case": "Bloody diarrhoea", "note": "Consider dysentery — refer." },
         { "case": "Neonates", "note": "Give ceftriaxone 100 mg/kg before referral." },
@@ -548,28 +387,14 @@
         { "name": "ORS", "dosage": "Plan B: 80 mL/kg over 4 h. Plan A: 10 mL/kg after each stool", "frequency": "Small sips", "duration": "Until diarrhoea stops", "phase": "Rehydration", "notes": "Cup-and-spoon method.", "isClinical": false },
         { "name": "SSS", "dosage": "½ tsp salt + 8 tsp sugar in 1 L water", "frequency": "As needed", "duration": "Until diarrhoea stops", "phase": "Home rehydration", "notes": "Discard after 24 h.", "isClinical": false },
         { "name": "Zinc — children", "dosage": "10 mg", "frequency": "Once daily", "duration": "14 days", "phase": "Children", "notes": "Give to ALL children.", "isClinical": false },
-        {
-          "name": "Loperamide — adults", "dosage": "4 mg initially, then 2 mg after each stool", "frequency": "As required", "duration": "Up to 48 hours", "phase": "Adults (no blood)",
-          "notes": "NOT for children or bloody diarrhoea.",
-          "isClinical": false,
-          "weightBands": [
-            { "weight": "34–39 kg", "dose": "Max 10 mg/day (5 tablets)" },
-            { "weight": "40–46 kg", "dose": "Max 12 mg/day (6 tablets)" },
-            { "weight": "47–53 kg", "dose": "Max 14 mg/day (7 tablets)" },
-            { "weight": "≥ 54 kg",   "dose": "Max 16 mg/day (8 tablets)" }
-          ]
-        }
+        { "name": "Loperamide — adults", "dosage": "4 mg initially, then 2 mg after each stool", "frequency": "As required", "duration": "Up to 48 hours", "phase": "Adults (no blood)", "notes": "NOT for children or bloody diarrhoea.", "isClinical": false, "weightBands": [ { "weight": "34–39 kg", "dose": "Max 10 mg/day (5 tablets)" }, { "weight": "40–46 kg", "dose": "Max 12 mg/day (6 tablets)" }, { "weight": "47–53 kg", "dose": "Max 14 mg/day (7 tablets)" }, { "weight": "≥ 54 kg", "dose": "Max 16 mg/day (8 tablets)" } ] }
       ],
       "lifestyleAdvice": ["Keep giving ORS/SSS even if patient vomits", "Continue feeding", "Give zinc to children for 14 days", "Wash hands with soap"],
       "monitoring": { "duringEpisode": ["Assess hydration", "Count stools", "Check for blood"] },
       "followUpSchedule": "Return immediately if: no improvement, blood in stool, sunken eyes.",
       "warningSigns": ["Lethargic", "Sunken eyes", "Not able to drink", "Slow skin pinch", "Blood in stool", "High fever", "Convulsions"],
       "referralCriteria": ["Severe dehydration", "Plan B failure at 8 hours", "Danger signs", "Dysentery in <12 months", "Malnourished children"],
-      "emergencyProtocol": {
-        "trigger": "Severe dehydration (Plan C)",
-        "immediateAction": "Ringers lactate or NaCl 0.9% IV, 20 mL/kg rapidly. Refer urgently.",
-        "outcome": "Life-threatening — refer urgently."
-      },
+      "emergencyProtocol": { "trigger": "Severe dehydration (Plan C)", "immediateAction": "Ringers lactate or NaCl 0.9% IV, 20 mL/kg rapidly. Refer urgently.", "outcome": "Life-threatening — refer urgently." },
       "specialCases": [
         { "case": "Bloody diarrhoea", "note": "Consider dysentery — refer." },
         { "case": "SAM", "note": "Reduce IV bolus to 10 mL/kg." }
@@ -586,15 +411,7 @@
       "treatmentDurationText": "Variable — depends on cause",
       "phases": ["Assess for cause", "Rehydrate", "Nutritional support", "Specific treatment", "Follow-up in 5 days"],
       "medications": [
-        {
-          "name": "Vitamin A — children", "dosage": "6–11 mo: 100,000 IU. 12 mo–5 yrs: 200,000 IU", "frequency": "Single dose", "duration": "Once", "phase": "Children",
-          "notes": "Cut capsule end with scissors. Squeeze directly into back of mouth. Do NOT give capsule to caregiver.",
-          "isClinical": false,
-          "weightBands": [
-            { "weight": "6–11 months", "dose": "100,000 IU (1 capsule of 100,000 IU)" },
-            { "weight": "12 months–5 years", "dose": "200,000 IU (1 capsule of 200,000 IU OR 2 capsules of 100,000 IU)" }
-          ]
-        },
+        { "name": "Vitamin A — children", "dosage": "6–11 mo: 100,000 IU. 12 mo–5 yrs: 200,000 IU", "frequency": "Single dose", "duration": "Once", "phase": "Children", "notes": "Cut capsule end with scissors. Squeeze directly into back of mouth. Do NOT give capsule to caregiver.", "isClinical": false, "weightBands": [ { "weight": "6–11 months", "dose": "100,000 IU (1 capsule of 100,000 IU)" }, { "weight": "12 months–5 years", "dose": "200,000 IU (1 capsule of 200,000 IU OR 2 capsules of 100,000 IU)" } ] },
         { "name": "Zinc — children", "dosage": "10 mg", "frequency": "Once daily", "duration": "14 days", "phase": "Children", "notes": "Give to all children with persistent diarrhoea.", "isClinical": false },
         { "name": "Metronidazole — adults", "dosage": "2 g", "frequency": "Once daily", "duration": "3 days", "phase": "Empiric giardiasis treatment", "notes": "Empiric treatment before referring adults. Avoid alcohol.", "isClinical": false },
         { "name": "Nutritional rehabilitation", "dosage": "Small frequent meals — at least 6× a day", "frequency": "Continuous", "duration": "Until weight gain", "phase": "Children with malnutrition", "notes": "If breastfeeding: more frequent longer feeds. If replacement: use fermented milk (amasi) or yoghurt.", "isClinical": false }
@@ -629,24 +446,8 @@
         { "name": "Ferrous sulphate — intermittent", "dosage": "340 mg per week (± 110 mg elemental iron)", "frequency": "Once weekly", "duration": "3–6 months after Hb normalises", "phase": "Alternative if daily poorly tolerated", "notes": "Only when daily iron causes GI side effects.", "isClinical": false },
         { "name": "Ferrous fumarate — intermittent", "dosage": "400 mg per week (± 130 mg elemental iron)", "frequency": "Once weekly", "duration": "3–6 months after Hb normalises", "phase": "Alternative if daily poorly tolerated", "notes": "Same as above.", "isClinical": false },
         { "name": "Iron — children <5 years", "dosage": "1–2 mg/kg/dose of elemental iron", "frequency": "Three times daily with meals", "duration": "3 months after Hb normalises", "phase": "Children <5 years", "notes": "Follow up Hb after 14 days. If lower — refer. If same/higher — continue and repeat at 28 days.", "isClinical": false },
-        {
-          "name": "Mebendazole — empiric deworming for children", "dosage": "1–2 yrs: 100 mg. >2–5 yrs: 500 mg", "frequency": "Once", "duration": "Single dose", "phase": "Deworming",
-          "notes": "For all children with iron deficiency anaemia in endemic areas. Does NOT treat tapeworm.",
-          "isClinical": false,
-          "weightBands": [
-            { "weight": "Children 1–2 years", "dose": "100 mg single dose" },
-            { "weight": "Children >2–5 years", "dose": "500 mg single dose" }
-          ]
-        },
-        {
-          "name": "Albendazole — alternative deworming", "dosage": "1–2 yrs: 200 mg. ≥2 yrs: 400 mg", "frequency": "Once", "duration": "Single dose", "phase": "Deworming",
-          "notes": "Alternative to mebendazole.",
-          "isClinical": false,
-          "weightBands": [
-            { "weight": "Children 1–2 years", "dose": "200 mg single dose" },
-            { "weight": "Children ≥2 years and adults", "dose": "400 mg single dose" }
-          ]
-        },
+        { "name": "Mebendazole — empiric deworming for children", "dosage": "1–2 yrs: 100 mg. >2–5 yrs: 500 mg", "frequency": "Once", "duration": "Single dose", "phase": "Deworming", "notes": "For all children with iron deficiency anaemia in endemic areas. Does NOT treat tapeworm.", "isClinical": false, "weightBands": [ { "weight": "Children 1–2 years", "dose": "100 mg single dose" }, { "weight": "Children >2–5 years", "dose": "500 mg single dose" } ] },
+        { "name": "Albendazole — alternative deworming", "dosage": "1–2 yrs: 200 mg. ≥2 yrs: 400 mg", "frequency": "Once", "duration": "Single dose", "phase": "Deworming", "notes": "Alternative to mebendazole.", "isClinical": false, "weightBands": [ { "weight": "Children 1–2 years", "dose": "200 mg single dose" }, { "weight": "Children ≥2 years and adults", "dose": "400 mg single dose" } ] },
         { "name": "Ferrous lactate drops — LBW infants", "dosage": "0.6 mL daily (± 15 mg elemental iron)", "frequency": "Once daily", "duration": "From 6 weeks until 6 months of age", "phase": "Prophylaxis — infants <2.5 kg", "notes": "For preterm/low birth weight infants.", "isClinical": false },
         { "name": "Ferrous gluconate syrup — LBW infants", "dosage": "2.5 mL daily (± 15 mg elemental iron)", "frequency": "Once daily", "duration": "From 6 weeks until 6 months of age", "phase": "Prophylaxis — infants <2.5 kg", "notes": "Alternative to ferrous lactate drops.", "isClinical": false }
       ],
@@ -659,11 +460,7 @@
       "followUpSchedule": "Children <5 years: Hb at 14 days, then 28 days, then continue 3 months after normalisation. Adults: Hb at 1 month (expect rise ≥ 2 g/dL); continue iron 3–6 months after Hb normalises.",
       "warningSigns": ["Palpitations", "Shortness of breath", "Evidence of cardiac failure", "Enlarged liver, spleen, or lymph nodes", "Signs of acute blood loss", "Blood in stool or melaena", "Heavy menstruation", "No improvement despite correct treatment"],
       "referralCriteria": ["Unknown cause", "Symptomatic anaemia", "Cardiac failure", "Signs of chronic disease (investigate HIV and TB first)", "Enlarged liver, spleen, or lymph nodes", "Acute blood loss or bleeding disorder", "Menorrhagia", "Blood in stool or melaena", "Children >5, adult males, and non-menstruating women", "Children with Hb ≤7 g/dL", "Pregnant women >34 weeks with Hb <7 g/dL", "No or inadequate response to treatment"],
-      "emergencyProtocol": {
-        "trigger": "Severe symptomatic anaemia — palpitations, shortness of breath, cardiac failure",
-        "immediateAction": "Refer urgently. If Hb ≤7 g/dL in children or pregnant women >34 weeks, refer immediately.",
-        "outcome": "Severe anaemia can be life-threatening."
-      },
+      "emergencyProtocol": { "trigger": "Severe symptomatic anaemia — palpitations, shortness of breath, cardiac failure", "immediateAction": "Refer urgently. If Hb ≤7 g/dL in children or pregnant women >34 weeks, refer immediately.", "outcome": "Severe anaemia can be life-threatening." },
       "specialCases": [
         { "case": "Children <5 years", "note": "Iron deficiency is the most common cause. Empiric deworming recommended. Follow up Hb at 14 days." },
         { "case": "Children >5, adult males, non-menstruating women", "note": "Generally due to occult blood loss. Refer ALL cases for investigation." },
@@ -684,21 +481,7 @@
       "treatmentDurationText": "3 days of artemether/lumefantrine — 6 doses total",
       "phases": ["Diagnose — thick and thin blood smears OR rapid diagnostic test (HRP2)", "First dose — give artemether/lumefantrine under supervision, observe for 1 hour", "Complete treatment — 6 doses over 3 days", "Monitor for severe malaria signs during the first 24 hours"],
       "medications": [
-        {
-          "name": "Artemether/lumefantrine 20/120 mg",
-          "dosage": "Weight-based dosing (see table below)",
-          "frequency": "First dose immediately, second 8 hours later, then 12-hourly for 2 more days (6 doses total)",
-          "duration": "3 days",
-          "phase": "First-line treatment",
-          "notes": "MUST take with fat-containing food or full cream milk to ensure adequate absorption. Give the FIRST DOSE UNDER SUPERVISION at the clinic — observe for at least 1 hour as vomiting is common. If the patient vomits within the first hour, repeat the dose. Vomiting oral treatment is one of the most common reasons for treatment failure.",
-          "isClinical": false,
-          "weightBands": [
-            { "weight": ">5–15 kg (6 months–3 years)", "dose": "1 tablet (20/120 mg)" },
-            { "weight": ">15–25 kg (>3–8 years)", "dose": "2 tablets (40/240 mg)" },
-            { "weight": ">25–35 kg (>8–12 years)", "dose": "3 tablets (60/360 mg)" },
-            { "weight": ">35 kg (>12 years and adults)", "dose": "4 tablets (80/480 mg)" }
-          ]
-        },
+        { "name": "Artemether/lumefantrine 20/120 mg", "dosage": "Weight-based dosing (see table below)", "frequency": "First dose immediately, second 8 hours later, then 12-hourly for 2 more days (6 doses total)", "duration": "3 days", "phase": "First-line treatment", "notes": "MUST take with fat-containing food or full cream milk to ensure adequate absorption. Give the FIRST DOSE UNDER SUPERVISION at the clinic — observe for at least 1 hour as vomiting is common. If the patient vomits within the first hour, repeat the dose. Vomiting oral treatment is one of the most common reasons for treatment failure.", "isClinical": false, "weightBands": [ { "weight": ">5–15 kg (6 months–3 years)", "dose": "1 tablet (20/120 mg)" }, { "weight": ">15–25 kg (>3–8 years)", "dose": "2 tablets (40/240 mg)" }, { "weight": ">25–35 kg (>8–12 years)", "dose": "3 tablets (60/360 mg)" }, { "weight": ">35 kg (>12 years and adults)", "dose": "4 tablets (80/480 mg)" } ] },
         { "name": "Paracetamol — for fever", "dosage": "Children <5 years: 10–15 mg/kg/dose. Adults: 500 mg to 1 g", "frequency": "6 hourly when required", "duration": "As needed for fever", "phase": "Symptomatic relief", "notes": "For fever management. Maximum 4 g in 24 hours for adults.", "isClinical": false }
       ],
       "lifestyleAdvice": ["Take all 6 doses of artemether/lumefantrine — do not stop early even if you feel better", "Always take each dose WITH fatty food or full cream milk — this is essential for the medicine to work", "If you vomit within 1 hour of a dose, go back to the clinic and get another dose", "Use mosquito nets impregnated with insecticide (DEET)", "Apply insect repellent (30% DEET) to exposed skin and clothing", "Wear long sleeves, long trousers and socks outdoors between dusk and dawn", "Get a second malaria test if symptoms continue after treatment", "One negative test does not exclude malaria — ask for a second test if still unwell", "Pregnant women, children under 5, and people with HIV are at high risk of severe malaria — seek care early"],
@@ -709,11 +492,7 @@
       "followUpSchedule": "Monitor for severe malaria features during the first 24 hours. If no response to oral treatment within 48 hours, refer urgently.",
       "warningSigns": ["Prostration (severe general body weakness)", "Sleepiness, unconsciousness or coma", "Convulsions", "Respiratory distress or cyanosis", "Jaundice (yellow eyes/skin)", "Renal failure", "Shock", "Repeated vomiting", "Hypoglycaemia", "Severe anaemia (Hb <7 g/dL)", "Haemoglobinuria / black urine", "Abnormal bleeding"],
       "referralCriteria": ["All patients with any sign of severe (complicated) malaria", "All patients presenting to PHC clinics in areas that do not stock antimalarials", "Vomiting leading to inability to retain medication", "Patients not responding to oral treatment within 48 hours", "After first dose of artemether/lumefantrine, refer: all children <2 years, all pregnant women, patients with co-morbidities (HIV, diabetes etc.), and patients >65 years"],
-      "emergencyProtocol": {
-        "trigger": "Any sign of severe/complicated malaria (prostration, coma, convulsions, respiratory distress, jaundice, renal failure, shock, black urine, severe anaemia)",
-        "immediateAction": "Correct hypoglycaemia if present. Give artesunate IM (see B50 — severe malaria). Refer urgently. Patient must reach referral hospital within 6 hours of being seen at the PHC facility.",
-        "outcome": "Life-threatening — refer immediately."
-      },
+      "emergencyProtocol": { "trigger": "Any sign of severe/complicated malaria (prostration, coma, convulsions, respiratory distress, jaundice, renal failure, shock, black urine, severe anaemia)", "immediateAction": "Correct hypoglycaemia if present. Give artesunate IM (see B50 — severe malaria). Refer urgently. Patient must reach referral hospital within 6 hours of being seen at the PHC facility.", "outcome": "Life-threatening — refer immediately." },
       "specialCases": [
         { "case": "Children <2 years", "note": "After first dose of artemether/lumefantrine, refer for observation — they are at high risk of severe malaria." },
         { "case": "Pregnant women", "note": "After first dose, refer urgently. High risk of severe malaria." },
@@ -733,54 +512,12 @@
       "durationWeeks": 0,
       "treatmentDurationText": "Acute emergency — immediate artesunate + urgent referral",
       "severityLevels": [
-        {
-          "level": "Complicated malaria signs",
-          "systolic": "Any one of: prostration, sleepiness, coma, convulsions, respiratory distress, cyanosis, jaundice, renal failure, shock, repeated vomiting, hypoglycaemia, Hb <7 g/dL, black urine, abnormal bleeding",
-          "diastolic": "Immediate artesunate IM + urgent referral"
-        }
+        { "level": "Complicated malaria signs", "systolic": "Any one of: prostration, sleepiness, coma, convulsions, respiratory distress, cyanosis, jaundice, renal failure, shock, repeated vomiting, hypoglycaemia, Hb <7 g/dL, black urine, abnormal bleeding", "diastolic": "Immediate artesunate IM + urgent referral" }
       ],
       "phases": ["Step 1 — Recognise severe malaria (any one sign)", "Step 2 — Correct hypoglycaemia immediately if present", "Step 3 — Give artesunate IM immediately", "Step 4 — Refer urgently to hospital within 6 hours"],
       "medications": [
-        {
-          "name": "Artesunate IM — adults and children ≥20 kg",
-          "dosage": "2.4 mg/kg per dose",
-          "frequency": "Immediately as a single dose, then refer. If transfer is delayed, repeat at 12 hours and 24 hours",
-          "duration": "Until referral",
-          "phase": "Severe malaria — immediate treatment",
-          "notes": "Reconstitution: 60 mg vial + 1 mL sodium bicarbonate, shake well, then add 5 mL sodium chloride 0.9% → final concentration 10 mg/mL. Administer as IM injection (anterior thigh). Correct hypoglycaemia BEFORE giving artesunate. Patient must reach referral hospital within 6 hours of being seen at the PHC facility.",
-          "isClinical": true,
-          "weightBands": [
-            { "weight": "20 kg", "dose": "0.48 mL (2.4 mg/kg = 48 mg)" },
-            { "weight": "25 kg", "dose": "0.6 mL (2.4 mg/kg = 60 mg)" },
-            { "weight": "30 kg", "dose": "0.72 mL (2.4 mg/kg = 72 mg)" },
-            { "weight": "35 kg", "dose": "0.84 mL (2.4 mg/kg = 84 mg)" },
-            { "weight": "40 kg", "dose": "0.96 mL (2.4 mg/kg = 96 mg)" },
-            { "weight": "45 kg", "dose": "1.08 mL (2.4 mg/kg = 108 mg)" },
-            { "weight": "50 kg", "dose": "1.2 mL (2.4 mg/kg = 120 mg)" },
-            { "weight": "55 kg", "dose": "1.32 mL (2.4 mg/kg = 132 mg)" },
-            { "weight": "60 kg", "dose": "1.44 mL (2.4 mg/kg = 144 mg)" },
-            { "weight": "70 kg", "dose": "1.68 mL (2.4 mg/kg = 168 mg)" },
-            { "weight": "80 kg", "dose": "1.92 mL (2.4 mg/kg = 192 mg)" },
-            { "weight": "90 kg", "dose": "2.16 mL (2.4 mg/kg = 216 mg)" },
-            { "weight": "100 kg", "dose": "2.4 mL (2.4 mg/kg = 240 mg)" }
-          ]
-        },
-        {
-          "name": "Artesunate IM — children <20 kg",
-          "dosage": "3 mg/kg per dose",
-          "frequency": "Immediately as a single dose, then refer. If transfer is delayed, repeat at 12 hours and 24 hours",
-          "duration": "Until referral",
-          "phase": "Severe malaria — immediate treatment (children)",
-          "notes": "Higher mg/kg dose for children <20 kg. Same reconstitution as adults. Correct hypoglycaemia first. Refer urgently.",
-          "isClinical": true,
-          "weightBands": [
-            { "weight": "5 kg", "dose": "0.15 mL (3 mg/kg = 15 mg)" },
-            { "weight": "7 kg", "dose": "0.21 mL (3 mg/kg = 21 mg)" },
-            { "weight": "10 kg", "dose": "0.3 mL (3 mg/kg = 30 mg)" },
-            { "weight": "15 kg", "dose": "0.45 mL (3 mg/kg = 45 mg)" },
-            { "weight": "20 kg", "dose": "0.6 mL (3 mg/kg = 60 mg)" }
-          ]
-        }
+        { "name": "Artesunate IM — adults and children ≥20 kg", "dosage": "2.4 mg/kg per dose", "frequency": "Immediately as a single dose, then refer. If transfer is delayed, repeat at 12 hours and 24 hours", "duration": "Until referral", "phase": "Severe malaria — immediate treatment", "notes": "Reconstitution: 60 mg vial + 1 mL sodium bicarbonate, shake well, then add 5 mL sodium chloride 0.9% → final concentration 10 mg/mL. Administer as IM injection (anterior thigh). Correct hypoglycaemia BEFORE giving artesunate. Patient must reach referral hospital within 6 hours of being seen at the PHC facility.", "isClinical": true, "weightBands": [ { "weight": "20 kg", "dose": "0.48 mL (2.4 mg/kg = 48 mg)" }, { "weight": "25 kg", "dose": "0.6 mL (2.4 mg/kg = 60 mg)" }, { "weight": "30 kg", "dose": "0.72 mL (2.4 mg/kg = 72 mg)" }, { "weight": "35 kg", "dose": "0.84 mL (2.4 mg/kg = 84 mg)" }, { "weight": "40 kg", "dose": "0.96 mL (2.4 mg/kg = 96 mg)" }, { "weight": "45 kg", "dose": "1.08 mL (2.4 mg/kg = 108 mg)" }, { "weight": "50 kg", "dose": "1.2 mL (2.4 mg/kg = 120 mg)" }, { "weight": "55 kg", "dose": "1.32 mL (2.4 mg/kg = 132 mg)" }, { "weight": "60 kg", "dose": "1.44 mL (2.4 mg/kg = 144 mg)" }, { "weight": "70 kg", "dose": "1.68 mL (2.4 mg/kg = 168 mg)" }, { "weight": "80 kg", "dose": "1.92 mL (2.4 mg/kg = 192 mg)" }, { "weight": "90 kg", "dose": "2.16 mL (2.4 mg/kg = 216 mg)" }, { "weight": "100 kg", "dose": "2.4 mL (2.4 mg/kg = 240 mg)" } ] },
+        { "name": "Artesunate IM — children <20 kg", "dosage": "3 mg/kg per dose", "frequency": "Immediately as a single dose, then refer. If transfer is delayed, repeat at 12 hours and 24 hours", "duration": "Until referral", "phase": "Severe malaria — immediate treatment (children)", "notes": "Higher mg/kg dose for children <20 kg. Same reconstitution as adults. Correct hypoglycaemia first. Refer urgently.", "isClinical": true, "weightBands": [ { "weight": "5 kg", "dose": "0.15 mL (3 mg/kg = 15 mg)" }, { "weight": "7 kg", "dose": "0.21 mL (3 mg/kg = 21 mg)" }, { "weight": "10 kg", "dose": "0.3 mL (3 mg/kg = 30 mg)" }, { "weight": "15 kg", "dose": "0.45 mL (3 mg/kg = 45 mg)" }, { "weight": "20 kg", "dose": "0.6 mL (3 mg/kg = 60 mg)" } ] }
       ],
       "lifestyleAdvice": ["This is a medical emergency — treatment must begin immediately", "Do not delay referral — patient must reach hospital within 6 hours", "Correct low blood sugar (hypoglycaemia) BEFORE giving artesunate", "If transfer is delayed, additional doses of artesunate are given at 12 and 24 hours", "Tell the referral hospital that the initial artesunate dose has been given", "Do not give oral medicines — the patient is too unwell to absorb them", "Keep the patient warm, monitor breathing and consciousness during transport"],
       "monitoring": {
@@ -790,11 +527,7 @@
       "followUpSchedule": "Handover to referral hospital. Complete treatment there. Do not delay transfer.",
       "warningSigns": ["Prostration (severe weakness)", "Sleepiness, confusion, unconsciousness, coma", "Convulsions", "Respiratory distress or cyanosis", "Jaundice", "Renal failure", "Shock", "Repeated vomiting", "Hypoglycaemia", "Severe anaemia (Hb <7 g/dL)", "Haemoglobinuria (black urine)", "Abnormal bleeding"],
       "referralCriteria": ["All patients — severe malaria is always a hospital referral", "Refer within 6 hours of first contact — this is critical", "Patient must be transported by ambulance if possible", "Advise referral hospital that initial artesunate has been given"],
-      "emergencyProtocol": {
-        "trigger": "Any sign of severe malaria (prostration, coma, convulsions, respiratory distress, jaundice, renal failure, shock, black urine, severe anaemia, abnormal bleeding)",
-        "immediateAction": "1. Correct hypoglycaemia immediately if present (dextrose 10% IV, 2–5 mL/kg). 2. Give artesunate IM — 2.4 mg/kg (adults and children ≥20 kg) OR 3 mg/kg (children <20 kg). 3. Refer urgently to hospital — must arrive within 6 hours. 4. If transfer delayed: repeat artesunate at 12 hours and 24 hours. 5. Advise referral hospital that artesunate was given.",
-        "outcome": "Life-threatening — 100% of cases must be referred urgently. Do NOT delay for observation."
-      },
+      "emergencyProtocol": { "trigger": "Any sign of severe malaria (prostration, coma, convulsions, respiratory distress, jaundice, renal failure, shock, black urine, severe anaemia, abnormal bleeding)", "immediateAction": "1. Correct hypoglycaemia immediately if present (dextrose 10% IV, 2–5 mL/kg). 2. Give artesunate IM — 2.4 mg/kg (adults and children ≥20 kg) OR 3 mg/kg (children <20 kg). 3. Refer urgently to hospital — must arrive within 6 hours. 4. If transfer delayed: repeat artesunate at 12 hours and 24 hours. 5. Advise referral hospital that artesunate was given.", "outcome": "Life-threatening — 100% of cases must be referred urgently. Do NOT delay for observation." },
       "specialCases": [
         { "case": "Children <20 kg", "note": "Use 3 mg/kg per dose (not 2.4 mg/kg). Higher dose needed because of lower body water content." },
         { "case": "Hypoglycaemia", "note": "Correct immediately before giving artesunate. Hypoglycaemia is common in severe malaria and can cause coma." },
@@ -813,162 +546,376 @@
       "durationWeeks": 0,
       "treatmentDurationText": "Continue treatment for at least 9 months after symptoms improve — sometimes longer (up to 3 years or lifelong) depending on history",
       "severityLevels": [
-        {
-          "level": "Mild depression",
-          "systolic": "Some symptoms present, but you can still do most daily tasks",
-          "diastolic": "Psychotherapy (talk therapy) is usually the first choice. Medicines may not be needed yet."
-        },
-        {
-          "level": "Moderate depression",
-          "systolic": "Symptoms make daily tasks harder — work, family, and self-care affected",
-          "diastolic": "Combination of psychotherapy (if available) OR antidepressant medication"
-        },
-        {
-          "level": "Severe depression",
-          "systolic": "Symptoms interfere with nearly everything — you may feel unable to function",
-          "diastolic": "Medication is essential. Psychotherapy recommended alongside. Refer if psychotic features or suicidal thoughts."
-        }
+        { "level": "Mild depression", "systolic": "Some symptoms present, but you can still do most daily tasks", "diastolic": "Psychotherapy (talk therapy) is usually the first choice. Medicines may not be needed yet." },
+        { "level": "Moderate depression", "systolic": "Symptoms make daily tasks harder — work, family, and self-care affected", "diastolic": "Combination of psychotherapy (if available) OR antidepressant medication" },
+        { "level": "Severe depression", "systolic": "Symptoms interfere with nearly everything — you may feel unable to function", "diastolic": "Medication is essential. Psychotherapy recommended alongside. Refer if psychotic features or suicidal thoughts." }
       ],
+      "phases": ["Recognise the signs — low mood and/or loss of interest for at least 2 weeks", "Rule out other medical causes — HIV, TB, anaemia, thyroid problems, substance use", "Offer choice of treatment — talk therapy (if available) or antidepressant medicine", "Start medicine slowly — fluoxetine 20 mg on alternate days for the first 2 weeks", "Increase to daily dose after 2–4 weeks — monitor for agitation or worsening mood", "Reassess response after 4 weeks on daily fluoxetine", "Continue treatment for 9 months minimum after you feel better — do NOT stop early", "Follow up regularly — weekly contact for the first 2 months if risk of self-harm is present"],
+      "medications": [
+        { "name": "Fluoxetine (first-line antidepressant)", "dosage": "20 mg (start with alternate days for the first 2 weeks, then daily)", "frequency": "Once daily in the morning", "duration": "Minimum 9 months after symptoms improve — longer if history of previous episodes", "phase": "First-line medicine", "notes": "IMPORTANT: Doctors prescribe this. You may notice increased anxiety or restlessness in the first 2–4 weeks — this usually settles. It can take 2–4 weeks to notice any improvement — don't give up too early. If you have thoughts of harming yourself, tell your CHW or go to the clinic IMMEDIATELY — you may need to be referred before starting this medicine. Do NOT stop suddenly — always reduce slowly with your doctor. Do NOT take St John's Wort or traditional medicines with this — they can interact dangerously.", "isClinical": false },
+        { "name": "Citalopram (alternative antidepressant)", "dosage": "10 mg daily for the first week, then increase to 20 mg daily", "frequency": "Once daily", "duration": "Minimum 9 months after symptoms improve", "phase": "If fluoxetine is poorly tolerated", "notes": "Another antidepressant in the same family (SSRI). Same precautions about agitation in the first few weeks and monitoring for suicidal thoughts. Doctor-prescribed.", "isClinical": false },
+        { "name": "Amitriptyline (if a sedating antidepressant is needed)", "dosage": "25 mg at bedtime, increase by 25 mg every 3–5 days up to a maximum of 150 mg per day", "frequency": "At bedtime", "duration": "As prescribed", "phase": "Only if a sedating effect is needed (e.g. severe insomnia)", "notes": "This is a tricyclic antidepressant. It can be FATAL in overdose — must be kept out of reach of children and anyone at risk of self-harm. Doctor-prescribed only, and requires a risk assessment of the patient and others in the household (especially adolescents). NOT for elderly patients or those with heart disease, urinary retention, glaucoma, or epilepsy.", "isClinical": true }
+      ],
+      "lifestyleAdvice": ["You are not alone — depression is common, treatable, and not your fault", "Talk to someone you trust — a friend, family member, or your CHW", "Stay connected — isolation makes depression worse, even when it feels easier", "Keep a simple routine — wake up and go to bed at the same time each day", "Move your body — even a short walk helps lift mood", "Eat regularly — depression often affects appetite", "Avoid alcohol and drugs — they make depression worse and interact badly with medicines", "Set small, achievable goals — big tasks feel overwhelming", "Be patient with yourself — recovery takes time", "Take your medicine every day, even when you feel better — stopping early causes relapse", "Attend every appointment — your CHW needs to check on you regularly", "If you have thoughts of harming yourself — tell someone immediately, call a helpline, or go to the nearest clinic", "SADAG helpline (SA Depression and Anxiety Group) — 0800 456 789 (toll-free, 24/7)", "Lifeline South Africa — 0861 322 322", "Family and friends — let them help, even with small things"],
+      "monitoring": {
+        "everyVisit": ["Ask about mood — how have you been feeling?", "Ask about sleep, appetite, energy levels", "Ask directly about thoughts of self-harm or suicide — this is essential", "Check whether you are taking your medicine regularly", "Ask about side effects of medicine"],
+        "baseline": ["Rule out medical causes — HIV test, TB screen, anaemia (Hb), thyroid function, blood glucose", "Screen for substance use (alcohol, cannabis, benzodiazepines)", "Assess severity — mild, moderate, or severe", "Ask specifically about suicidal thoughts, plans, and access to means", "Ask about psychosocial stressors — abuse, financial problems, relationship issues, bereavement"],
+        "followUp": ["Weekly contact for the first 2 months if any risk of self-harm is present", "Reassess symptoms at 4 weeks after starting daily medicine", "If no improvement after 8 weeks on the correct dose — refer to doctor", "Reassess at every visit for suicidal thoughts"]
+      },
+      "followUpSchedule": "Weekly contact for the first 2 months if any risk of self-harm is present. Reassess response to medicine at 4 weeks. If no improvement at 8 weeks despite correct medicine and dose, refer to doctor. Continue treatment for at least 9 months after symptoms improve.",
+      "warningSigns": ["Thoughts of harming yourself or ending your life", "Feeling that life is not worth living", "Making a plan to harm yourself", "Giving away possessions or saying goodbye to loved ones", "Severe agitation or restlessness (especially in the first few weeks of medicine)", "Sudden worsening of mood after starting medicine", "Hearing voices or seeing things others don't see (psychosis)", "Unable to care for yourself or dependent children", "Alcohol or drug use getting worse"],
+      "referralCriteria": ["Any thoughts of harming yourself or ending your life — refer IMMEDIATELY", "Major depression with psychotic features (hearing voices, seeing things, delusions)", "Suspected bipolar disorder (history of manic or hypomanic episodes)", "Failure to respond to antidepressant after 8 weeks on the correct dose", "Pregnancy or breastfeeding", "Children and adolescents with depression — refer to specialist", "Severe depression with inability to function", "Access to lethal means (weapons, pesticides, large quantities of medication)"],
+      "emergencyProtocol": { "trigger": "Any thoughts of self-harm, suicide, or imminent risk (patient is extremely agitated, distressed, or has a current plan)", "immediateAction": "DO NOT leave the person alone. Remove access to means (bleach, pesticides, firearms, medications, especially paracetamol, amitriptyline, theophylline). Stay with them until help arrives. Refer IMMEDIATELY to hospital — do not send them alone. If a serious act of self-harm has already occurred, treat as a medical emergency first (see Section 21.3 — Trauma and injuries).", "outcome": "Suicidal ideation is a medical emergency. Never delay referral. Never dismiss or minimise." },
+      "specialCases": [
+        { "case": "Suicidal thoughts during treatment", "note": "ASK about suicidal thoughts at every visit — especially in adolescents and young adults. Antidepressants can occasionally increase suicidal thoughts in the first few weeks. If they are present, refer to hospital before continuing treatment." },
+        { "case": "Adolescents and young adults", "note": "Higher risk of suicidal ideation during early treatment. Monitor closely. Refer all adolescents to a specialist." },
+        { "case": "Pregnancy and breastfeeding", "note": "Refer to a doctor. Untreated depression is dangerous for both mother and baby, but medicine must be carefully chosen." },
+        { "case": "Bipolar disorder", "note": "Do NOT give antidepressants alone — they can trigger a manic episode. If there is any history of mania or hypomania, refer to a specialist." },
+        { "case": "Co-existing substance use", "note": "Alcohol and drug use makes depression worse and interferes with treatment. Address substance use at the same time as depression." },
+        { "case": "Co-existing medical conditions", "note": "Depression makes chronic diseases (HIV, TB, diabetes, heart disease) harder to manage. Treating depression improves outcomes for these conditions too." },
+        { "case": "Traditional medicines and herbal products", "note": "Some traditional medicines and St John's Wort interact dangerously with antidepressants. Ask about them before starting medicine." },
+        { "case": "Stopping treatment too early", "note": "Most relapses happen because people stop treatment as soon as they feel better. Continue treatment for the full duration (minimum 9 months) even when you feel fine." }
+      ],
+      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 16, Sections 16.4 and 16.4.1 (Mood disorders — Depressive disorders) and Section 16.7 (Suicide risk assessment)"
+    },
+
+    "J18.9": {
+      "icd10Code": "J18.9",
+      "conditionName": "Pneumonia, unspecified (community-acquired)",
+      "overview": "Pneumonia is an acute infection of the lung tissue, usually caused by bacteria — most commonly Streptococcus pneumoniae (pneumococcus). It causes the air sacs in the lungs to fill with fluid or pus, making it hard to breathe. Symptoms include fever (often with sudden onset and shivering), cough (may be dry at first, then productive of yellow-green or rusty-brown sputum), chest pain that worsens on breathing in, and shortness of breath. Older adults may not have a fever but can present with confusion. Pneumonia can occur in previously healthy people or as a complication of another illness. HIV, malnutrition, very young or old age, and chronic diseases increase the risk.",
+      "isChronic": false,
+      "durationWeeks": 1,
+      "treatmentDurationText": "5 days of antibiotics — review at 48 hours if no improvement",
       "phases": [
-        "Recognise the signs — low mood and/or loss of interest for at least 2 weeks",
-        "Rule out other medical causes — HIV, TB, anaemia, thyroid problems, substance use",
-        "Offer choice of treatment — talk therapy (if available) or antidepressant medicine",
-        "Start medicine slowly — fluoxetine 20 mg on alternate days for the first 2 weeks",
-        "Increase to daily dose after 2–4 weeks — monitor for agitation or worsening mood",
-        "Reassess response after 4 weeks on daily fluoxetine",
-        "Continue treatment for 9 months minimum after you feel better — do NOT stop early",
-        "Follow up regularly — weekly contact for the first 2 months if risk of self-harm is present"
+        "Diagnose — clinical signs (fever, cough, tachypnoea, crackles) + chest X-ray if available",
+        "Exclude TB — send sputum for TB-NAAT (GeneXpert)",
+        "Assess severity — uncomplicated vs with underlying conditions vs severe",
+        "Start antibiotics — amoxicillin (or amoxicillin/clavulanic acid if underlying conditions)",
+        "Review at 48 hours — refer if no response",
+        "Complete 5-day course — follow-up X-ray if >50 years"
       ],
       "medications": [
         {
-          "name": "Fluoxetine (first-line antidepressant)",
-          "dosage": "20 mg (start with alternate days for the first 2 weeks, then daily)",
-          "frequency": "Once daily in the morning",
-          "duration": "Minimum 9 months after symptoms improve — longer if history of previous episodes",
-          "phase": "First-line medicine",
-          "notes": "IMPORTANT: Doctors prescribe this. You may notice increased anxiety or restlessness in the first 2–4 weeks — this usually settles. It can take 2–4 weeks to notice any improvement — don't give up too early. If you have thoughts of harming yourself, tell your CHW or go to the clinic IMMEDIATELY — you may need to be referred before starting this medicine. Do NOT stop suddenly — always reduce slowly with your doctor. Do NOT take St John's Wort or traditional medicines with this — they can interact dangerously.",
+          "name": "Amoxicillin — uncomplicated pneumonia (adults)",
+          "dosage": "1 g",
+          "frequency": "8 hourly (three times a day)",
+          "duration": "5 days",
+          "phase": "Adults — uncomplicated pneumonia",
+          "notes": "First-line for uncomplicated community-acquired pneumonia in adults. If not severely ill and no underlying conditions, this can be managed at PHC level. Review at 48 hours — refer if no improvement. Chest X-ray ideally before starting treatment.",
           "isClinical": false
         },
         {
-          "name": "Citalopram (alternative antidepressant)",
-          "dosage": "10 mg daily for the first week, then increase to 20 mg daily",
+          "name": "Amoxicillin/clavulanic acid — pneumonia with underlying conditions (adults)",
+          "dosage": "875/125 mg",
+          "frequency": "12 hourly (twice a day)",
+          "duration": "5 days",
+          "phase": "Adults — with underlying medical conditions or >65 years",
+          "notes": "For patients with diabetes, alcoholism, HIV, cardiac failure, chronic liver disease, chronic kidney disease, or COPD. Most of these patients will require referral to a doctor.",
+          "isClinical": false
+        },
+        {
+          "name": "Moxifloxacin — penicillin allergy alternative",
+          "dosage": "400 mg",
           "frequency": "Once daily",
-          "duration": "Minimum 9 months after symptoms improve",
-          "phase": "If fluoxetine is poorly tolerated",
-          "notes": "Another antidepressant in the same family (SSRI). Same precautions about agitation in the first few weeks and monitoring for suicidal thoughts. Doctor-prescribed.",
-          "isClinical": false
+          "duration": "5 days",
+          "phase": "Severe penicillin allergy only",
+          "notes": "Use ONLY if severe penicillin allergy (Z88.0). Reserved antibiotic — do NOT use as first-line. Doctor-prescribed.",
+          "isClinical": true
         },
         {
-          "name": "Amitriptyline (if a sedating antidepressant is needed)",
-          "dosage": "25 mg at bedtime, increase by 25 mg every 3–5 days up to a maximum of 150 mg per day",
-          "frequency": "At bedtime",
-          "duration": "As prescribed",
-          "phase": "Only if a sedating effect is needed (e.g. severe insomnia)",
-          "notes": "This is a tricyclic antidepressant. It can be FATAL in overdose — must be kept out of reach of children and anyone at risk of self-harm. Doctor-prescribed only, and requires a risk assessment of the patient and others in the household (especially adolescents). NOT for elderly patients or those with heart disease, urinary retention, glaucoma, or epilepsy.",
+          "name": "Ceftriaxone — severe pneumonia before referral",
+          "dosage": "1 g",
+          "frequency": "Single dose",
+          "duration": "Once, before referral",
+          "phase": "Severe pneumonia — while awaiting transfer",
+          "notes": "Give ONLY to patients with severe pneumonia (≥2 of: confusion, RR ≥30, age >65, SBP <90, DBP <60) — before urgent referral. Do NOT give calcium-containing IV fluids (like Ringer Lactate) with ceftriaxone. Also give oxygen to keep saturation 92%.",
+          "isClinical": true
+        },
+        {
+          "name": "Amoxicillin — non-severe pneumonia in children",
+          "dosage": "45 mg/kg/dose",
+          "frequency": "12 hourly",
+          "duration": "5 days",
+          "phase": "Children — non-severe pneumonia",
+          "notes": "Children with pneumonia (fever, cough, rapid breathing) but NO chest indrawing and NO flaring nostrils. See weight-band table. Give to a child who is drinking well and has no danger signs.",
+          "isClinical": false,
+          "weightBands": [
+            { "weight": ">3.5–5 kg (>1–3 months)", "dose": "175 mg (3.5 mL of 250/5mL syrup)" },
+            { "weight": ">5–7 kg (>3–6 months)", "dose": "250 mg (5 mL of 250/5mL syrup OR 10 mL of 125/5mL)" },
+            { "weight": ">7–11 kg (>6–18 months)", "dose": "375 mg (7.5 mL of 250/5mL OR 15 mL of 125/5mL)" },
+            { "weight": ">11–14 kg (>18 months–3 years)", "dose": "500 mg (2 × 250 mg capsules OR 1 × 500 mg capsule)" },
+            { "weight": ">14–17.5 kg (>3–5 years)", "dose": "750 mg (3 × 250 mg capsules)" },
+            { "weight": ">17.5–25 kg (>5–7 years)", "dose": "1000 mg (4 × 250 mg capsules OR 2 × 500 mg capsules)" },
+            { "weight": ">25–30 kg (>7–10 years)", "dose": "1250 mg (5 × 250 mg capsules)" },
+            { "weight": ">30 kg (>10 years)", "dose": "1500 mg (6 × 250 mg capsules OR 3 × 500 mg capsules)" }
+          ]
+        },
+        {
+          "name": "Azithromycin — severe penicillin allergy in children",
+          "dosage": "10 mg/kg/dose",
+          "frequency": "Once daily",
+          "duration": "3 days",
+          "phase": "Children — severe penicillin allergy only",
+          "notes": "Use ONLY if severe penicillin allergy. See dosing table Chapter 23.",
+          "isClinical": true
+        },
+        {
+          "name": "Ceftriaxone — severe pneumonia in children before referral",
+          "dosage": "80 mg/kg/dose",
+          "frequency": "Single dose",
+          "duration": "Once, before referral",
+          "phase": "Severe pneumonia — children before referral",
+          "notes": "Give to children with severe pneumonia (chest indrawing, flaring nostrils, or grunting) before urgent referral. Do NOT inject more than 1 g per injection site. Give oxygen via nasal cannula at 1–2 L/min before and during transfer.",
+          "isClinical": true
+        },
+        {
+          "name": "Oxygen — severe pneumonia",
+          "dosage": "Titrate to keep saturation 92% (adults) or >90% (children)",
+          "frequency": "Continuous",
+          "duration": "Until stabilized",
+          "phase": "Severe pneumonia",
+          "notes": "Adults: 92% saturation target. Children: nasal cannula at 1–2 L/min before and during transfer.",
           "isClinical": true
         }
       ],
       "lifestyleAdvice": [
-        "You are not alone — depression is common, treatable, and not your fault",
-        "Talk to someone you trust — a friend, family member, or your CHW",
-        "Stay connected — isolation makes depression worse, even when it feels easier",
-        "Keep a simple routine — wake up and go to bed at the same time each day",
-        "Move your body — even a short walk helps lift mood",
-        "Eat regularly — depression often affects appetite",
-        "Avoid alcohol and drugs — they make depression worse and interact badly with medicines",
-        "Set small, achievable goals — big tasks feel overwhelming",
-        "Be patient with yourself — recovery takes time",
-        "Take your medicine every day, even when you feel better — stopping early causes relapse",
-        "Attend every appointment — your CHW needs to check on you regularly",
-        "If you have thoughts of harming yourself — tell someone immediately, call a helpline, or go to the nearest clinic",
-        "SADAG helpline (SA Depression and Anxiety Group) — 0800 456 789 (toll-free, 24/7)",
-        "Lifeline South Africa — 0861 322 322",
-        "Family and friends — let them help, even with small things"
+        "Take the full course of antibiotics — do not stop even if you feel better",
+        "Rest and drink plenty of fluids",
+        "Do not smoke — it delays recovery",
+        "Cover your mouth when you cough",
+        "Wash your hands frequently to prevent spread",
+        "Return to the clinic if symptoms get worse or don't improve after 48 hours",
+        "If you have children in the house, keep them away from your cough",
+        "Get the flu vaccine annually, especially if you have underlying conditions",
+        "If you have a chronic illness (diabetes, HIV, COPD), keep it well-controlled — it reduces pneumonia risk"
       ],
       "monitoring": {
         "everyVisit": [
-          "Ask about mood — how have you been feeling?",
-          "Ask about sleep, appetite, energy levels",
-          "Ask directly about thoughts of self-harm or suicide — this is essential",
-          "Check whether you are taking your medicine regularly",
-          "Ask about side effects of medicine"
+          "Temperature",
+          "Respiratory rate",
+          "Oxygen saturation",
+          "Blood pressure",
+          "Check for confusion or reduced consciousness",
+          "Assess response to antibiotics"
         ],
         "baseline": [
-          "Rule out medical causes — HIV test, TB screen, anaemia (Hb), thyroid function, blood glucose",
-          "Screen for substance use (alcohol, cannabis, benzodiazepines)",
-          "Assess severity — mild, moderate, or severe",
-          "Ask specifically about suicidal thoughts, plans, and access to means",
-          "Ask about psychosocial stressors — abuse, financial problems, relationship issues, bereavement"
+          "Chest X-ray if available — ideally in all patients",
+          "Sputum TB-NAAT (Xpert MTB/RIF) — to exclude TB",
+          "Blood glucose (if diabetic)",
+          "HIV test — if not known",
+          "Blood pressure, pulse, respiratory rate"
         ],
         "followUp": [
-          "Weekly contact for the first 2 months if any risk of self-harm is present",
-          "Reassess symptoms at 4 weeks after starting daily medicine",
-          "If no improvement after 8 weeks on the correct dose — refer to doctor",
-          "Reassess at every visit for suicidal thoughts"
+          "Review at 48 hours — refer if no improvement",
+          "Follow-up chest X-ray in patients >50 years to ensure resolution",
+          "Assess for complications"
         ]
       },
-      "followUpSchedule": "Weekly contact for the first 2 months if any risk of self-harm is present. Reassess response to medicine at 4 weeks. If no improvement at 8 weeks despite correct medicine and dose, refer to doctor. Continue treatment for at least 9 months after symptoms improve.",
+      "followUpSchedule": "Review at 48 hours. If no improvement, refer urgently. Chest X-ray follow-up in patients >50 years to ensure resolution. Complete 5 days of antibiotics.",
       "warningSigns": [
-        "Thoughts of harming yourself or ending your life",
-        "Feeling that life is not worth living",
-        "Making a plan to harm yourself",
-        "Giving away possessions or saying goodbye to loved ones",
-        "Severe agitation or restlessness (especially in the first few weeks of medicine)",
-        "Sudden worsening of mood after starting medicine",
-        "Hearing voices or seeing things others don't see (psychosis)",
-        "Unable to care for yourself or dependent children",
-        "Alcohol or drug use getting worse"
+        "Confusion or decreased level of consciousness",
+        "Blue lips or tongue (cyanosis)",
+        "Respiratory rate ≥ 30 breaths/minute",
+        "Systolic BP < 90 mmHg",
+        "Diastolic BP < 60 mmHg",
+        "Deterioration at any point",
+        "No improvement after 48 hours of treatment",
+        "Unable to drink or feed (children)",
+        "Chest indrawing or flaring nostrils (children)",
+        "Grunting (children < 2 months)"
       ],
       "referralCriteria": [
-        "Any thoughts of harming yourself or ending your life — refer IMMEDIATELY",
-        "Major depression with psychotic features (hearing voices, seeing things, delusions)",
-        "Suspected bipolar disorder (history of manic or hypomanic episodes)",
-        "Failure to respond to antidepressant after 8 weeks on the correct dose",
-        "Pregnancy or breastfeeding",
-        "Children and adolescents with depression — refer to specialist",
-        "Severe depression with inability to function",
-        "Access to lethal means (weapons, pesticides, large quantities of medication)"
+        "Any of: confusion, cyanosis, RR ≥ 30, SBP < 90, DBP < 60",
+        "Deterioration at any point",
+        "No response to treatment after 48 hours",
+        "Patients from a poor socio-economic background",
+        "Patients unlikely to comply with treatment",
+        "Patients living a considerable distance from health centres",
+        "Patients with no access to immediate transport",
+        "All children with severe pneumonia (chest indrawing, flaring nostrils, or cyanosis)",
+        "All children < 2 months of age with rapid breathing",
+        "Pneumonia in patients with underlying conditions (diabetes, HIV, cardiac failure, CLD, CKD, COPD) — most require referral"
       ],
       "emergencyProtocol": {
-        "trigger": "Any thoughts of self-harm, suicide, or imminent risk (patient is extremely agitated, distressed, or has a current plan)",
-        "immediateAction": "DO NOT leave the person alone. Remove access to means (bleach, pesticides, firearms, medications, especially paracetamol, amitriptyline, theophylline). Stay with them until help arrives. Refer IMMEDIATELY to hospital — do not send them alone. If a serious act of self-harm has already occurred, treat as a medical emergency first (see Section 21.3 — Trauma and injuries).",
-        "outcome": "Suicidal ideation is a medical emergency. Never delay referral. Never dismiss or minimise."
+        "trigger": "Severe pneumonia (≥2 of: confusion, RR ≥30, age >65, SBP <90, DBP <60) OR any danger sign in children",
+        "immediateAction": "Adults: oxygen to keep saturation 92%. Give ceftriaxone 1 g IV/IM single dose before referral. Children: oxygen via nasal cannula 1–2 L/min. Give ceftriaxone IM 80 mg/kg (do not exceed 1 g per injection site) before urgent referral. Do NOT give calcium-containing IV fluids (Ringer Lactate) with ceftriaxone.",
+        "outcome": "Severe pneumonia is life-threatening — refer urgently to hospital."
       },
       "specialCases": [
         {
-          "case": "Suicidal thoughts during treatment",
-          "note": "ASK about suicidal thoughts at every visit — especially in adolescents and young adults. Antidepressants can occasionally increase suicidal thoughts in the first few weeks. If they are present, refer to hospital before continuing treatment."
+          "case": "Children < 2 months of age",
+          "note": "Any rapid breathing (≥60 breaths/minute) should be classified as severe pneumonia — refer immediately."
         },
         {
-          "case": "Adolescents and young adults",
-          "note": "Higher risk of suicidal ideation during early treatment. Monitor closely. Refer all adolescents to a specialist."
+          "case": "Children with HIV or malnutrition",
+          "note": "Higher risk of severe pneumonia and complications. Lower threshold for referral."
         },
         {
-          "case": "Pregnancy and breastfeeding",
-          "note": "Refer to a doctor. Untreated depression is dangerous for both mother and baby, but medicine must be carefully chosen."
+          "case": "Patients > 65 years",
+          "note": "Higher risk. Even mild symptoms can deteriorate quickly. Refer if any underlying condition present."
         },
         {
-          "case": "Bipolar disorder",
-          "note": "Do NOT give antidepressants alone — they can trigger a manic episode. If there is any history of mania or hypomania, refer to a specialist."
+          "case": "Patients with diabetes, alcoholism, HIV, cardiac failure, chronic liver or kidney disease, COPD",
+          "note": "Use amoxicillin/clavulanic acid instead of plain amoxicillin. Most require referral to a doctor."
         },
         {
-          "case": "Co-existing substance use",
-          "note": "Alcohol and drug use makes depression worse and interferes with treatment. Address substance use at the same time as depression."
+          "case": "Penicillin allergy (severe)",
+          "note": "Use moxifloxacin 400 mg daily × 5 days (adults) or azithromycin 10 mg/kg daily × 3 days (children)."
         },
         {
-          "case": "Co-existing medical conditions",
-          "note": "Depression makes chronic diseases (HIV, TB, diabetes, heart disease) harder to manage. Treating depression improves outcomes for these conditions too."
+          "case": "Pneumonia not responding to treatment",
+          "note": "Consider TB — send sputum for TB-NAAT. Also consider resistant organisms or complications (empyema, abscess)."
         },
         {
-          "case": "Traditional medicines and herbal products",
-          "note": "Some traditional medicines and St John's Wort interact dangerously with antidepressants. Ask about them before starting medicine."
-        },
-        {
-          "case": "Stopping treatment too early",
-          "note": "Most relapses happen because people stop treatment as soon as they feel better. Continue treatment for the full duration (minimum 9 months) even when you feel fine."
+          "case": "Pneumonia with HIV (Pneumocystis pneumonia)",
+          "note": "See B20.6 for HIV-related Pneumocystis pneumonia — treated with high-dose cotrimoxazole, not amoxicillin."
         }
       ],
-      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 16, Sections 16.4 and 16.4.1 (Mood disorders — Depressive disorders) and Section 16.7 (Suicide risk assessment)"
+      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 17, Sections 17.3.4.2.1 (Uncomplicated pneumonia), 17.3.4.2.2 (With underlying conditions), 17.3.4.2.3 (Severe pneumonia), and 17.3.4.1 (Children)"
+    },
+
+    "B20.6": {
+      "icd10Code": "B20.6",
+      "conditionName": "HIV disease resulting in Pneumocystis pneumonia (PCP)",
+      "overview": "Pneumocystis pneumonia (PCP) is a serious lung infection caused by the fungus Pneumocystis jiroveci. It occurs almost exclusively in people with advanced HIV infection (usually CD4 count <200 cells/mm³) and in other severely immunocompromised patients. PCP causes inflammation and fluid buildup in the air sacs of the lungs, making it hard to breathe. Symptoms typically develop gradually over days to weeks and include shortness of breath (especially on exertion), a dry cough, and sometimes fever. In early stages, the chest X-ray may look normal. Prompt treatment is essential — PCP can be life-threatening if not treated early. Patients with PCP also need to be started on ART (see B20).",
+      "isChronic": false,
+      "durationWeeks": 3,
+      "treatmentDurationText": "3 weeks of cotrimoxazole treatment, followed by long-term daily prophylaxis",
+      "phases": [
+        "Diagnose — symptoms (shortness of breath, dry cough) + HIV+ with low CD4 + chest X-ray findings",
+        "Start treatment — high-dose cotrimoxazole",
+        "Treat for 3 weeks — complete full course",
+        "Start ART — usually during PCP treatment (see B20)",
+        "Secondary prophylaxis — cotrimoxazole daily after acute treatment",
+        "Stop prophylaxis — when CD4 >200 for at least 6 months"
+      ],
+      "medications": [
+        {
+          "name": "Cotrimoxazole — acute PCP treatment",
+          "dosage": "Weight-based dosing (see table below)",
+          "frequency": "6 hourly (four times a day)",
+          "duration": "3 weeks",
+          "phase": "Acute treatment",
+          "notes": "High-dose cotrimoxazole is the first-line treatment for PCP. Can cause rash, nausea, bone marrow suppression, and hyperkalaemia. Monitor closely. Always ensure adequate hydration. Refer ALL children with PCP — do not treat at PHC level.",
+          "isClinical": false,
+          "weightBands": [
+            { "weight": "<40 kg", "dose": "2 tablets of 160/800 mg (or 4 tablets of 80/400 mg) 6-hourly" },
+            { "weight": ">40–56 kg", "dose": "3 tablets of 160/800 mg (or 6 tablets of 80/400 mg) 6-hourly" },
+            { "weight": ">56 kg", "dose": "4 tablets of 160/800 mg (or 8 tablets of 80/400 mg) 6-hourly" }
+          ]
+        },
+        {
+          "name": "Cotrimoxazole — secondary prophylaxis (after acute treatment)",
+          "dosage": "160/800 mg (double-strength tablet) OR 2 tablets of 80/400 mg",
+          "frequency": "Once daily",
+          "duration": "Until CD4 >200 cells/mm³ for at least 6 months on ART",
+          "phase": "Secondary prophylaxis",
+          "notes": "After completing 3 weeks of high-dose treatment, continue cotrimoxazole once daily to prevent recurrence. Discontinue ONLY once the CD4 count has been above 200 for at least 6 months on ART. If the patient develops a rash with fever, mucosal involvement, or facial swelling — stop immediately and refer.",
+          "isClinical": false
+        },
+        {
+          "name": "Oxygen",
+          "dosage": "Titrate to keep saturation above 90%",
+          "frequency": "Continuous if hypoxic",
+          "duration": "Until stabilized",
+          "phase": "Supportive care",
+          "notes": "Give oxygen if oxygen saturation <90%. Refer if breathing rate >24 breaths/minute, shortness of breath on mild effort, or cyanosis.",
+          "isClinical": true
+        }
+      ],
+      "lifestyleAdvice": [
+        "Take every dose of cotrimoxazole — this medicine cures the infection",
+        "Attend every follow-up appointment — PCP can come back if you stop treatment too early",
+        "Start ART as soon as the doctor prescribes it — this protects your immune system and prevents recurrence",
+        "Report any new rash, fever, or shortness of breath immediately",
+        "Drink plenty of water while on cotrimoxazole",
+        "Avoid smoking — it worsens lung damage",
+        "Wear a mask in crowded places until your immune system recovers",
+        "Get the flu vaccine annually",
+        "If you have children, keep them away from your cough until you are no longer infectious",
+        "SADAG helpline (if you feel depressed or overwhelmed) — 0800 456 789"
+      ],
+      "monitoring": {
+        "everyVisit": [
+          "Respiratory rate — should be <24 breaths/minute",
+          "Oxygen saturation",
+          "Check for cyanosis",
+          "Assess for rash (cotrimoxazole side effect)",
+          "Assess for adherence",
+          "Check CD4 count when due"
+        ],
+        "baseline": [
+          "Chest X-ray — typically shows bilateral interstitial or ground glass pattern (may be normal early)",
+          "CD4 count",
+          "Oxygen saturation",
+          "Full blood count (cotrimoxazole can suppress bone marrow)",
+          "Serum potassium (cotrimoxazole can cause hyperkalaemia)",
+          "Serum creatinine",
+          "HIV viral load if not recent"
+        ],
+        "duringTreatment": [
+          "Assess response within the first week",
+          "Monitor for adverse drug reactions (rash, anaemia, hyperkalaemia)",
+          "Ensure ART is started appropriately (see B20 for timing)"
+        ]
+      },
+      "followUpSchedule": "Review within the first week of treatment. Ensure 3-week course completed. Start ART during treatment (usually within 2 weeks — see B20 for timing). Continue secondary prophylaxis daily until CD4 >200 for at least 6 months. Reassess at every ART refill.",
+      "warningSigns": [
+        "Shortness of breath with mild effort",
+        "Breathing rate >24 breaths/minute",
+        "Blue lips or tongue (cyanosis)",
+        "Confusion or reduced consciousness",
+        "New rash with fever or mucosal involvement (cotrimoxazole hypersensitivity)",
+        "Yellow eyes or skin (jaundice)",
+        "Dark brown urine",
+        "Extreme fatigue or pallor (bone marrow suppression)"
+      ],
+      "referralCriteria": [
+        "All children with PCP",
+        "Breathing rate >24 breaths/minute",
+        "Shortness of breath with mild effort",
+        "Cyanosed patients (oxygen saturation <90%)",
+        "Confusion or reduced level of consciousness",
+        "Suspected cotrimoxazole hypersensitivity (rash with systemic features or mucosal involvement)",
+        "Failure to respond to treatment after 1 week",
+        "Severe anaemia or hyperkalaemia during treatment"
+      ],
+      "emergencyProtocol": {
+        "trigger": "Severe respiratory distress, cyanosis, or altered consciousness in a patient with PCP",
+        "immediateAction": "Give oxygen to keep saturation above 90%. Refer IMMEDIATELY to hospital — do NOT delay. Continue cotrimoxazole if already started. Ensure IV access. Monitor breathing continuously during transfer.",
+        "outcome": "Severe PCP is life-threatening — refer urgently."
+      },
+      "specialCases": [
+        {
+          "case": "Children",
+          "note": "Refer ALL children with PCP — do not treat at PHC level. Paediatric PCP is a hospital-level emergency."
+        },
+        {
+          "case": "Pregnancy",
+          "note": "Cotrimoxazole is safe in pregnancy (particularly in the 2nd and 3rd trimesters). Refer for specialist review. Untreated PCP is more dangerous than the medicine."
+        },
+        {
+          "case": "Severe penicillin or sulphonamide allergy",
+          "note": "If there is a history of severe sulphonamide (cotrimoxazole) allergy, PCP treatment requires an alternative regimen (pentamidine, clindamycin-primaquine, or atovaquone) which is only available at hospital level — refer urgently."
+        },
+        {
+          "case": "Starting ART during PCP treatment",
+          "note": "ART should be started as soon as feasible during PCP treatment — usually within 2 weeks. See B20 for full HIV management. Early ART reduces risk of further opportunistic infections."
+        },
+        {
+          "case": "Stopping prophylaxis too early",
+          "note": "Do NOT stop cotrimoxazole prophylaxis until CD4 >200 for at least 6 months on ART. Stopping early causes relapse of PCP."
+        },
+        {
+          "case": "Cotrimoxazole hypersensitivity",
+          "note": "Rash is common. STOP immediately and refer if systemic features (fever, mucosal involvement, facial swelling) develop."
+        },
+        {
+          "case": "Prevention of PCP",
+          "note": "All PLHIV with CD4 <200 cells/mm³ should receive cotrimoxazole prophylaxis BEFORE they develop PCP. See Z29.2 — HIV prophylaxis."
+        }
+      ],
+      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 17, Section 17.3.4.2.4 (Pneumocystis pneumonia) and Chapter 11 (HIV)"
     }
   }
 }

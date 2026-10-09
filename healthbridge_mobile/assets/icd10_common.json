@@ -23,6 +23,7 @@
     { "code": "B16",    "name": "Acute hepatitis B",                                         "category": "Infectious" },
     { "code": "B18",    "name": "Chronic viral hepatitis",                                   "category": "Infectious" },
     { "code": "B20",    "name": "Human immunodeficiency virus (HIV) disease",                "category": "Infectious" },
+    { "code": "B20.6",  "name": "HIV disease resulting in Pneumocystis pneumonia",           "category": "Infectious" },
     { "code": "B24",    "name": "Unspecified human immunodeficiency virus (HIV) disease",    "category": "Infectious" },
     { "code": "B50",    "name": "Plasmodium falciparum malaria",                             "category": "Infectious" },
     { "code": "B51",    "name": "Plasmodium vivax malaria",                                  "category": "Infectious" },

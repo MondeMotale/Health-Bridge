@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // <--- ADDED THIS
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../models/patient.dart';
 import '../../services/firestore_service.dart';
 import '../../auth/auth_provider.dart' as AuthService;
+import '../../widgets/icd10_picker.dart';
 
 class CreatePatientScreen extends StatefulWidget {
   const CreatePatientScreen({super.key});
@@ -15,14 +16,17 @@ class CreatePatientScreen extends StatefulWidget {
 
 class _CreatePatientScreenState extends State<CreatePatientScreen> {
   final _formKey = GlobalKey<FormState>();
-  
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _conditionController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+
+  // ⭐ NEW: ICD-10 state
+  String? _selectedIcd10Code;
+  String? _selectedIcd10Name;
 
   String _selectedStatus = 'Stable';
   final List<String> _statusOptions = ['Stable', 'Needs Follow-up', 'Critical'];
@@ -30,56 +34,69 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
 
   Future<void> _savePatient() async {
     if (_formKey.currentState!.validate()) {
+      if (_selectedIcd10Code == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please select a medical condition (ICD-10)'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
       setState(() => _isSaving = true);
 
-      final authProvider = Provider.of<AuthService.AuthProvider>(context, listen: false) as dynamic;
+      final authProvider =
+          Provider.of<AuthService.AuthProvider>(context, listen: false) as dynamic;
       final chwId = authProvider.user?.uid;
 
       if (chwId == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('User not logged in'), backgroundColor: Colors.red),
+          const SnackBar(
+            content: Text('User not logged in'),
+            backgroundColor: Colors.red,
+          ),
         );
         setState(() => _isSaving = false);
         return;
       }
 
       try {
-        // STEP 1: SAVE THE CHW'S EMAIL AND PASSWORD SO WE CAN LOG THEM BACK IN LATER
         final chwEmail = authProvider.user?.email ?? '';
-        final chwPassword = 'Chw@123'; // <--- REPLACE WITH YOUR CHW PASSWORD
+        final chwPassword = 'Chw@123';
 
-        // STEP 2: CREATE THE PATIENT'S ACCOUNT
         final tempPassword = 'Patient@123';
-        final UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        final UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: tempPassword,
         );
         final patientUid = userCredential.user!.uid;
 
-        // STEP 3: IMMEDIATELY LOG THE PATIENT OUT
         await FirebaseAuth.instance.signOut();
 
-        // STEP 4: LOG THE CHW BACK IN (SO THEY STAY ON THEIR DASHBOARD)
         if (chwEmail.isNotEmpty && chwPassword.isNotEmpty) {
           await authProvider.login(chwEmail, chwPassword);
         }
 
-        // STEP 4.5: SAVE TO 'users' COLLECTION SO FIRESTORE KNOWS THEIR ROLE!
-        await FirebaseFirestore.instance.collection('users').doc(patientUid).set({
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(patientUid)
+            .set({
           'uid': patientUid,
-          'role': 'patient', // <--- This makes them a 'patient'
+          'role': 'patient',
           'displayName': _nameController.text.trim(),
           'email': _emailController.text.trim(),
         });
 
-        // STEP 5: SAVE THE PATIENT'S PROFILE TO FIRESTORE
         final newPatient = Patient(
           id: patientUid,
           name: _nameController.text.trim(),
           age: int.parse(_ageController.text.trim()),
           phone: _phoneController.text.trim(),
           address: _addressController.text.trim(),
-          condition: _conditionController.text.trim(),
+          condition: _selectedIcd10Name ?? '',        // human-readable
+          icd10Code: _selectedIcd10Code,              // ⭐ NEW: code
           status: _selectedStatus,
           notes: _notesController.text.trim(),
           assignedChwId: chwId,
@@ -89,13 +106,16 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
         final firestoreService = FirestoreService();
         await firestoreService.addPatient(newPatient);
 
-        // STEP 6: WAIT 3 SECONDS BEFORE SENDING PASSWORD RESET EMAIL
         await Future.delayed(const Duration(seconds: 3));
-        await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text.trim());
+        await FirebaseAuth.instance
+            .sendPasswordResetEmail(email: _emailController.text.trim());
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Patient created successfully! Login email sent.'), backgroundColor: Colors.green),
+            const SnackBar(
+              content: Text('Patient created successfully! Login email sent.'),
+              backgroundColor: Colors.green,
+            ),
           );
           Navigator.pop(context);
         }
@@ -110,14 +130,13 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
       }
     }
   }
-  
+
   @override
   void dispose() {
     _nameController.dispose();
     _ageController.dispose();
     _phoneController.dispose();
     _addressController.dispose();
-    _conditionController.dispose();
     _notesController.dispose();
     _emailController.dispose();
     super.dispose();
@@ -126,7 +145,7 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black54, // Semi-transparent background
+      backgroundColor: Colors.black54,
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
@@ -155,7 +174,11 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                     children: [
                       const Text(
                         'Add New Patient',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF1A1A2E)),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF1A1A2E),
+                        ),
                       ),
                       IconButton(
                         icon: const Icon(Icons.close, color: Colors.grey),
@@ -174,7 +197,9 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty) return 'Please enter a name';
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Please enter a name';
+                      }
                       return null;
                     },
                   ),
@@ -189,9 +214,13 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty) return 'Please enter an age';
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Please enter an age';
+                      }
                       final age = int.tryParse(value.trim());
-                      if (age == null || age < 0 || age > 150) return 'Please enter a valid age (0-150)';
+                      if (age == null || age < 0 || age > 150) {
+                        return 'Please enter a valid age (0-150)';
+                      }
                       return null;
                     },
                   ),
@@ -207,8 +236,10 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                     ),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) return null;
-                      final RegExp phoneRegex = RegExp(r'^[0-9+\- ]+$');
-                      if (!phoneRegex.hasMatch(value.trim())) return 'Please enter a valid phone number';
+                      final phoneRegex = RegExp(r'^[0-9+\- ]+$');
+                      if (!phoneRegex.hasMatch(value.trim())) {
+                        return 'Please enter a valid phone number';
+                      }
                       return null;
                     },
                   ),
@@ -223,7 +254,9 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty) return 'Please enter a patient email';
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Please enter a patient email';
+                      }
                       return null;
                     },
                   ),
@@ -237,21 +270,28 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
 
-                  TextFormField(
-                    controller: _conditionController,
-                    decoration: const InputDecoration(
-                      labelText: 'Medical Condition',
-                      prefixIcon: Icon(Icons.medical_services),
-                      border: OutlineInputBorder(),
+                  // ⭐ NEW: ICD-10 Picker replaces the free-text condition field
+                  const Text(
+                    'Medical Condition (ICD-10)',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF1A1A2E),
                     ),
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) return 'Please enter a medical condition';
-                      return null;
+                  ),
+                  const SizedBox(height: 8),
+                  Icd10Picker(
+                    initialCode: _selectedIcd10Code,
+                    onChanged: (code, name) {
+                      setState(() {
+                        _selectedIcd10Code = code;
+                        _selectedIcd10Name = name;
+                      });
                     },
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
 
                   DropdownButtonFormField<String>(
                     initialValue: _selectedStatus,
@@ -287,7 +327,9 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                             backgroundColor: Colors.grey.shade200,
                             foregroundColor: Colors.black87,
                             padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
                           child: const Text('Cancel'),
                         ),
@@ -300,10 +342,19 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                             backgroundColor: const Color(0xFF1E3A8A),
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
                           child: _isSaving
-                              ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
                               : const Text('Create Login'),
                         ),
                       ),

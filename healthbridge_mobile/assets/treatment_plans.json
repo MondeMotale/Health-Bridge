@@ -170,13 +170,7 @@
           "duration": "Ongoing",
           "phase": "Step 1",
           "notes": "First-line agent. Contraindicated in uncontrolled congestive cardiac failure, severe liver disease, significant respiratory compromise, and renal impairment (eGFR < 30 mL/min).",
-          "isClinical": false,
-          "renalAdjustment": [
-            { "eGFR": "> 60 mL/min", "dose": "Normal daily dose" },
-            { "eGFR": "45–60 mL/min", "dose": "Standard dose; monitor every 3–6 months" },
-            { "eGFR": "30–45 mL/min", "dose": "Maximum 1 g per day" },
-            { "eGFR": "< 30 mL/min", "dose": "STOP metformin" }
-          ]
+          "isClinical": false
         },
         {
           "name": "Gliclazide",
@@ -664,6 +658,311 @@
         }
       ],
       "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 11, Sections 11.2.1 and 11.2.2"
+    },
+
+    "A15": {
+      "icd10Code": "A15",
+      "conditionName": "Respiratory tuberculosis, bacteriologically confirmed",
+      "overview": "Tuberculosis is an infection caused by Mycobacterium tuberculosis, most commonly affecting the lungs. It spreads through the air when an infected person coughs or sneezes. TB is a notifiable disease. Drug-sensitive TB (DS-TB) is treated with a 6-month regimen: 2 months of intensive-phase RHZE followed by 4 months of continuation-phase RH. Cure rates are high with correct, complete treatment.",
+      "isChronic": false,
+      "durationWeeks": 26,
+      "treatmentDurationText": "6 months (2 months intensive + 4 months continuation)",
+      "phases": [
+        "Intensive phase (Months 1–2) — RHZE 4-drug combination daily",
+        "Continuation phase (Months 3–6) — RH 2-drug combination daily",
+        "Cure — sputum smear-negative at month 5 or 6"
+      ],
+      "medications": [
+        {
+          "name": "RHZE — Rifampicin + Isoniazid + Pyrazinamide + Ethambutol (fixed-dose combination)",
+          "dosage": "Weight-based dosing (see table below)",
+          "frequency": "Once daily, same time each day",
+          "duration": "2 months (intensive phase)",
+          "phase": "Intensive phase",
+          "notes": "The 4-in-1 tablet contains Rifampicin 150 mg + Isoniazid 75 mg + Pyrazinamide 400 mg + Ethambutol 275 mg. Take all tablets in ONE dose (not divided). Tablets may be taken with food to minimise nausea. Rifampicin may turn urine, sweat and tears orange — this is harmless. Rifampicin reduces the effectiveness of combined oral contraceptives and progestin-only implants — advise alternative contraception (IUD, DMPA) or additional barrier method.",
+          "isClinical": false,
+          "weightBands": [
+            { "weight": "30–37 kg", "dose": "2 tablets daily" },
+            { "weight": "38–54 kg", "dose": "3 tablets daily" },
+            { "weight": "55–70 kg", "dose": "4 tablets daily" },
+            { "weight": "≥ 71 kg",   "dose": "5 tablets daily" }
+          ]
+        },
+        {
+          "name": "RH — Rifampicin + Isoniazid (fixed-dose combination)",
+          "dosage": "Weight-based dosing (see table below)",
+          "frequency": "Once daily, same time each day",
+          "duration": "4 months (continuation phase)",
+          "phase": "Continuation phase",
+          "notes": "Two formulations available: RH 150/75 mg and RH 300/150 mg. Depending on weight, either 5 tablets of RH 150/75 OR 2 tablets of RH 300/150 is used. Continue taking treatment every day without interruption.",
+          "isClinical": false,
+          "weightBands": [
+            { "weight": "30–37 kg", "dose": "2 tablets RH 150/75" },
+            { "weight": "38–54 kg", "dose": "3 tablets RH 150/75" },
+            { "weight": "55–70 kg", "dose": "2 tablets RH 300/150" },
+            { "weight": "≥ 71 kg",   "dose": "2 tablets RH 300/150" }
+          ]
+        },
+        {
+          "name": "Pyridoxine (Vitamin B6)",
+          "dosage": "25 mg",
+          "frequency": "Once daily",
+          "duration": "Full duration of TB treatment (6 months)",
+          "phase": "Adjunct — given with all TB medicines",
+          "notes": "Prevents isoniazid-induced peripheral neuropathy. Given routinely to patients with HIV, malnutrition, or existing neuropathy.",
+          "isClinical": false
+        }
+      ],
+      "lifestyleAdvice": [
+        "Take all your TB tablets every day without missing any dose — this is essential for cure",
+        "Take all tablets together in ONE dose at the same time each day",
+        "You may take tablets with food to reduce nausea",
+        "Do not stop treatment even if you feel better — completing 6 months is essential to prevent resistance",
+        "If you miss more than 2 doses, tell your CHW or clinic immediately",
+        "Cover your mouth when you cough or sneeze — TB spreads through the air",
+        "Open windows and let in sunlight at home — TB spreads less in well-ventilated spaces",
+        "Sleep in a separate room from others if possible during the first 2 weeks of treatment",
+        "Eat a nutritious, balanced diet — TB treatment works best with good nutrition",
+        "Stop smoking and avoid excessive alcohol — both worsen TB and slow recovery",
+        "Attend every follow-up appointment, including sputum tests at 2, 5 and 6 months",
+        "Wear a mask in crowded public spaces while you are still infectious (first 2 weeks)",
+        "Inform close contacts (family, colleagues) so they can be screened for TB",
+        "If you have HIV, take your ART alongside TB treatment every day",
+        "Report any of these immediately: yellow eyes/skin, dark urine, severe nausea, tingling in hands/feet, skin rash"
+      ],
+      "monitoring": {
+        "everyVisit": [
+          "Weight — adjust tablet count if weight changes significantly",
+          "Ask about adherence — how many doses missed",
+          "Ask about side effects (nausea, rash, tingling, yellow eyes)",
+          "Check for new symptoms suggesting treatment failure (persistent cough, fever, weight loss)"
+        ],
+        "baseline": [
+          "Sputum TB-NAAT (Xpert MTB/RIF Ultra) — confirm TB and check for rifampicin resistance",
+          "Sputum smear microscopy (for reporting)",
+          "Baseline weight for dosing",
+          "HIV test — if positive, refer for ART",
+          "Baseline ALT (if jaundiced or risk factors for liver disease)",
+          "Screen for diabetes (if risk factors)"
+        ],
+        "atMonths": [
+          "Month 2 — sputum smear microscopy (should convert to negative)",
+          "Month 5 — sputum smear microscopy (should remain negative)",
+          "Month 6 — sputum smear microscopy (confirm cure)"
+        ]
+      },
+      "followUpSchedule": "Monthly clinical review. Sputum smear microscopy at month 2, month 5, and month 6. If smear remains positive at month 2, consider adherence issues and drug-resistant TB — refer for evaluation. If positive at month 5 or 6, refer for investigation of treatment failure.",
+      "warningSigns": [
+        "Yellow eyes or skin (jaundice)",
+        "Dark brown urine",
+        "Severe nausea or vomiting with abdominal pain",
+        "New skin rash — especially with fever, mucosal involvement, or facial swelling",
+        "Tingling or numbness in hands or feet",
+        "Persistent fever or worsening cough after starting treatment",
+        "Coughing up blood (haemoptysis)",
+        "Severe chest pain or difficulty breathing",
+        "Weight loss despite treatment"
+      ],
+      "referralCriteria": [
+        "Disseminated forms of TB (miliary, extrapulmonary)",
+        "TB meningitis (refer urgently — defer ART for 8 weeks)",
+        "Drug-resistant TB confirmed or suspected (Rifampicin-resistant, MDR, XDR)",
+        "Failure to convert to smear-negative at month 2 despite adherence",
+        "Treatment failure (positive smear at month 5 or 6)",
+        "Severe adverse drug reactions (hepatitis, drug rash, peripheral neuropathy worsening despite pyridoxine)",
+        "TB in children (<12 years) requiring chest X-ray for diagnosis",
+        "Previously treated TB requiring re-treatment",
+        "Contact of a patient with drug-resistant TB",
+        "Unable to be managed on an ambulatory basis (e.g. severe clinical condition)",
+        "Pregnancy — refer for expert TB management"
+      ],
+      "emergencyProtocol": {
+        "trigger": "Signs of disseminated TB, TB meningitis, or severe adverse drug reaction (hepatitis, drug rash with systemic features)",
+        "immediateAction": "Refer to hospital same day. For suspected TB meningitis (fever + neck stiffness + headache): urgent LP and referral. For suspected drug-induced hepatitis: STOP all TB medicines before referral.",
+        "outcome": "Life-threatening if not treated promptly. Do not delay referral."
+      },
+      "specialCases": [
+        {
+          "case": "HIV co-infection",
+          "note": "Treat TB and HIV. Start TB treatment first, then add ART based on CD4: <50 = within 2 weeks; ≥50 = defer until 8 weeks. Watch for Immune Reconstitution Inflammatory Syndrome (IRIS). Rifampicin reduces DTG concentration — double DTG dose to 50 mg twice daily while on rifampicin (extra dose 12 hours after TLD)."
+        },
+        {
+          "case": "Renal impairment (eGFR <30 mL/min)",
+          "note": "Ethambutol 15–25 mg/kg three times weekly. Pyrazinamide 20–30 mg/kg three times weekly. Rifampicin and isoniazid do not require dose adjustment."
+        },
+        {
+          "case": "Pregnancy and breastfeeding",
+          "note": "Rifampicin, isoniazid, pyrazinamide and ethambutol are all safe in pregnancy. Do NOT use pyridoxine-free regimen — give pyridoxine 25 mg daily. Refer to Section 6.4.2 for obstetric management."
+        },
+        {
+          "case": "Drug-induced hepatitis",
+          "note": "Rifampicin, isoniazid and pyrazinamide can cause hepatitis. If jaundice or hepatitis symptoms develop: stop all TB medicines, refer urgently for same-day ALT, do not restart until specialist advice."
+        },
+        {
+          "case": "Pyridoxine (vitamin B6)",
+          "note": "Give 25 mg daily alongside TB treatment to prevent isoniazid-induced peripheral neuropathy — especially important for patients living with HIV, pregnant women, malnourished patients, and those with existing neuropathy."
+        },
+        {
+          "case": "Directly observed therapy (DOT)",
+          "note": "Where possible, all TB patients should have a treatment supporter (family member, CHW, or clinic staff) to observe each dose and support adherence. Missed doses must be followed up the same day."
+        },
+        {
+          "case": "Contraception while on TB treatment",
+          "note": "Rifampicin reduces the efficacy of combined oral contraceptives and progestin-only implants. Advise IUD or DMPA (injectable) as preferred. If using a progestin-only implant, additional barrier contraception is needed during TB therapy."
+        }
+      ],
+      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 17, Sections 17.4.1 and 17.4.1.2 (Pulmonary tuberculosis, in adults)"
+    },
+
+    "A16": {
+      "icd10Code": "A16",
+      "conditionName": "Respiratory tuberculosis, not confirmed",
+      "overview": "Tuberculosis is an infection caused by Mycobacterium tuberculosis. This entry is used when TB is diagnosed clinically (based on symptoms, chest X-ray, and/or exposure history) without bacteriological confirmation — i.e. the TB-NAAT or smear was not positive, but the clinical picture strongly suggests TB. Treatment follows the same 6-month regimen as confirmed TB (2RHZE/4RH).",
+      "isChronic": false,
+      "durationWeeks": 26,
+      "treatmentDurationText": "6 months (2 months intensive + 4 months continuation)",
+      "phases": [
+        "Intensive phase (Months 1–2) — RHZE 4-drug combination daily",
+        "Continuation phase (Months 3–6) — RH 2-drug combination daily",
+        "Completion — clinical resolution at month 6"
+      ],
+      "medications": [
+        {
+          "name": "RHZE — Rifampicin + Isoniazid + Pyrazinamide + Ethambutol (fixed-dose combination)",
+          "dosage": "Weight-based dosing (see table below)",
+          "frequency": "Once daily, same time each day",
+          "duration": "2 months (intensive phase)",
+          "phase": "Intensive phase",
+          "notes": "The 4-in-1 tablet contains Rifampicin 150 mg + Isoniazid 75 mg + Pyrazinamide 400 mg + Ethambutol 275 mg. Take all tablets in ONE dose (not divided). May be taken with food to minimise nausea. Rifampicin may turn urine, sweat and tears orange — this is harmless. Rifampicin reduces effectiveness of combined oral contraceptives — advise alternative contraception.",
+          "isClinical": false,
+          "weightBands": [
+            { "weight": "30–37 kg", "dose": "2 tablets daily" },
+            { "weight": "38–54 kg", "dose": "3 tablets daily" },
+            { "weight": "55–70 kg", "dose": "4 tablets daily" },
+            { "weight": "≥ 71 kg",   "dose": "5 tablets daily" }
+          ]
+        },
+        {
+          "name": "RH — Rifampicin + Isoniazid (fixed-dose combination)",
+          "dosage": "Weight-based dosing (see table below)",
+          "frequency": "Once daily, same time each day",
+          "duration": "4 months (continuation phase)",
+          "phase": "Continuation phase",
+          "notes": "Two formulations available: RH 150/75 mg and RH 300/150 mg. Depending on weight, either 5 tablets of RH 150/75 OR 2 tablets of RH 300/150 is used. Continue every day without interruption.",
+          "isClinical": false,
+          "weightBands": [
+            { "weight": "30–37 kg", "dose": "2 tablets RH 150/75" },
+            { "weight": "38–54 kg", "dose": "3 tablets RH 150/75" },
+            { "weight": "55–70 kg", "dose": "2 tablets RH 300/150" },
+            { "weight": "≥ 71 kg",   "dose": "2 tablets RH 300/150" }
+          ]
+        },
+        {
+          "name": "Pyridoxine (Vitamin B6)",
+          "dosage": "25 mg",
+          "frequency": "Once daily",
+          "duration": "Full duration of TB treatment (6 months)",
+          "phase": "Adjunct — given with all TB medicines",
+          "notes": "Prevents isoniazid-induced peripheral neuropathy. Routinely given to patients with HIV, malnutrition, or existing neuropathy.",
+          "isClinical": false
+        }
+      ],
+      "lifestyleAdvice": [
+        "Take all your TB tablets every day without missing any dose — this is essential for cure",
+        "Take all tablets together in ONE dose at the same time each day",
+        "You may take tablets with food to reduce nausea",
+        "Do not stop treatment even if you feel better — completing 6 months is essential to prevent resistance",
+        "If you miss more than 2 doses, tell your CHW or clinic immediately",
+        "Cover your mouth when you cough or sneeze — TB spreads through the air",
+        "Open windows and let in sunlight at home — TB spreads less in well-ventilated spaces",
+        "Sleep in a separate room from others if possible during the first 2 weeks of treatment",
+        "Eat a nutritious, balanced diet — TB treatment works best with good nutrition",
+        "Stop smoking and avoid excessive alcohol — both worsen TB and slow recovery",
+        "Attend every follow-up appointment",
+        "Wear a mask in crowded public spaces while you are still infectious (first 2 weeks)",
+        "Inform close contacts (family, colleagues) so they can be screened for TB",
+        "If you have HIV, take your ART alongside TB treatment every day",
+        "Report any of these immediately: yellow eyes/skin, dark urine, severe nausea, tingling in hands/feet, skin rash"
+      ],
+      "monitoring": {
+        "everyVisit": [
+          "Weight — adjust tablet count if weight changes significantly",
+          "Ask about adherence — how many doses missed",
+          "Ask about side effects (nausea, rash, tingling, yellow eyes)",
+          "Check for clinical improvement (cough, fever, weight gain)"
+        ],
+        "baseline": [
+          "Sputum TB-NAAT — if negative, still treat if clinical picture is convincing",
+          "Sputum smear microscopy and culture (for confirmation)",
+          "Chest X-ray if available — suggestive findings support diagnosis",
+          "Baseline weight for dosing",
+          "HIV test — if positive, refer for ART",
+          "Baseline ALT (if jaundiced or risk factors for liver disease)",
+          "Screen for diabetes if risk factors"
+        ],
+        "atMonths": [
+          "Month 2 — sputum smear microscopy (for follow-up)",
+          "Month 5 — sputum smear microscopy",
+          "Month 6 — sputum smear microscopy (confirm completion)"
+        ]
+      },
+      "followUpSchedule": "Monthly clinical review. Sputum smear microscopy at month 2, month 5, and month 6. If smear remains positive at month 2, consider adherence issues and drug-resistant TB — refer for evaluation. Note: for clinically-diagnosed (unconfirmed) TB, the response to treatment is the main confirmation of the diagnosis.",
+      "warningSigns": [
+        "Yellow eyes or skin (jaundice)",
+        "Dark brown urine",
+        "Severe nausea or vomiting with abdominal pain",
+        "New skin rash — especially with fever, mucosal involvement, or facial swelling",
+        "Tingling or numbness in hands or feet",
+        "Persistent fever or worsening cough after starting treatment",
+        "Coughing up blood (haemoptysis)",
+        "Severe chest pain or difficulty breathing",
+        "Weight loss despite treatment"
+      ],
+      "referralCriteria": [
+        "Disseminated forms of TB (miliary, extrapulmonary)",
+        "TB meningitis (refer urgently — defer ART for 8 weeks)",
+        "Drug-resistant TB confirmed or suspected",
+        "Failure to improve after 2 months of treatment despite adherence",
+        "Treatment failure (positive smear at month 5 or 6)",
+        "Severe adverse drug reactions (hepatitis, drug rash, peripheral neuropathy worsening despite pyridoxine)",
+        "TB in children (<12 years) requiring chest X-ray for diagnosis",
+        "Previously treated TB requiring re-treatment",
+        "Contact of a patient with drug-resistant TB",
+        "Unable to be managed on an ambulatory basis",
+        "Pregnancy — refer for expert TB management"
+      ],
+      "emergencyProtocol": {
+        "trigger": "Signs of disseminated TB, TB meningitis, or severe adverse drug reaction (hepatitis, drug rash with systemic features)",
+        "immediateAction": "Refer to hospital same day. For suspected TB meningitis (fever + neck stiffness + headache): urgent LP and referral. For suspected drug-induced hepatitis: STOP all TB medicines before referral.",
+        "outcome": "Life-threatening if not treated promptly. Do not delay referral."
+      },
+      "specialCases": [
+        {
+          "case": "HIV co-infection",
+          "note": "Treat TB and HIV. Start TB treatment first, then add ART based on CD4: <50 = within 2 weeks; ≥50 = defer until 8 weeks. Watch for IRIS. Rifampicin reduces DTG concentration — double DTG dose to 50 mg twice daily while on rifampicin."
+        },
+        {
+          "case": "Renal impairment (eGFR <30 mL/min)",
+          "note": "Ethambutol 15–25 mg/kg three times weekly. Pyrazinamide 20–30 mg/kg three times weekly. Rifampicin and isoniazid do not require dose adjustment."
+        },
+        {
+          "case": "Pregnancy and breastfeeding",
+          "note": "Rifampicin, isoniazid, pyrazinamide and ethambutol are all safe in pregnancy. Give pyridoxine 25 mg daily."
+        },
+        {
+          "case": "Drug-induced hepatitis",
+          "note": "Rifampicin, isoniazid and pyrazinamide can cause hepatitis. If jaundice or hepatitis symptoms develop: stop all TB medicines, refer urgently for same-day ALT."
+        },
+        {
+          "case": "Pyridoxine (vitamin B6)",
+          "note": "Give 25 mg daily alongside TB treatment to prevent isoniazid-induced peripheral neuropathy."
+        },
+        {
+          "case": "Contraception while on TB treatment",
+          "note": "Rifampicin reduces the efficacy of combined oral contraceptives and progestin-only implants. Advise IUD or DMPA. If using a progestin-only implant, additional barrier contraception is needed during TB therapy."
+        }
+      ],
+      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 17, Sections 17.4.1 and 17.4.1.2 (Pulmonary tuberculosis, in adults)"
     }
   }
 }

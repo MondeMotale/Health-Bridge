@@ -43,7 +43,6 @@ class _PatientResourcesScreenState extends State<PatientResourcesScreen> {
                   return _emptyState('No patient profile found.');
                 }
 
-                // Load the treatment plan for the patient's ICD-10 code
                 return FutureBuilder<TreatmentPlan?>(
                   future: _planService.getPlanFor(patient.icd10Code),
                   builder: (context, planSnap) {
@@ -94,29 +93,30 @@ class _PatientResourcesScreenState extends State<PatientResourcesScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header
           _buildHeader(plan),
-
           const SizedBox(height: 20),
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Warning signs (highest priority)
                 if (plan.warningSigns.isNotEmpty) ...[
                   _buildWarningBox(plan.warningSigns),
                   const SizedBox(height: 20),
                 ],
-
-                // Overview
                 _buildSection('About your condition', [
                   Text(plan.overview, style: _bodyStyle),
                 ]),
                 const SizedBox(height: 20),
 
-                // Medications
+                if (plan.phases != null && plan.phases!.isNotEmpty) ...[
+                  _buildSection(
+                    '📋 Treatment Steps',
+                    plan.phases!.map((p) => _buildBullet(p)).toList(),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+
                 if (plan.medications.isNotEmpty) ...[
                   _buildSection(
                     '💊 Your Medications',
@@ -128,7 +128,6 @@ class _PatientResourcesScreenState extends State<PatientResourcesScreen> {
                   const SizedBox(height: 20),
                 ],
 
-                // Lifestyle
                 if (plan.lifestyleAdvice.isNotEmpty) ...[
                   _buildSection(
                     '🥗 Lifestyle Recommendations',
@@ -137,7 +136,6 @@ class _PatientResourcesScreenState extends State<PatientResourcesScreen> {
                   const SizedBox(height: 20),
                 ],
 
-                // Portion guide (diabetes-specific)
                 if (plan.portionGuide != null) ...[
                   _buildSection(
                     '🍽️ Portion Guide',
@@ -148,7 +146,6 @@ class _PatientResourcesScreenState extends State<PatientResourcesScreen> {
                   const SizedBox(height: 20),
                 ],
 
-                // Follow-up
                 if (plan.followUpSchedule.isNotEmpty) ...[
                   _buildSection(
                     '📅 Follow-up Schedule',
@@ -157,7 +154,6 @@ class _PatientResourcesScreenState extends State<PatientResourcesScreen> {
                   const SizedBox(height: 20),
                 ],
 
-                // Duration
                 if (plan.treatmentDurationText != null) ...[
                   _buildSection('⏱️ Treatment Duration', [
                     Text(plan.treatmentDurationText!, style: _bodyStyle),
@@ -165,7 +161,6 @@ class _PatientResourcesScreenState extends State<PatientResourcesScreen> {
                   const SizedBox(height: 20),
                 ],
 
-                // Source citation
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
@@ -187,7 +182,6 @@ class _PatientResourcesScreenState extends State<PatientResourcesScreen> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 40),
               ],
             ),
@@ -345,6 +339,97 @@ class _PatientResourcesScreenState extends State<PatientResourcesScreen> {
           const SizedBox(height: 4),
           Text('${m.dosage} · ${m.frequency}',
               style: const TextStyle(color: Colors.grey, fontSize: 13)),
+
+          if (m.weightBands != null && m.weightBands!.isNotEmpty) ...[
+            const SizedBox(height: 12),
+            Container(
+              decoration: BoxDecoration(
+                color: const Color(0xFF1E3A8A).withValues(alpha: 0.04),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                    color: const Color(0xFF1E3A8A).withValues(alpha: 0.15)),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1E3A8A).withValues(alpha: 0.1),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8),
+                      ),
+                    ),
+                    child: const Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            'Your weight',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF1E3A8A),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            'Your dose',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF1E3A8A),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ...m.weightBands!.map(
+                    (band) => Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            color: const Color(0xFF1E3A8A)
+                                .withValues(alpha: 0.1),
+                          ),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              band.weight,
+                              style: const TextStyle(
+                                  fontSize: 13, color: Color(0xFF1A1A2E)),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              band.dose,
+                              style: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF1A1A2E),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+
           if (m.notes.isNotEmpty) ...[
             const SizedBox(height: 6),
             Text(m.notes,

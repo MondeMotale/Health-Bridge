@@ -111,6 +111,7 @@ class Medication {
   final String? phase;
   final String notes;
   final bool isClinical;
+  final List<WeightBand>? weightBands;
 
   Medication({
     required this.name,
@@ -120,6 +121,7 @@ class Medication {
     this.phase,
     required this.notes,
     this.isClinical = false,
+    this.weightBands,
   });
 
   factory Medication.fromMap(Map<String, dynamic> m) => Medication(
@@ -130,6 +132,22 @@ class Medication {
         phase: m['phase'],
         notes: m['notes'] ?? '',
         isClinical: m['isClinical'] ?? false,
+        weightBands: (m['weightBands'] as List?)
+            ?.map((e) => WeightBand.fromMap(Map<String, dynamic>.from(e)))
+            .toList(),
+      );
+}
+
+/// A single weight-band dose for a medication (used for paediatric / TB dosing).
+class WeightBand {
+  final String weight; // e.g. "30–37 kg"
+  final String dose; // e.g. "2 tablets"
+
+  WeightBand({required this.weight, required this.dose});
+
+  factory WeightBand.fromMap(Map<String, dynamic> m) => WeightBand(
+        weight: m['weight'] ?? '',
+        dose: m['dose'] ?? '',
       );
 }
 

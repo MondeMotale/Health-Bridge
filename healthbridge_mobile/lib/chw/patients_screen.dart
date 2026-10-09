@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../../models/patient.dart';
-import '../../models/treatment_plan.dart';              // ⭐ NEW
+import '../../models/treatment_plan.dart';
 import '../../services/firestore_service.dart';
 import '../../services/referral_service.dart';
 import '../../services/appointment_service.dart';
-import '../../services/treatment_plan_service.dart';    // ⭐ NEW
+import '../../services/treatment_plan_service.dart';
 import '../../models/referral.dart';
 import '../../models/appointment.dart';
 import '../../auth/auth_provider.dart';
@@ -60,7 +60,8 @@ class _PatientsScreenState extends State<PatientsScreen> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           elevation: 10,
           insetPadding: const EdgeInsets.all(20),
           child: Container(
@@ -70,7 +71,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // --- PATIENT HEADER ---
                 Row(
                   children: [
                     CircleAvatar(
@@ -105,7 +105,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
                 const Divider(),
                 const SizedBox(height: 12),
 
-                // ICD-10 row (only shown if the patient has a code)
                 if (patient.icd10Code != null && patient.icd10Code!.isNotEmpty)
                   _buildInfoRow('ICD-10', patient.icd10Code!),
 
@@ -125,7 +124,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
                 ],
                 const SizedBox(height: 24),
 
-                // --- SINGLE CLEAN ACTION BUTTON ---
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
@@ -263,7 +261,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
                 ),
                 const Divider(height: 24),
 
-                // ⭐ NEW: OPTION 3 - VIEW TREATMENT PLAN ---
+                // --- OPTION 3: VIEW TREATMENT PLAN ---
                 InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
@@ -347,7 +345,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
                 ),
                 const SizedBox(height: 24),
 
-                // --- CLOSE BUTTON ---
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -726,7 +723,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
   }
 
   // ================================================================
-  // ⭐ NEW: TREATMENT PLAN MODAL
+  // TREATMENT PLAN MODAL
   // ================================================================
   void _showTreatmentPlan(Patient patient) async {
     if (patient.icd10Code == null || patient.icd10Code!.isEmpty) {
@@ -851,7 +848,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
               'All Medications (Clinical)',
               plan.medications.map((m) {
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -861,6 +858,89 @@ class _PatientsScreenState extends State<PatientsScreen> {
                       Text('${m.frequency} · ${m.duration}',
                           style:
                               const TextStyle(fontSize: 13, color: Colors.grey)),
+
+                      if (m.weightBands != null &&
+                          m.weightBands!.isNotEmpty) ...[
+                        const SizedBox(height: 8),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 6),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF1E3A8A)
+                                      .withValues(alpha: 0.1),
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(6),
+                                    topRight: Radius.circular(6),
+                                  ),
+                                ),
+                                child: const Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Weight',
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w700,
+                                          color: Color(0xFF1E3A8A),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        'Dose',
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w700,
+                                          color: Color(0xFF1E3A8A),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              ...m.weightBands!.map(
+                                (band) => Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                          color: Colors.grey.shade300),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          band.weight,
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          band.dose,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+
                       if (m.notes.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.only(top: 4),
@@ -1138,9 +1218,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
     );
   }
 
-  /// Builds the condition subtitle for a patient card.
-  /// With code:    "65 yrs • E11.9 · Diabetes"
-  /// Without code: "65 yrs • Diabetes"
   String _buildConditionLine(Patient patient) {
     final code = patient.icd10Code;
     if (code != null && code.isNotEmpty) {

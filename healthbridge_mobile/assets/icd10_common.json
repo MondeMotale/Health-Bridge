@@ -3,6 +3,7 @@
   "source": "WHO ICD-10 (2019) + SA PHC STGs alignment",
   "codes": [
     { "code": "A09",    "name": "Diarrhoea and gastroenteritis of presumed infectious origin", "category": "Infectious" },
+    { "code": "A09.9",  "name": "Gastroenteritis and colitis of unspecified origin",          "category": "Infectious" },
     { "code": "A15",    "name": "Respiratory tuberculosis, bacteriologically confirmed",     "category": "Infectious" },
     { "code": "A16",    "name": "Respiratory tuberculosis, not confirmed",                   "category": "Infectious" },
     { "code": "A17",    "name": "Tuberculosis of nervous system",                            "category": "Infectious" },

@@ -7,33 +7,40 @@ class AppointmentService {
   // CREATE: Book a new appointment
   Future<void> bookAppointment(Appointment appointment) async {
     try {
-      await _firestore.collection('appointments').doc(appointment.id).set(appointment.toMap());
+      await _firestore
+          .collection('appointments')
+          .doc(appointment.id)
+          .set(appointment.toMap());
     } catch (e) {
       throw Exception('Failed to book appointment: $e');
     }
   }
 
-    // READ (CHW): Get appointments for a specific CHW (NO SORTING ON FIREBASE)
+  // READ (CHW): Get appointments for a specific CHW
   Stream<List<Appointment>> getAppointmentsForChw(String chwId) {
     return _firestore
         .collection('appointments')
         .where('chwId', isEqualTo: chwId)
-        // REMOVED THE .orderBy LINE COMPLETELY
         .snapshots()
         .map((snapshot) {
-          // Fetch the list
           List<Appointment> appointments = snapshot.docs
               .map((doc) => Appointment.fromMap(doc.data(), doc.id))
               .toList();
-          
-          // SORT THE LIST INSIDE THE APP (No index required!)
+
+          // Sort by date — upcoming first, then recent history
           appointments.sort((a, b) => b.dateTime.compareTo(a.dateTime));
-          
           return appointments;
         });
   }
 
-    // READ (PATIENT): Get appointments for a specific patient
+  // READ (CHW): Get today's appointments only
+  Stream<List<Appointment>> getTodaysAppointmentsForChw(String chwId) {
+    return getAppointmentsForChw(chwId).map((appointments) {
+      return appointments.where((a) => a.isToday).toList();
+    });
+  }
+
+  // READ (PATIENT): Get appointments for a specific patient
   Stream<List<Appointment>> getAppointmentsForPatient(String patientId) {
     return _firestore
         .collection('appointments')
@@ -43,14 +50,84 @@ class AppointmentService {
           List<Appointment> appointments = snapshot.docs
               .map((doc) => Appointment.fromMap(doc.data(), doc.id))
               .toList();
-          
+
           appointments.sort((a, b) => b.dateTime.compareTo(a.dateTime));
-          
           return appointments;
         });
   }
 
-  // UPDATE STATUS: Mark as Completed or Cancelled
+  // ============================================================
+  // LIFECYCLE — status transitions
+  // ============================================================
+
+  /// CHW starts the trip → status becomes 'EnRoute'
+  Future<void> markEnRoute(String appointmentId) async {
+    await _firestore.collection('appointments').doc(appointmentId).update({
+      'status': 'EnRoute',
+      'enRouteAt': DateTime.now().toIso8601String(),
+    });
+  }
+
+  /// CHW has arrived → status becomes 'InProgress'
+  Future<void> markArrived(String appointmentId) async {
+    await _firestore.collection('appointments').doc(appointmentId).update({
+      'status': 'InProgress',
+      'startedAt': DateTime.now().toIso8601String(),
+    });
+  }
+
+  /// CHW completes the visit → status becomes 'Completed'
+  /// Saves CHW notes, calculates duration, locks notes.
+  /// Optionally sets up follow-up.
+  Future<void> markCompleted({
+    required String appointmentId,
+    required String chwNotes,
+    required DateTime startedAt,
+    String? followUpRequired,
+    DateTime? nextFollowUpDate,
+  }) async {
+    final now = DateTime.now();
+    final duration = now.difference(startedAt).inMinutes;
+
+    await _firestore.collection('appointments').doc(appointmentId).update({
+      'status': 'Completed',
+      'chwNotes': chwNotes,
+      'completedAt': now.toIso8601String(),
+      'visitDurationMinutes': duration,
+      'followUpRequired': followUpRequired,
+      'nextFollowUpDate': nextFollowUpDate?.toIso8601String(),
+      'notesLockedAt': now.toIso8601String(), // ← lock notes on save
+    });
+  }
+
+  /// CHW marks the patient as missed (not home, didn't show)
+  Future<void> markMissed({
+    required String appointmentId,
+    required String reason,
+  }) async {
+    await _firestore.collection('appointments').doc(appointmentId).update({
+      'status': 'Missed',
+      'missedReason': reason,
+      'completedAt': DateTime.now().toIso8601String(),
+    });
+  }
+
+  /// Cancel the appointment (either party)
+  Future<void> cancelAppointment({
+    required String appointmentId,
+    required String reason,
+  }) async {
+    await _firestore.collection('appointments').doc(appointmentId).update({
+      'status': 'Cancelled',
+      'cancellationReason': reason,
+    });
+  }
+
+  // ============================================================
+  // LEGACY — kept for backward compatibility
+  // ============================================================
+
+  /// Simple status update — used if a screen just needs to change status
   Future<void> updateStatus(String appointmentId, String newStatus) async {
     await _firestore.collection('appointments').doc(appointmentId).update({
       'status': newStatus,

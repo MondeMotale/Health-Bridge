@@ -3,10 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../models/appointment.dart';
-import '../../models/chw_availability.dart';
 import '../../services/firestore_service.dart';
-import '../../services/availability_service.dart';
-import '../../services/slot_service.dart';
 import '../../auth/auth_provider.dart';
 
 class PatientAppointmentsScreen extends StatefulWidget {
@@ -17,197 +14,418 @@ class PatientAppointmentsScreen extends StatefulWidget {
       _PatientAppointmentsScreenState();
 }
 
-class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
-  // ---------- REQUEST APPOINTMENT (SLOT-BASED) ----------
-  void _showRequestAppointmentDialog(String patientUid) async {
+class _PatientAppointmentsScreenState
+    extends State<PatientAppointmentsScreen> {
+  bool _isSubmitting = false;
+
+  // ============================================================
+  // REQUEST APPOINTMENT (unchanged from before)
+  // ============================================================
+  void _showRequestAppointmentDialog(String patientUid) {
+    final TextEditingController locationController = TextEditingController();
+    DateTime selectedDate = DateTime.now().add(const Duration(days: 7));
+    TimeOfDay selectedTime = const TimeOfDay(hour: 10, minute: 0);
+
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final String patientName = authProvider.user?.displayName ?? 'Patient';
-
-    // Fetch the patient doc to find the assigned CHW
-    final patientSnap = await FirebaseFirestore.instance
-        .collection('patients')
-        .doc(patientUid)
-        .get();
-
-    if (!patientSnap.exists) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('No CHW assigned to you yet.'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-      return;
-    }
-
-    final chwId = patientSnap.data()?['assignedChwId'] ?? '';
-    if (chwId.isEmpty) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('No CHW assigned to you yet.'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-      return;
-    }
-
-    // Load CHW availability
-    final availability = await AvailabilityService().getAvailability(chwId);
-
-    final hasAnyWindow = availability.weekly.values.any((s) => s.isNotEmpty);
-    if (!hasAnyWindow) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content:
-                Text('Your CHW is not accepting appointments at the moment.'),
-            backgroundColor: Colors.orange,
-          ),
-        );
-      }
-      return;
-    }
-
-    if (!mounted) return;
 
     showDialog(
       context: context,
       barrierDismissible: true,
-      builder: (ctx) => _SlotPickerDialog(
-        chwId: chwId,
-        availability: availability,
-        onSubmit: (DateTime chosenSlot) async {
-          Navigator.pop(ctx);
-          await _submitRequest(
-            patientUid: patientUid,
-            patientName: patientName,
-            requestedDateTime: chosenSlot,
-          );
-        },
-      ),
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              insetPadding: const EdgeInsets.all(20),
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                width: double.infinity,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Request Appointment',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF1A1A2E),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    ListTile(
+                      leading: const Icon(Icons.calendar_today,
+                          color: Color(0xFF1E3A8A)),
+                      title: Text(
+                          'Date: ${selectedDate.toLocal().toString().split(' ')[0]}'),
+                      onTap: () async {
+                        final DateTime? picked = await showDatePicker(
+                          context: context,
+                          initialDate: selectedDate,
+                          firstDate: DateTime.now(),
+                          lastDate:
+                              DateTime.now().add(const Duration(days: 365)),
+                        );
+                        if (picked != null) {
+                          setState(() => selectedDate = picked);
+                        }
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.access_time,
+                          color: Color(0xFF1E3A8A)),
+                      title: Text('Time: ${selectedTime.format(context)}'),
+                      onTap: () async {
+                        final TimeOfDay? picked = await showTimePicker(
+                          context: context,
+                          initialTime: selectedTime,
+                        );
+                        if (picked != null) {
+                          setState(() => selectedTime = picked);
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: locationController,
+                      decoration: const InputDecoration(
+                        labelText: 'Location',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.location_on),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _isSubmitting
+                            ? null
+                            : () async {
+                                if (locationController.text.trim().isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Please enter a location.'),
+                                    ),
+                                  );
+                                  return;
+                                }
+
+                                setState(() => _isSubmitting = true);
+
+                                try {
+                                  await FirebaseFirestore.instance
+                                      .collection('appointment_requests')
+                                      .add({
+                                    'patientId': patientUid,
+                                    'patientName': patientName,
+                                    'requestedDate':
+                                        selectedDate.toIso8601String(),
+                                    'requestedTime':
+                                        selectedTime.format(context),
+                                    'location':
+                                        locationController.text.trim(),
+                                    'status': 'Pending',
+                                    'createdAt':
+                                        FieldValue.serverTimestamp(),
+                                  });
+
+                                  if (context.mounted) {
+                                    Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Request sent! Your CHW will confirm.'),
+                                        backgroundColor: Colors.green,
+                                      ),
+                                    );
+                                  }
+                                } catch (e) {
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(
+                                      SnackBar(
+                                        content: Text('Error: $e'),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
+                                } finally {
+                                  if (context.mounted) {
+                                    setState(() => _isSubmitting = false);
+                                  }
+                                }
+                              },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF1E3A8A),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: _isSubmitting
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                    color: Colors.white, strokeWidth: 2),
+                              )
+                            : const Text('Submit Request'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
-  Future<void> _submitRequest({
-    required String patientUid,
-    required String patientName,
-    required DateTime requestedDateTime,
-  }) async {
-    try {
-      final location = await _askLocation();
-      if (location == null || location.isEmpty) return;
-
-      await FirebaseFirestore.instance.collection('appointment_requests').add({
-        'patientId': patientUid,
-        'patientName': patientName,
-        'requestedDate': requestedDateTime.toIso8601String(),
-        'requestedTime': _formatTime(requestedDateTime),
-        'location': location,
-        'status': 'Pending',
-        'createdAt': FieldValue.serverTimestamp(),
-      });
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Request sent! Your CHW will confirm.'),
-            backgroundColor: Colors.green,
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
-        );
-      }
-    }
-  }
-
-  Future<String?> _askLocation() async {
-    final controller = TextEditingController();
-    return showDialog<String>(
+  // ============================================================
+  // DETAILS DIALOG (with CHW notes visible to patient)
+  // ============================================================
+  void _showDetailsDialog(Appointment appt) {
+    showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Where should the CHW meet you?'),
-        content: TextField(
-          controller: controller,
-          autofocus: true,
-          decoration: const InputDecoration(
-            hintText: 'e.g. 12 Main Street, Soweto',
-            prefixIcon: Icon(Icons.location_on),
+      builder: (ctx) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        insetPadding: const EdgeInsets.all(20),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          width: double.infinity,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: _statusColor(appt.status).withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Icon(
+                      _statusIcon(appt.status),
+                      color: _statusColor(appt.status),
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Visit Details',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1A1A2E),
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          _statusLabel(appt.status),
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: _statusColor(appt.status),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              const Divider(),
+              const SizedBox(height: 12),
+              _row('With', appt.chwName),
+              _row(
+                'Date',
+                DateFormat('EEEE, MMM d, yyyy').format(appt.dateTime),
+              ),
+              _row('Time', DateFormat('h:mm a').format(appt.dateTime)),
+              _row('Location', appt.location),
+
+              if (appt.startedAt != null && appt.completedAt != null) ...[
+                const SizedBox(height: 8),
+                _row(
+                  'Visit Duration',
+                  '${appt.visitDurationMinutes ?? 0} minutes',
+                ),
+              ],
+
+              // ----- CHW's clinical notes (visible to patient) -----
+              if (appt.chwNotes != null && appt.chwNotes!.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1E3A8A).withValues(alpha: 0.05),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: const Color(0xFF1E3A8A).withValues(alpha: 0.2),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Row(
+                        children: [
+                          Icon(
+                            Icons.medical_information,
+                            color: Color(0xFF1E3A8A),
+                            size: 18,
+                          ),
+                          SizedBox(width: 6),
+                          Text(
+                            'Notes from your CHW',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF1E3A8A),
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        appt.chwNotes!,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFF1A1A2E),
+                          height: 1.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+
+              // ----- Follow-up -----
+              if (appt.followUpRequired != null &&
+                  appt.nextFollowUpDate != null) ...[
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF59E0B).withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.event_repeat,
+                          color: Color(0xFFF59E0B), size: 20),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'Follow-up suggested: ${DateFormat('MMM d, yyyy').format(appt.nextFollowUpDate!)}',
+                          style: const TextStyle(
+                            color: Color(0xFF92400E),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+
+              // ----- Missed reason -----
+              if (appt.missedReason != null) ...[
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFEF4444).withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.info_outline,
+                          color: Color(0xFFEF4444), size: 20),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'Reason: ${appt.missedReason}',
+                          style: const TextStyle(
+                            color: Color(0xFF991B1B),
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF1E3A8A),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text('Close'),
+                ),
+              ),
+            ],
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
+      ),
+    );
+  }
+
+  Widget _row(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 100,
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: Color(0xFF6B7280),
+                fontWeight: FontWeight.w500,
+                fontSize: 13,
+              ),
+            ),
           ),
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, controller.text.trim()),
-            child: const Text('Confirm Request'),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(
+                color: Color(0xFF1A1A2E),
+                fontSize: 13,
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  String _formatTime(DateTime d) {
-    final h = d.hour;
-    final m = d.minute.toString().padLeft(2, '0');
-    final ampm = h >= 12 ? 'PM' : 'AM';
-    final h12 = h == 0 ? 12 : (h > 12 ? h - 12 : h);
-    return '$h12:$m $ampm';
-  }
-
-  // ---------- DISMISS DECLINED REQUEST ----------
-  Future<void> _dismissDeclined(String docId) async {
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Remove this request?'),
-        content: const Text(
-            'This will hide it from your list. The CHW still has a record of declining it.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Remove', style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      ),
-    );
-
-    if (confirm != true) return;
-
-    try {
-      await FirebaseFirestore.instance
-          .collection('appointment_requests')
-          .doc(docId)
-          .update({'patientDismissed': true});
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Removed from your list.')),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
-        );
-      }
-    }
-  }
-
-  // ---------- BUILD ----------
+  // ============================================================
+  // BUILD
+  // ============================================================
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -228,19 +446,22 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // ---------- CONFIRMED ----------
-                  const Text('📅 My Appointments',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF1A1A2E),
-                      )),
+                  // ---------- UPCOMING & ACTIVE ----------
+                  const Text(
+                    '📅 Upcoming',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1A1A2E),
+                    ),
+                  ),
                   const SizedBox(height: 12),
                   StreamBuilder<List<Appointment>>(
                     stream: FirestoreService()
                         .getAppointmentsForPatient(patientUid),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
                         return const Center(
                           child: Padding(
                             padding: EdgeInsets.all(20),
@@ -248,26 +469,37 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
                           ),
                         );
                       }
-                      final appointments = snapshot.data ?? [];
-                      if (appointments.isEmpty) {
+
+                      final all = snapshot.data ?? [];
+                      final upcoming = all
+                          .where((a) =>
+                              a.status != 'Completed' &&
+                              a.status != 'Missed' &&
+                              a.status != 'Cancelled')
+                          .toList();
+
+                      if (upcoming.isEmpty) {
                         return _emptyCard('No upcoming appointments.');
                       }
+
                       return Column(
-                        children: appointments
-                            .map((a) => _appointmentCard(a))
-                            .toList(),
+                        children:
+                            upcoming.map((a) => _upcomingCard(a)).toList(),
                       );
                     },
                   ),
+
                   const SizedBox(height: 24),
 
-                  // ---------- PENDING ----------
-                  const Text('⏳ Pending Requests',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF1A1A2E),
-                      )),
+                  // ---------- PENDING REQUESTS ----------
+                  const Text(
+                    '⏳ Pending Requests',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1A1A2E),
+                    ),
+                  ),
                   const SizedBox(height: 12),
                   StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
@@ -276,7 +508,8 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
                         .where('status', isEqualTo: 'Pending')
                         .snapshots(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
                         return const SizedBox();
                       }
                       final pending = snapshot.data?.docs ?? [];
@@ -285,21 +518,24 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
                       }
                       return Column(
                         children: pending
-                            .map((d) =>
-                                _pendingCard(d.data() as Map<String, dynamic>))
+                            .map((d) => _pendingCard(
+                                d.data() as Map<String, dynamic>))
                             .toList(),
                       );
                     },
                   ),
+
                   const SizedBox(height: 24),
 
                   // ---------- DECLINED ----------
-                  const Text('❌ Declined Requests',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF1A1A2E),
-                      )),
+                  const Text(
+                    '❌ Declined Requests',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1A1A2E),
+                    ),
+                  ),
                   const SizedBox(height: 12),
                   StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
@@ -308,15 +544,14 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
                         .where('status', isEqualTo: 'Declined')
                         .snapshots(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
                         return const SizedBox();
                       }
-                      final declined = (snapshot.data?.docs ?? [])
-                          .where((d) {
-                            final data = d.data() as Map<String, dynamic>;
-                            return data['patientDismissed'] != true;
-                          })
-                          .toList();
+                      final declined = (snapshot.data?.docs ?? []).where((d) {
+                        final data = d.data() as Map<String, dynamic>;
+                        return data['patientDismissed'] != true;
+                      }).toList();
                       if (declined.isEmpty) {
                         return _emptyCard('No declined requests. 🎉');
                       }
@@ -328,19 +563,63 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
                       );
                     },
                   ),
+
+                  const SizedBox(height: 24),
+
+                  // ---------- HISTORY ----------
+                  const Text(
+                    '📜 History',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1A1A2E),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  StreamBuilder<List<Appointment>>(
+                    stream: FirestoreService()
+                        .getAppointmentsForPatient(patientUid),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const SizedBox();
+                      }
+                      final all = snapshot.data ?? [];
+                      final history = all
+                          .where((a) =>
+                              a.status == 'Completed' ||
+                              a.status == 'Missed' ||
+                              a.status == 'Cancelled')
+                          .toList();
+
+                      if (history.isEmpty) {
+                        return _emptyCard('No past appointments yet.');
+                      }
+
+                      return Column(
+                        children:
+                            history.map((a) => _historyCard(a)).toList(),
+                      );
+                    },
+                  ),
+
+                  const SizedBox(height: 60),
                 ],
               ),
             ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'patient_request_fab',
-        onPressed: () => _showRequestAppointmentDialog(patientUid ?? ''),
+        onPressed: () =>
+            _showRequestAppointmentDialog(patientUid ?? ''),
         backgroundColor: const Color(0xFF1E3A8A),
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
 
-  // ---------- CARD BUILDERS ----------
+  // ============================================================
+  // CARD BUILDERS
+  // ============================================================
   Widget _emptyCard(String text) {
     return Container(
       width: double.infinity,
@@ -350,6 +629,246 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(text, style: const TextStyle(color: Colors.grey)),
+    );
+  }
+
+  // UPCOMING — includes "en route" indicator
+  Widget _upcomingCard(Appointment appt) {
+    return InkWell(
+      onTap: () => _showDetailsDialog(appt),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border(
+            left: BorderSide(color: _statusColor(appt.status), width: 4),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        DateFormat('EEEE, MMM d')
+                            .format(appt.dateTime),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Color(0xFF1A1A2E),
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '${DateFormat('h:mm a').format(appt.dateTime)} • ${appt.chwName}',
+                        style: const TextStyle(
+                          color: Color(0xFF6B7280),
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: _statusColor(appt.status)
+                        .withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    _statusLabel(appt.status),
+                    style: TextStyle(
+                      color: _statusColor(appt.status),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                const Icon(Icons.location_on,
+                    color: Color(0xFF6B7280), size: 16),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    appt.location,
+                    style: const TextStyle(
+                        color: Color(0xFF6B7280), fontSize: 13),
+                  ),
+                ),
+              ],
+            ),
+            if (appt.status == 'EnRoute') ...[
+              const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF3B82F6)
+                      .withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Row(
+                  children: [
+                    Icon(Icons.directions_walk,
+                        color: Color(0xFF3B82F6), size: 16),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Your CHW is on the way',
+                        style: TextStyle(
+                          color: Color(0xFF1E40AF),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  // HISTORY — read-only, with reason for missed
+  Widget _historyCard(Appointment appt) {
+    return InkWell(
+      onTap: () => _showDetailsDialog(appt),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border(
+            left: BorderSide(color: _statusColor(appt.status), width: 4),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  _statusIcon(appt.status),
+                  color: _statusColor(appt.status),
+                  size: 22,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        DateFormat('MMM d, yyyy').format(appt.dateTime),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Color(0xFF1A1A2E),
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '${appt.chwName} • ${appt.location}',
+                        style: const TextStyle(
+                          color: Color(0xFF6B7280),
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
+                  _statusLabel(appt.status),
+                  style: TextStyle(
+                    color: _statusColor(appt.status),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            if (appt.chwNotes != null && appt.chwNotes!.isNotEmpty) ...[
+              const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1E3A8A).withValues(alpha: 0.05),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(Icons.notes,
+                        color: Color(0xFF1E3A8A), size: 16),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        appt.chwNotes!,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Color(0xFF1E3A8A),
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+            if (appt.missedReason != null) ...[
+              const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEF4444).withValues(alpha: 0.06),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(Icons.info_outline,
+                        color: Color(0xFFEF4444), size: 16),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        appt.missedReason!,
+                        style: const TextStyle(
+                          color: Color(0xFF991B1B),
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
     );
   }
 
@@ -365,7 +884,8 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border(left: BorderSide(color: Colors.orange.shade400, width: 4)),
+        border: Border(
+            left: BorderSide(color: Colors.orange.shade400, width: 4)),
       ),
       child: Row(
         children: [
@@ -375,26 +895,34 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('$dateStr at ${data['requestedTime'] ?? ''}',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 15)),
+                Text(
+                  '$dateStr at ${data['requestedTime'] ?? ''}',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 15),
+                ),
                 const SizedBox(height: 4),
-                Text(data['location'] ?? '',
-                    style: const TextStyle(color: Colors.grey, fontSize: 13)),
+                Text(
+                  data['location'] ?? '',
+                  style: const TextStyle(color: Colors.grey, fontSize: 13),
+                ),
               ],
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
               color: Colors.orange.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Text('Pending',
-                style: TextStyle(
-                    color: Colors.orange,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600)),
+            child: const Text(
+              'Pending',
+              style: TextStyle(
+                color: Colors.orange,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
         ],
       ),
@@ -415,7 +943,8 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border(left: BorderSide(color: Colors.red.shade400, width: 4)),
+        border: Border(
+            left: BorderSide(color: Colors.red.shade400, width: 4)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -428,13 +957,17 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('$dateStr at ${data['requestedTime'] ?? ''}',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15)),
+                    Text(
+                      '$dateStr at ${data['requestedTime'] ?? ''}',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
                     const SizedBox(height: 4),
-                    Text(data['location'] ?? '',
-                        style: const TextStyle(
-                            color: Colors.grey, fontSize: 13)),
+                    Text(
+                      data['location'] ?? '',
+                      style: const TextStyle(
+                          color: Colors.grey, fontSize: 13),
+                    ),
                   ],
                 ),
               ),
@@ -442,7 +975,12 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
                 icon: const Icon(Icons.close, size: 20),
                 color: Colors.grey.shade500,
                 tooltip: 'Dismiss',
-                onPressed: () => _dismissDeclined(docId),
+                onPressed: () async {
+                  await FirebaseFirestore.instance
+                      .collection('appointment_requests')
+                      .doc(docId)
+                      .update({'patientDismissed': true});
+                },
               ),
             ],
           ),
@@ -453,394 +991,79 @@ class _PatientAppointmentsScreenState extends State<PatientAppointmentsScreen> {
             decoration: BoxDecoration(
               color: Colors.red.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.red.withValues(alpha: 0.2)),
+              border: Border.all(
+                  color: Colors.red.withValues(alpha: 0.2)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Reason:',
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.red)),
+                const Text(
+                  'Reason:',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.red,
+                  ),
+                ),
                 const SizedBox(height: 4),
-                Text(reason,
-                    style: const TextStyle(
-                        fontSize: 14, color: Color(0xFF1A1A2E))),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _appointmentCard(Appointment appointment) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.calendar_today,
-              color: Color(0xFF1E3A8A), size: 28),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
                 Text(
-                  '${DateFormat('MMM d, yyyy').format(appointment.dateTime)} at ${DateFormat('h:mm a').format(appointment.dateTime)}',
+                  reason,
                   style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16),
+                      fontSize: 14, color: Color(0xFF1A1A2E)),
                 ),
-                Text(appointment.location,
-                    style: const TextStyle(color: Colors.grey)),
               ],
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: appointment.status == 'Scheduled'
-                  ? const Color(0xFF10B981).withValues(alpha: 0.1)
-                  : Colors.orange.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(appointment.status,
-                style: TextStyle(
-                  color: appointment.status == 'Scheduled'
-                      ? Colors.green
-                      : Colors.orange,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                )),
           ),
         ],
       ),
     );
   }
-}
 
-// ================================================================
-// SLOT PICKER DIALOG
-// ================================================================
-class _SlotPickerDialog extends StatefulWidget {
-  final String chwId;
-  final ChwAvailability availability;
-  final void Function(DateTime chosenSlot) onSubmit;
-
-  const _SlotPickerDialog({
-    required this.chwId,
-    required this.availability,
-    required this.onSubmit,
-  });
-
-  @override
-  State<_SlotPickerDialog> createState() => _SlotPickerDialogState();
-}
-
-class _SlotPickerDialogState extends State<_SlotPickerDialog> {
-  late DateTime _selectedDate;
-  List<BookableSlot> _slots = [];
-  BookableSlot? _selectedSlot;
-  bool _isLoadingSlots = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedDate = _nextBookableDate(DateTime.now());
-    _loadSlotsForDate(_selectedDate);
-  }
-
-  DateTime _nextBookableDate(DateTime from) {
-    var d = DateTime(from.year, from.month, from.day);
-    for (int i = 0; i < 60; i++) {
-      if (!widget.availability.isExceptionDate(d)) {
-        final key = _dayKey(d.weekday);
-        if ((widget.availability.weekly[key] ?? []).isNotEmpty) {
-          return d;
-        }
-      }
-      d = d.add(const Duration(days: 1));
-    }
-    return DateTime(from.year, from.month, from.day);
-  }
-
-  Future<void> _loadSlotsForDate(DateTime date) async {
-    setState(() {
-      _isLoadingSlots = true;
-      _selectedSlot = null;
-    });
-    final slots = await SlotService().computeSlotsForDate(
-      chwId: widget.chwId,
-      date: date,
-      availability: widget.availability,
-    );
-    if (mounted) {
-      setState(() {
-        _slots = slots;
-        _isLoadingSlots = false;
-      });
-    }
-  }
-
-  bool _isDateOpen(DateTime date) {
-    if (widget.availability.isExceptionDate(date)) return false;
-    final key = _dayKey(date.weekday);
-    return (widget.availability.weekly[key] ?? []).isNotEmpty;
-  }
-
-  String _dayKey(int weekday) {
-    switch (weekday) {
-      case DateTime.monday:
-        return 'mon';
-      case DateTime.tuesday:
-        return 'tue';
-      case DateTime.wednesday:
-        return 'wed';
-      case DateTime.thursday:
-        return 'thu';
-      case DateTime.friday:
-        return 'fri';
-      case DateTime.saturday:
-        return 'sat';
-      case DateTime.sunday:
-        return 'sun';
+  // ============================================================
+  // HELPERS
+  // ============================================================
+  Color _statusColor(String status) {
+    switch (status) {
+      case 'Completed':
+        return const Color(0xFF10B981);
+      case 'Missed':
+        return const Color(0xFFEF4444);
+      case 'Cancelled':
+        return Colors.grey;
+      case 'EnRoute':
+        return const Color(0xFF3B82F6);
+      case 'InProgress':
+        return const Color(0xFFF59E0B);
       default:
-        return 'mon';
+        return const Color(0xFF1E3A8A);
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      insetPadding: const EdgeInsets.all(20),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        constraints: const BoxConstraints(maxHeight: 650),
-        width: double.infinity,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Request Appointment',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF1A1A2E))),
-            const SizedBox(height: 4),
-            Text('Pick an available slot below',
-                style: TextStyle(color: Colors.grey.shade600, fontSize: 13)),
-            const SizedBox(height: 16),
-
-            _buildCalendar(),
-            const SizedBox(height: 16),
-
-            Text(
-              'Available slots on ${DateFormat('EEE, MMM d').format(_selectedDate)}',
-              style: const TextStyle(
-                  fontWeight: FontWeight.w600, fontSize: 14),
-            ),
-            const SizedBox(height: 8),
-            Expanded(child: _buildSlotsList()),
-
-            const SizedBox(height: 12),
-
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey.shade200,
-                      foregroundColor: Colors.black87,
-                      elevation: 0,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                    ),
-                    child: const Text('Cancel'),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _selectedSlot == null
-                        ? null
-                        : () => widget.onSubmit(_selectedSlot!.start),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1E3A8A),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                    ),
-                    child: const Text('Request Slot'),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+  IconData _statusIcon(String status) {
+    switch (status) {
+      case 'Completed':
+        return Icons.check_circle;
+      case 'Missed':
+        return Icons.cancel;
+      case 'Cancelled':
+        return Icons.block;
+      case 'EnRoute':
+        return Icons.directions_walk;
+      case 'InProgress':
+        return Icons.hourglass_top;
+      default:
+        return Icons.calendar_today;
+    }
   }
 
-  Widget _buildCalendar() {
-    final today = DateTime.now();
-    return SizedBox(
-      height: 80,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 30,
-        itemBuilder: (context, i) {
-          final date = DateTime(today.year, today.month, today.day)
-              .add(Duration(days: i));
-          final isOpen = _isDateOpen(date);
-          final isSelected = date.year == _selectedDate.year &&
-              date.month == _selectedDate.month &&
-              date.day == _selectedDate.day;
-
-          return GestureDetector(
-            onTap: isOpen
-                ? () {
-                    setState(() => _selectedDate = date);
-                    _loadSlotsForDate(date);
-                  }
-                : null,
-            child: Container(
-              width: 60,
-              margin: const EdgeInsets.only(right: 8),
-              decoration: BoxDecoration(
-                color: isSelected
-                    ? const Color(0xFF1E3A8A)
-                    : isOpen
-                        ? Colors.white
-                        : Colors.grey.shade200,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: isSelected
-                      ? const Color(0xFF1E3A8A)
-                      : Colors.grey.shade300,
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    DateFormat('EEE').format(date),
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: isSelected
-                          ? Colors.white70
-                          : Colors.grey.shade700,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '${date.day}',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: isSelected
-                          ? Colors.white
-                          : isOpen
-                              ? const Color(0xFF1A1A2E)
-                              : Colors.grey.shade500,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    DateFormat('MMM').format(date),
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: isSelected
-                          ? Colors.white70
-                          : Colors.grey.shade600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildSlotsList() {
-    if (_isLoadingSlots) {
-      return const Center(child: CircularProgressIndicator());
+  String _statusLabel(String status) {
+    switch (status) {
+      case 'EnRoute':
+        return 'CHW En Route';
+      case 'InProgress':
+        return 'In Progress';
+      default:
+        return status;
     }
-
-    if (_slots.isEmpty) {
-      return Center(
-        child: Text(
-          'No slots available on this day.',
-          style: TextStyle(color: Colors.grey.shade600),
-        ),
-      );
-    }
-
-    return ListView.builder(
-      itemCount: _slots.length,
-      itemBuilder: (context, i) {
-        final slot = _slots[i];
-        final isSelected = _selectedSlot?.start == slot.start;
-
-        return Opacity(
-          opacity: slot.isTaken ? 0.4 : 1.0,
-          child: GestureDetector(
-            onTap: slot.isTaken
-                ? null
-                : () => setState(() => _selectedSlot = slot),
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-              decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF1E3A8A) : Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: isSelected
-                      ? const Color(0xFF1E3A8A)
-                      : Colors.grey.shade300,
-                ),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    isSelected
-                        ? Icons.radio_button_checked
-                        : Icons.radio_button_off,
-                    color: isSelected
-                        ? Colors.white
-                        : const Color(0xFF1E3A8A),
-                    size: 20,
-                  ),
-                  const SizedBox(width: 12),
-                  Text(
-                    slot.label,
-                    style: TextStyle(
-                      color:
-                          isSelected ? Colors.white : const Color(0xFF1A1A2E),
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const Spacer(),
-                  if (slot.isTaken)
-                    const Text('Booked',
-                        style: TextStyle(color: Colors.grey, fontSize: 12)),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
   }
 }

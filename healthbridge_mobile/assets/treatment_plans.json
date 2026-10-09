@@ -277,6 +277,393 @@
         }
       },
       "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 9, Section 9.2.2"
+    },
+
+    "B20": {
+      "icd10Code": "B20",
+      "conditionName": "Human immunodeficiency virus (HIV) disease",
+      "overview": "HIV is a retrovirus that attacks the immune system, specifically CD4 lymphocytes. Without treatment it progressively destroys immunity, leading to opportunistic infections and AIDS. With effective antiretroviral therapy (ART), people living with HIV can achieve near-normal life expectancy. All PLHIV are eligible for ART, regardless of CD4 count or WHO stage.",
+      "isChronic": true,
+      "durationWeeks": 0,
+      "treatmentDurationText": "Lifelong antiretroviral therapy",
+      "phases": [
+        "Diagnosis — confirm with 2 rapid tests from different manufacturers; do CD4 count and WHO staging",
+        "ART initiation — start TLD as soon as feasible, ideally same-day if patient is ready",
+        "Monitoring — VL at 3 & 10 months, then annually if suppressed",
+        "Long-term care — continued adherence support and viral suppression"
+      ],
+      "medications": [
+        {
+          "name": "Tenofovir + Lamivudine + Dolutegravir (TLD)",
+          "dosage": "TDF 300 mg + 3TC 300 mg + DTG 50 mg (single tablet)",
+          "frequency": "Once daily",
+          "duration": "Lifelong",
+          "phase": "First-line ART — Treatment-naïve patients ≥30 kg and ≥10 years",
+          "notes": "The preferred first-line regimen for all adults including women of child-bearing potential. Check creatinine before starting TDF — avoid TDF if eGFR <50 mL/min. If HBsAg positive, TDF must form part of the regimen.",
+          "isClinical": false
+        },
+        {
+          "name": "TDF + Emtricitabine + Efavirenz (TEE)",
+          "dosage": "TDF 300 mg + FTC 200 mg + EFV 600 mg",
+          "frequency": "Once daily at night",
+          "duration": "Ongoing",
+          "phase": "Alternative first-line — patients on rifampicin-based TB treatment who cannot use DTG",
+          "notes": "Used when patient is on rifampicin-based TB treatment and cannot double-dose DTG, or has DTG intolerance/contraindication.",
+          "isClinical": true
+        },
+        {
+          "name": "TDF + 3TC + DTG (with double-dose DTG)",
+          "dosage": "TDF 300 mg + 3TC 300 mg + DTG 50 mg twice daily",
+          "frequency": "Twice daily while on rifampicin",
+          "duration": "During TB treatment + 2 weeks after stopping rifampicin",
+          "phase": "Alternative — patients on rifampicin-based TB treatment",
+          "notes": "Rifampicin reduces DTG concentrations. Additional 50 mg DTG dose given 12 hours after the TLD dose. Stop the extra DTG dose 2 weeks after stopping rifampicin.",
+          "isClinical": true
+        },
+        {
+          "name": "TDF + 3TC/FTC + Atazanavir/ritonavir (ATV/r)",
+          "dosage": "ATV 300 mg + ritonavir 100 mg daily",
+          "frequency": "Once daily",
+          "duration": "Ongoing",
+          "phase": "Protease inhibitor-based regimen — contraindications to BOTH EFV and DTG",
+          "notes": "If patient requires rifampicin-based TB treatment, substitute ATV/r with LPV/r at 800/200 mg 12-hourly. Avoid co-administration with proton-pump inhibitors.",
+          "isClinical": true
+        },
+        {
+          "name": "Abacavir + Lamivudine + Dolutegravir (ALD)",
+          "dosage": "ABC 600 mg + 3TC 300 mg + DTG 50 mg",
+          "frequency": "Once daily",
+          "duration": "Ongoing",
+          "phase": "Alternative — TDF contraindication (eGFR <50 mL/min), no chronic hepatitis B",
+          "notes": "If chronic hepatitis B coinfection AND eGFR 30-50 mL/min, use TAF + FTC + DTG instead. ABC can cause hypersensitivity reactions — if suspected, consult expert.",
+          "isClinical": true
+        },
+        {
+          "name": "Zidovudine + Lamivudine + Dolutegravir",
+          "dosage": "AZT 300 mg + 3TC 150 mg (twice daily) + DTG 50 mg daily",
+          "frequency": "AZT/3TC twice daily; DTG once daily",
+          "duration": "Ongoing",
+          "phase": "Alternative — intolerance to TDF/TAF and ABC",
+          "notes": "Monitor FBC at months 1 and 3 for AZT-related anaemia. AZT dose adjusted in renal impairment.",
+          "isClinical": true
+        },
+        {
+          "name": "Cotrimoxazole (OI prophylaxis)",
+          "dosage": "160/800 mg",
+          "frequency": "Once daily",
+          "duration": "Until CD4 >200 cells/mm³ on ART",
+          "phase": "Prophylaxis — additional to ART",
+          "notes": "Indicated for WHO stage 3/4 or CD4 <200. Stop when CD4 >200. Watch for maculopapular rash — stop and refer if systemic features or mucosal involvement.",
+          "isClinical": false
+        },
+        {
+          "name": "Isoniazid (TB Preventive Therapy)",
+          "dosage": "300 mg",
+          "frequency": "Once daily",
+          "duration": "12 months",
+          "phase": "TB Preventive Therapy (TPT) — additional to ART",
+          "notes": "Give to all adult PLHIV who don't have active TB, liver disease, or prior MDR/XDR-TB. Exclude TB first. Add pyridoxine 25 mg daily. Follow up monthly for first 3 months. Educate on hepatotoxicity symptoms. Defer in pregnancy until after delivery.",
+          "isClinical": false
+        },
+        {
+          "name": "Pyridoxine (Vitamin B6)",
+          "dosage": "25 mg",
+          "frequency": "Once daily",
+          "duration": "Full duration of TPT regimen",
+          "phase": "TPT adjunct",
+          "notes": "Prevents isoniazid-induced peripheral neuropathy.",
+          "isClinical": false
+        }
+      ],
+      "lifestyleAdvice": [
+        "Take your ART at the same time every day — adherence is essential for viral suppression",
+        "Never skip doses — resistance develops quickly from missed doses",
+        "Use condoms during sexual intercourse to prevent transmission and STIs",
+        "Disclose your HIV status to someone who can be your treatment supporter",
+        "Join a support or peer group for people living with HIV",
+        "Seek early treatment for any sexually transmitted infection",
+        "Inform all sexual partners so they can be tested and treated",
+        "Eat a balanced diet and maintain a healthy weight",
+        "Exercise regularly to support immune function",
+        "Stop smoking and limit alcohol — both weaken the immune system",
+        "Get your flu vaccine annually",
+        "Attend every clinic appointment — do not run out of medication",
+        "If you have TB symptoms (cough, fever, night sweats, weight loss), report them immediately"
+      ],
+      "monitoring": {
+        "baseline": [
+          "WHO clinical staging",
+          "CD4 count",
+          "If CD4 <200: cryptococcal antigen (CrAg) test — do LP if positive",
+          "If CD4 <200: initiate cotrimoxazole prophylaxis",
+          "Screen for pregnancy (or ask if planning to conceive)",
+          "Screen for mental health, STIs, and non-communicable diseases",
+          "Screen for TB using WHO questionnaire (cough, fever, night sweats, weight loss)",
+          "Sputum TB-NAAT (GeneXpert Ultra MTB/RIF)",
+          "Urine LAM for inpatients or outpatients with CD4 <200 / advanced HIV",
+          "If planning TDF: serum creatinine (avoid TDF if eGFR <50 mL/min)",
+          "Haemoglobin",
+          "HBsAg (if positive, TDF must form part of regimen)",
+          "Cervical cancer screening"
+        ],
+        "onART": [
+          "Viral load at 3 and 10 months after ART initiation, then every 12 months if virologically suppressed",
+          "CD4 at 10 months; stop once CD4 >200 AND virologically suppressed",
+          "If on TDF: creatinine at month 3, month 10, then annually",
+          "If on AZT: FBC and differential at 1 and 3 months",
+          "If on protease inhibitor: cholesterol and triglycerides at month 3",
+          "ALT if symptoms of hepatitis develop",
+          "Weight, blood pressure, adherence check at every visit"
+        ]
+      },
+      "followUpSchedule": "Viral load at 3 and 10 months after ART initiation and every 12 months thereafter if virologically suppressed. Clinical review at every script refill.",
+      "warningSigns": [
+        "New or worsening cough lasting more than 2 weeks (possible TB)",
+        "Fever with night sweats and weight loss",
+        "Severe headache with neck stiffness (possible meningitis)",
+        "Difficulty swallowing or painful swallowing (possible oesophageal candidiasis)",
+        "Blurred vision or sudden vision changes",
+        "Confusion, seizures, or altered level of consciousness",
+        "Severe diarrhoea lasting more than 2 weeks",
+        "Shortness of breath at rest",
+        "New skin lesions, especially purple or dark patches (possible Kaposi's sarcoma)",
+        "Persistent mouth sores or oral thrush not responding to treatment"
+      ],
+      "referralCriteria": [
+        "Dolutegravir resistance demonstrated on resistance testing",
+        "Suspected cryptococcal meningitis",
+        "TB meningitis (defer ART for 8 weeks)",
+        "Cryptococcal meningitis (defer ART for 4-6 weeks after starting antifungals)",
+        "Virological failure on TLD >2 years with 2 consecutive VL ≥1000 copies/mL",
+        "Suspected IRIS (Immune Reconstitution Inflammatory Syndrome)",
+        "Renal impairment (eGFR <30 mL/min) requiring specialist care",
+        "Pregnancy planning or confirmed pregnancy",
+        "Chronic hepatitis B coinfection on TDF — do not stop TDF without specialist advice",
+        "Severe adverse drug reactions (e.g. abacavir hypersensitivity, AZT-related severe anaemia)"
+      ],
+      "emergencyProtocol": {
+        "trigger": "New severe symptoms in an HIV+ patient — especially fever + neck stiffness, altered consciousness, or severe dyspnoea",
+        "immediateAction": "Assess ABCDE. If signs of meningitis (fever + neck stiffness + headache): refer urgently for LP and CSF CrAg. If suspected IRIS: assess severity, do not stop ART, refer to infectious disease specialist.",
+        "outcome": "Most HIV-related emergencies need hospital referral. Do not delay transfer."
+      },
+      "specialCases": [
+        {
+          "case": "Pregnancy or breastfeeding",
+          "note": "Initiate ART immediately with TLD if no contraindication. See Section 6.8 for pregnancy-specific ART."
+        },
+        {
+          "case": "TB co-infection (non-meningitis)",
+          "note": "Start TB treatment first. Add ART based on CD4: <50 = start within 2 weeks; ≥50 = defer until 8 weeks. Watch for IRIS."
+        },
+        {
+          "case": "TB meningitis co-infection",
+          "note": "Defer ART for 8 weeks after starting TB treatment regardless of CD4 count. Earlier initiation increases risk of death from IRIS."
+        },
+        {
+          "case": "Cryptococcal meningitis co-infection",
+          "note": "Defer ART for 4-6 weeks after starting antifungal therapy. Earlier initiation increases mortality."
+        },
+        {
+          "case": "Asymptomatic cryptococcosis (CrAg+ but CSF-)",
+          "note": "Start ART immediately — no delay needed. Treat cryptococcosis with fluconazole as per protocol."
+        },
+        {
+          "case": "Chronic hepatitis B coinfection",
+          "note": "TDF must form part of the ART regimen. Do not stop TDF without specialist advice — risk of fatal hepatitis flare."
+        },
+        {
+          "case": "Patient not ready to start ART immediately",
+          "note": "Counsel about benefits and risks. Repeat CD4 count every 6 months until ART can be initiated."
+        },
+        {
+          "case": "Drug interactions with DTG",
+          "note": "Polyvalent cations (antacids, iron, calcium, zinc) — take DTG 6 hours before or 2 hours after. Metformin — monitor renal function. Carbamazepine/phenytoin/phenobarbital — avoid or double DTG dose."
+        }
+      ],
+      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 11, Section 11.1 (Antiretroviral therapy, adults and adolescents)"
+    },
+
+    "Z21": {
+      "icd10Code": "Z21",
+      "conditionName": "Asymptomatic HIV infection status",
+      "overview": "A patient who has tested HIV-positive but has no current symptoms of HIV disease (WHO clinical stage 1). Despite being asymptomatic, ART should be initiated as soon as feasible — early treatment prevents disease progression, reduces transmission, and improves long-term outcomes. All PLHIV are eligible for ART regardless of CD4 count.",
+      "isChronic": true,
+      "durationWeeks": 0,
+      "treatmentDurationText": "Lifelong antiretroviral therapy",
+      "phases": [
+        "Confirm HIV-positive status — do CD4 count and baseline investigations",
+        "Start ART as soon as feasible — same-day initiation if patient is ready",
+        "Monitor viral load — target undetectable (<50 copies/mL)",
+        "Lifelong adherence support"
+      ],
+      "medications": [
+        {
+          "name": "Tenofovir + Lamivudine + Dolutegravir (TLD)",
+          "dosage": "TDF 300 mg + 3TC 300 mg + DTG 50 mg",
+          "frequency": "Once daily",
+          "duration": "Lifelong",
+          "phase": "First-line ART",
+          "notes": "Same first-line regimen as for symptomatic HIV. Preferred for all adults including women of child-bearing potential.",
+          "isClinical": false
+        },
+        {
+          "name": "Cotrimoxazole (prophylaxis — if indicated)",
+          "dosage": "160/800 mg",
+          "frequency": "Once daily",
+          "duration": "Until CD4 >200 cells/mm³ on ART",
+          "phase": "Prophylaxis",
+          "notes": "Only if CD4 <200 cells/mm³ or WHO stage 3/4. Asymptomatic patients with CD4 >200 do not require this.",
+          "isClinical": false
+        }
+      ],
+      "lifestyleAdvice": [
+        "Take your ART every day at the same time — even when you feel healthy",
+        "Use condoms during sexual intercourse to prevent transmission and STIs",
+        "Inform your sexual partners so they can be tested",
+        "Disclose your status to a trusted person for support",
+        "Attend every clinic appointment — do not miss doses or script refills",
+        "Maintain a healthy lifestyle — balanced diet, regular exercise, no smoking",
+        "Avoid alcohol excess — it affects adherence and liver health",
+        "Get your annual flu vaccine",
+        "Report any new symptoms to your CHW or clinic promptly",
+        "Join a support group for people living with HIV"
+      ],
+      "monitoring": {
+        "baseline": [
+          "Confirm HIV-positive status with 2 rapid tests (different manufacturers)",
+          "CD4 count",
+          "WHO clinical staging",
+          "Screen for TB (cough, fever, night sweats, weight loss)",
+          "Sputum TB-NAAT",
+          "Serum creatinine (before TDF)",
+          "HBsAg",
+          "Screen for pregnancy",
+          "Screen for mental health, STIs, NCDs"
+        ],
+        "onART": [
+          "Viral load at 3 and 10 months, then annually if suppressed",
+          "CD4 at 10 months (stop if >200 and suppressed)",
+          "Creatinine (if on TDF) at month 3, month 10, then annually",
+          "Weight, blood pressure, adherence check at every visit"
+        ]
+      },
+      "followUpSchedule": "Same as for symptomatic HIV — VL at 3 and 10 months after ART initiation, then annually if suppressed. Clinical review at each script refill.",
+      "warningSigns": [
+        "Any new symptom that could indicate HIV progression — weight loss, chronic diarrhoea, persistent fever",
+        "New cough lasting >2 weeks (possible TB)",
+        "Oral thrush or difficulty swallowing",
+        "Skin rash or lesions",
+        "Swollen glands lasting more than a few weeks"
+      ],
+      "referralCriteria": [
+        "Same as for symptomatic HIV",
+        "Any new symptoms suggesting WHO stage 2, 3, or 4 progression",
+        "Virological failure on first-line ART",
+        "Pregnancy planning (refer for preconception ART review)"
+      ],
+      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 11, Section 11.1 (Antiretroviral therapy, adults and adolescents)"
+    },
+
+    "Z29.2": {
+      "icd10Code": "Z29.2",
+      "conditionName": "HIV prophylaxis (cotrimoxazole and TB preventive therapy)",
+      "overview": "Preventive treatment for people living with HIV to reduce the risk of opportunistic infections. Includes cotrimoxazole prophylaxis (against Pneumocystis pneumonia, toxoplasmosis, and bacterial infections) and TB Preventive Therapy (TPT) with isoniazid. Both are given alongside ART for eligible patients.",
+      "isChronic": true,
+      "durationWeeks": 0,
+      "treatmentDurationText": "Varies — cotrimoxazole until CD4 >200; TPT for 12 months",
+      "phases": [
+        "Initiation — after excluding active infections",
+        "Maintenance — continued prophylaxis",
+        "Discontinuation — when criteria met"
+      ],
+      "medications": [
+        {
+          "name": "Cotrimoxazole",
+          "dosage": "160/800 mg (double-strength tablet)",
+          "frequency": "Once daily",
+          "duration": "Until CD4 >200 cells/mm³ on ART",
+          "phase": "OI prophylaxis",
+          "notes": "Indicated for WHO Clinical stage 3 or 4, or CD4 <200 cells/mm³. Once CD4 >200, discontinue. If CD4 was >200 when commenced (e.g. TB), continue for 6 months. Watch for maculopapular rash — stop immediately and refer if systemic features or mucosal involvement occur.",
+          "isClinical": false
+        },
+        {
+          "name": "Isoniazid (INH)",
+          "dosage": "300 mg",
+          "frequency": "Once daily",
+          "duration": "12 months",
+          "phase": "TB Preventive Therapy (TPT)",
+          "notes": "Give to all adult PLHIV at any CD4 count and any ART status. Exclude active TB first. Exclusions: suspected/confirmed TB, liver disease, prior MDR/XDR-TB, painful peripheral neuropathy, alcohol use disorder. For patients on a DTG-based ART regimen, isoniazid daily for 12 months is preferred.",
+          "isClinical": false
+        },
+        {
+          "name": "Pyridoxine (Vitamin B6)",
+          "dosage": "25 mg",
+          "frequency": "Once daily",
+          "duration": "Full duration of TPT regimen",
+          "phase": "TPT adjunct",
+          "notes": "Prevents isoniazid-induced peripheral neuropathy. Counsel patient to report any tingling or numbness.",
+          "isClinical": false
+        }
+      ],
+      "lifestyleAdvice": [
+        "Take your prophylaxis every day at the same time as your ART",
+        "Do not stop cotrimoxazole or isoniazid without telling your clinic",
+        "Report any new rash, tingling in hands/feet, or yellow eyes to your CHW immediately",
+        "If you have any TB symptoms (cough, fever, night sweats, weight loss), report them before starting TPT",
+        "Continue all your HIV care — prophylaxis is additional, not a replacement",
+        "Attend monthly check-ups for the first 3 months of TPT"
+      ],
+      "monitoring": {
+        "everyVisit": [
+          "Check for rash (cotrimoxazole hypersensitivity)",
+          "Ask about tingling or numbness in hands/feet (isoniazid neuropathy)",
+          "Ask about nausea, vomiting, yellow eyes, brown urine, RUQ pain (isoniazid hepatotoxicity)",
+          "Confirm adherence"
+        ],
+        "baseline": [
+          "Exclude active TB before starting TPT",
+          "Screen for liver disease",
+          "Confirm no history of MDR/XDR-TB",
+          "Check for painful peripheral neuropathy",
+          "Ask about alcohol use"
+        ]
+      },
+      "followUpSchedule": "Cotrimoxazole: continue until CD4 >200; review at each ART visit. TPT: monthly follow-up for first 3 months, then routine; complete the full 12-month course.",
+      "warningSigns": [
+        "New rash — especially with fever, mucosal involvement, or facial swelling (cotrimoxazole hypersensitivity)",
+        "Tingling or numbness in hands or feet (isoniazid neuropathy)",
+        "Nausea, vomiting, or loss of appetite (isoniazid hepatotoxicity)",
+        "Yellow eyes or skin (jaundice)",
+        "Dark brown urine",
+        "Pain in the right upper abdomen (liver)",
+        "Any TB symptom appearing while on prophylaxis"
+      ],
+      "referralCriteria": [
+        "Severe cotrimoxazole hypersensitivity (rash with systemic features or mucosal involvement)",
+        "Suspected isoniazid hepatotoxicity",
+        "Severe peripheral neuropathy despite pyridoxine",
+        "Active TB develops during prophylaxis",
+        "Pregnancy (defer TPT until after delivery)"
+      ],
+      "specialCases": [
+        {
+          "case": "Pregnancy",
+          "note": "Defer TPT until after delivery. Continue routine TB screening at every antenatal visit."
+        },
+        {
+          "case": "Patient on protease inhibitor-based ART",
+          "note": "Do NOT use rifapentine-containing 3HP regimen. Use daily isoniazid for 12 months."
+        },
+        {
+          "case": "Woman on hormonal contraceptives",
+          "note": "Do NOT use rifapentine-containing 3HP regimen — reduces contraceptive efficacy."
+        },
+        {
+          "case": "Patient with prior MDR/XDR-TB",
+          "note": "Exclude from TPT. Continue routine TB screening."
+        }
+      ],
+      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 11, Sections 11.2.1 and 11.2.2"
     }
   }
 }

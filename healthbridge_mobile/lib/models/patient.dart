@@ -5,7 +5,8 @@ class Patient {
   final String phone;
   final String address;
   final String condition;      // Human-readable condition name
-  final String? icd10Code;     // NEW — e.g. "I10", "E11.9"
+  final String? icd10Code;     // e.g. "I10", "E11.9"
+  final String saIdNumber;     // NEW — South African ID number (13 digits)
   final String status;         // 'Stable', 'Needs Follow-up', 'Critical'
   final String notes;
   final String assignedChwId;
@@ -19,6 +20,7 @@ class Patient {
     required this.address,
     required this.condition,
     this.icd10Code,
+    this.saIdNumber = '',      // NEW — defaults to empty string
     required this.status,
     required this.notes,
     required this.assignedChwId,
@@ -34,6 +36,7 @@ class Patient {
       'address': address,
       'condition': condition,
       'icd10Code': icd10Code,
+      'saIdNumber': saIdNumber,
       'status': status,
       'notes': notes,
       'assignedChwId': assignedChwId,
@@ -50,6 +53,7 @@ class Patient {
       address: map['address'] ?? '',
       condition: map['condition'] ?? '',
       icd10Code: map['icd10Code'],
+      saIdNumber: map['saIdNumber'] ?? '',
       status: map['status'] ?? 'Stable',
       notes: map['notes'] ?? '',
       assignedChwId: map['assignedChwId'] ?? '',

@@ -178,7 +178,7 @@
           "frequency": "Once daily with breakfast",
           "duration": "Ongoing",
           "phase": "Step 2",
-          "notes": "Preferred sulphonylurea in the elderly. Only add if HbA1c > 8% despite 2–3 months of maximal metformin. Missing meals may cause hypoglycaemia.",
+          "notes": "Preferred sulphonylurea in the elderly. Only add if HbA1c > 8% despite 2–3 months of maximal metformin.",
           "isClinical": false
         },
         {
@@ -187,21 +187,20 @@
           "frequency": "Evening before bed (not after 22:00)",
           "duration": "Ongoing",
           "phase": "Step 3",
-          "notes": "Doctor-initiated. If 10 units ineffective, increase gradually to 20 units (2–4 unit increase per week). Continue metformin; STOP sulphonylurea when insulin is initiated.",
+          "notes": "Doctor-initiated. STOP sulphonylurea when insulin is initiated.",
           "isClinical": true
         }
       ],
       "lifestyleAdvice": [
         "Regular, evenly-spaced meals with small portions",
-        "Nutritionally balanced meals — one protein, one starch, two vegetables, one fruit, water",
+        "Nutritionally balanced meals",
         "Strict carbohydrate control — favour whole grains, legumes, vegetables",
-        "Discourage processed/refined carbs (takeaways, cakes, white bread, sugary drinks)",
-        "Aim for 5 servings of fruit/vegetables per day; limit fruit to 2 servings/day",
+        "Discourage processed/refined carbs",
+        "Aim for 5 servings of fruit/vegetables per day",
         "Prefer fat-free or low-fat dairy",
-        "Eat oily fish (sardines, pilchards) 2–3 times per week",
+        "Eat oily fish 2–3 times per week",
         "Salt: do not exceed half a teaspoon per day",
         "Increased physical activity — 30 minutes, 5 times a week",
-        "Appropriate weight loss if overweight",
         "Stop smoking; limit alcohol",
         "Foot care education — inspect feet daily",
         "Wear a medical notification bracelet"
@@ -213,28 +212,24 @@
         "hardCheeseOrPeanutButter": "Length of your thumb (1 tablespoon)"
       },
       "monitoring": {
-        "everyVisit": [
-          "Finger-prick blood glucose",
-          "Weight",
-          "Blood pressure"
-        ],
+        "everyVisit": ["Finger-prick blood glucose", "Weight", "Blood pressure"],
         "baseline": [
           "Serum creatinine and eGFR",
           "Urine protein by dipstix",
           "BMI",
           "Blood lipids",
           "Foot examination",
-          "Eye examination for retinopathy"
+          "Eye examination"
         ],
         "annually": [
           "Serum creatinine and eGFR",
           "Urine protein by dipstix",
-          "HbA1c (every 3–6 months while therapy changes)",
+          "HbA1c (3–6 monthly while therapy changes)",
           "Eye examination",
           "Foot examination"
         ]
       },
-      "followUpSchedule": "Review monthly until stable. Once at target, review every 3–6 months. HbA1c every 3–6 months while therapy changes. Annual comprehensive review.",
+      "followUpSchedule": "Review monthly until stable. Once at target, review every 3–6 months. Annual comprehensive review.",
       "warningSigns": [
         "Blood glucose < 4 mmol/L (hypoglycaemia) — treat immediately",
         "Altered level of consciousness",
@@ -258,7 +253,7 @@
         "Progressive loss of vision"
       ],
       "emergencyProtocol": {
-        "trigger": "Altered level of consciousness, acidotic breathing, dehydration, ketonuria, or glucose > 25 mmol/L",
+        "trigger": "Altered consciousness, acidotic breathing, dehydration, ketonuria, or glucose > 25 mmol/L",
         "classification": [
           { "type": "DKA", "glucose": "≥ 11.1 mmol/L", "ketones": "Positive, often > 1+" },
           { "type": "HHS", "glucose": "Usually > 40 mmol/L", "ketones": "Usually negative" },
@@ -266,7 +261,7 @@
         ],
         "immediateAction": "Check blood glucose and test urine for ketones. If diagnosis uncertain, treat as hypoglycaemia and refer urgently.",
         "hypoglycaemiaTreatment": {
-          "conscious": "Sweets, sugar, glucose by mouth, OR oral sugar solution (3 tsp sugar in 200 mL water)",
+          "conscious": "Sweets, sugar, glucose by mouth, OR oral sugar solution",
           "unconscious": "Dextrose 10% IV, 2–5 mL/kg. Re-check glucose 10–15 min later."
         }
       },
@@ -276,15 +271,15 @@
     "B20": {
       "icd10Code": "B20",
       "conditionName": "Human immunodeficiency virus (HIV) disease",
-      "overview": "HIV is a retrovirus that attacks the immune system, specifically CD4 lymphocytes. Without treatment it progressively destroys immunity, leading to opportunistic infections and AIDS. With effective antiretroviral therapy (ART), people living with HIV can achieve near-normal life expectancy. All PLHIV are eligible for ART, regardless of CD4 count or WHO stage.",
+      "overview": "HIV is a retrovirus that attacks the immune system, specifically CD4 lymphocytes. Without treatment it progressively destroys immunity, leading to opportunistic infections and AIDS. All PLHIV are eligible for ART, regardless of CD4 count or WHO stage.",
       "isChronic": true,
       "durationWeeks": 0,
       "treatmentDurationText": "Lifelong antiretroviral therapy",
       "phases": [
-        "Diagnosis — confirm with 2 rapid tests from different manufacturers; do CD4 count and WHO staging",
-        "ART initiation — start TLD as soon as feasible, ideally same-day if patient is ready",
+        "Diagnosis — confirm with 2 rapid tests; do CD4 count and WHO staging",
+        "ART initiation — start TLD as soon as feasible",
         "Monitoring — VL at 3 & 10 months, then annually if suppressed",
-        "Long-term care — continued adherence support and viral suppression"
+        "Long-term care"
       ],
       "medications": [
         {
@@ -293,7 +288,7 @@
           "frequency": "Once daily",
           "duration": "Lifelong",
           "phase": "First-line ART",
-          "notes": "The preferred first-line regimen for all adults including women of child-bearing potential. Check creatinine before starting TDF — avoid TDF if eGFR <50 mL/min. If HBsAg positive, TDF must form part of the regimen.",
+          "notes": "The preferred first-line regimen for all adults. Avoid TDF if eGFR <50 mL/min. If HBsAg positive, TDF must form part of the regimen.",
           "isClinical": false
         },
         {
@@ -301,8 +296,8 @@
           "dosage": "TDF 300 mg + FTC 200 mg + EFV 600 mg",
           "frequency": "Once daily at night",
           "duration": "Ongoing",
-          "phase": "Alternative first-line — patients on rifampicin-based TB treatment who cannot use DTG",
-          "notes": "Used when patient is on rifampicin-based TB treatment and cannot double-dose DTG, or has DTG intolerance/contraindication.",
+          "phase": "Alternative — patients on rifampicin-based TB treatment who cannot use DTG",
+          "notes": "Used when patient is on rifampicin-based TB treatment and cannot double-dose DTG.",
           "isClinical": true
         },
         {
@@ -311,7 +306,7 @@
           "frequency": "Twice daily while on rifampicin",
           "duration": "During TB treatment + 2 weeks after stopping rifampicin",
           "phase": "Alternative — patients on rifampicin-based TB treatment",
-          "notes": "Rifampicin reduces DTG concentrations. Additional 50 mg DTG dose given 12 hours after the TLD dose.",
+          "notes": "Rifampicin reduces DTG concentrations.",
           "isClinical": true
         },
         {
@@ -319,8 +314,8 @@
           "dosage": "ATV 300 mg + ritonavir 100 mg daily",
           "frequency": "Once daily",
           "duration": "Ongoing",
-          "phase": "Protease inhibitor-based regimen — contraindications to BOTH EFV and DTG",
-          "notes": "If patient requires rifampicin-based TB treatment, substitute ATV/r with LPV/r at 800/200 mg 12-hourly.",
+          "phase": "PI-based regimen — contraindications to BOTH EFV and DTG",
+          "notes": "If rifampicin needed, substitute ATV/r with LPV/r at 800/200 mg 12-hourly.",
           "isClinical": true
         },
         {
@@ -328,8 +323,8 @@
           "dosage": "ABC 600 mg + 3TC 300 mg + DTG 50 mg",
           "frequency": "Once daily",
           "duration": "Ongoing",
-          "phase": "Alternative — TDF contraindication (eGFR <50 mL/min), no chronic hepatitis B",
-          "notes": "If chronic hepatitis B coinfection AND eGFR 30-50 mL/min, use TAF + FTC + DTG instead.",
+          "phase": "Alternative — TDF contraindication, no chronic hepatitis B",
+          "notes": "If chronic hepatitis B coinfection AND eGFR 30-50, use TAF + FTC + DTG.",
           "isClinical": true
         },
         {
@@ -338,7 +333,7 @@
           "frequency": "AZT/3TC twice daily; DTG once daily",
           "duration": "Ongoing",
           "phase": "Alternative — intolerance to TDF/TAF and ABC",
-          "notes": "Monitor FBC at months 1 and 3 for AZT-related anaemia.",
+          "notes": "Monitor FBC at months 1 and 3.",
           "isClinical": true
         },
         {
@@ -346,7 +341,7 @@
           "dosage": "160/800 mg",
           "frequency": "Once daily",
           "duration": "Until CD4 >200 cells/mm³ on ART",
-          "phase": "Prophylaxis — additional to ART",
+          "phase": "Prophylaxis",
           "notes": "Indicated for WHO stage 3/4 or CD4 <200.",
           "isClinical": false
         },
@@ -370,11 +365,11 @@
         }
       ],
       "lifestyleAdvice": [
-        "Take your ART at the same time every day — adherence is essential",
-        "Never skip doses — resistance develops quickly from missed doses",
-        "Use condoms during sexual intercourse to prevent transmission and STIs",
+        "Take your ART at the same time every day",
+        "Never skip doses — resistance develops quickly",
+        "Use condoms during sexual intercourse",
         "Disclose your HIV status to someone who can be your treatment supporter",
-        "Join a support or peer group for people living with HIV",
+        "Join a support or peer group",
         "Eat a balanced diet and maintain a healthy weight",
         "Stop smoking and limit alcohol",
         "Get your flu vaccine annually",
@@ -385,40 +380,40 @@
         "baseline": [
           "WHO clinical staging",
           "CD4 count",
-          "If CD4 <200: cryptococcal antigen (CrAg) test",
+          "If CD4 <200: cryptococcal antigen test",
           "If CD4 <200: initiate cotrimoxazole prophylaxis",
           "Screen for TB",
           "Sputum TB-NAAT",
-          "If planning TDF: serum creatinine",
+          "Serum creatinine (before TDF)",
           "HBsAg",
           "Cervical cancer screening"
         ],
         "onART": [
           "Viral load at 3 and 10 months, then annually if suppressed",
-          "CD4 at 10 months; stop once >200 and suppressed",
+          "CD4 at 10 months",
           "If on TDF: creatinine at month 3, month 10, annually",
           "If on AZT: FBC at 1 and 3 months",
-          "Weight, blood pressure, adherence at every visit"
+          "Weight, BP, adherence at every visit"
         ]
       },
-      "followUpSchedule": "Viral load at 3 and 10 months after ART initiation and annually if suppressed. Clinical review at every script refill.",
+      "followUpSchedule": "VL at 3 and 10 months, then annually if suppressed.",
       "warningSigns": [
-        "New cough lasting more than 2 weeks (possible TB)",
+        "New cough lasting more than 2 weeks",
         "Fever with night sweats and weight loss",
         "Severe headache with neck stiffness",
-        "Difficulty swallowing (possible oesophageal candidiasis)",
-        "Blurred vision or sudden vision changes",
-        "Confusion, seizures, or altered consciousness",
+        "Difficulty swallowing",
+        "Blurred vision",
+        "Confusion, seizures, altered consciousness",
         "Severe diarrhoea lasting more than 2 weeks",
         "Shortness of breath at rest",
-        "New purple or dark skin patches (possible Kaposi's sarcoma)"
+        "New purple or dark skin patches"
       ],
       "referralCriteria": [
-        "Dolutegravir resistance on resistance testing",
+        "Dolutegravir resistance",
         "Suspected cryptococcal meningitis",
         "TB meningitis (defer ART 8 weeks)",
         "Cryptococcal meningitis (defer ART 4-6 weeks)",
-        "Virological failure on TLD >2 years with 2 consecutive VL ≥1000",
+        "Virological failure on TLD",
         "Suspected IRIS",
         "Renal impairment (eGFR <30)",
         "Pregnancy",
@@ -426,27 +421,15 @@
         "Severe adverse drug reactions"
       ],
       "emergencyProtocol": {
-        "trigger": "Fever + neck stiffness, altered consciousness, or severe dyspnoea in an HIV+ patient",
-        "immediateAction": "Assess ABCDE. Refer urgently for LP and CSF CrAg if meningitis signs. If suspected IRIS: assess, do not stop ART, refer.",
+        "trigger": "Fever + neck stiffness, altered consciousness, or severe dyspnoea",
+        "immediateAction": "Assess ABCDE. Refer urgently for LP and CSF CrAg if meningitis signs. Do not stop ART if suspected IRIS.",
         "outcome": "Most HIV-related emergencies need hospital referral."
       },
       "specialCases": [
-        {
-          "case": "Pregnancy or breastfeeding",
-          "note": "Initiate ART immediately with TLD if no contraindication."
-        },
-        {
-          "case": "TB co-infection",
-          "note": "Start TB first. CD4 <50: ART within 2 weeks; CD4 ≥50: defer 8 weeks. Watch for IRIS."
-        },
-        {
-          "case": "TB meningitis",
-          "note": "Defer ART 8 weeks."
-        },
-        {
-          "case": "Cryptococcal meningitis",
-          "note": "Defer ART 4-6 weeks after starting antifungals."
-        }
+        { "case": "Pregnancy or breastfeeding", "note": "Initiate ART immediately with TLD." },
+        { "case": "TB co-infection", "note": "Start TB first. CD4 <50: ART within 2 weeks; CD4 ≥50: defer 8 weeks." },
+        { "case": "TB meningitis", "note": "Defer ART 8 weeks." },
+        { "case": "Cryptococcal meningitis", "note": "Defer ART 4-6 weeks after starting antifungals." }
       ],
       "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 11, Section 11.1"
     },
@@ -454,14 +437,14 @@
     "Z21": {
       "icd10Code": "Z21",
       "conditionName": "Asymptomatic HIV infection status",
-      "overview": "A patient who has tested HIV-positive but has no current symptoms of HIV disease (WHO clinical stage 1). Despite being asymptomatic, ART should be initiated as soon as feasible.",
+      "overview": "A patient who has tested HIV-positive but has no current symptoms (WHO clinical stage 1). ART should be initiated as soon as feasible.",
       "isChronic": true,
       "durationWeeks": 0,
       "treatmentDurationText": "Lifelong antiretroviral therapy",
       "phases": [
-        "Confirm HIV-positive status — do CD4 count and baseline investigations",
+        "Confirm status — CD4 count and baseline investigations",
         "Start ART as soon as feasible",
-        "Monitor viral load — target undetectable",
+        "Monitor viral load",
         "Lifelong adherence support"
       ],
       "medications": [
@@ -475,10 +458,10 @@
           "isClinical": false
         },
         {
-          "name": "Cotrimoxazole (prophylaxis — if indicated)",
+          "name": "Cotrimoxazole (if indicated)",
           "dosage": "160/800 mg",
           "frequency": "Once daily",
-          "duration": "Until CD4 >200 cells/mm³ on ART",
+          "duration": "Until CD4 >200",
           "phase": "Prophylaxis",
           "notes": "Only if CD4 <200 cells/mm³ or WHO stage 3/4.",
           "isClinical": false
@@ -487,40 +470,35 @@
       "lifestyleAdvice": [
         "Take your ART every day at the same time",
         "Use condoms during sexual intercourse",
-        "Inform your sexual partners so they can be tested",
+        "Inform your sexual partners",
         "Attend every clinic appointment",
-        "Maintain a healthy lifestyle",
-        "Get your annual flu vaccine",
-        "Report any new symptoms to your CHW or clinic promptly"
+        "Maintain a healthy lifestyle"
       ],
       "monitoring": {
         "baseline": [
-          "Confirm HIV-positive status with 2 rapid tests",
+          "Confirm HIV status with 2 rapid tests",
           "CD4 count",
           "WHO clinical staging",
           "Screen for TB",
-          "Sputum TB-NAAT",
           "Serum creatinine (before TDF)",
           "HBsAg"
         ],
         "onART": [
-          "Viral load at 3 and 10 months, then annually if suppressed",
-          "CD4 at 10 months (stop if >200 and suppressed)",
-          "Creatinine (if on TDF) at month 3, month 10, annually"
+          "VL at 3 and 10 months, then annually",
+          "CD4 at 10 months",
+          "Creatinine if on TDF"
         ]
       },
-      "followUpSchedule": "Same as for symptomatic HIV — VL at 3 and 10 months, then annually if suppressed.",
+      "followUpSchedule": "VL at 3 and 10 months, then annually if suppressed.",
       "warningSigns": [
         "Weight loss, chronic diarrhoea, persistent fever",
         "New cough lasting >2 weeks",
         "Oral thrush or difficulty swallowing",
-        "Skin rash or lesions",
-        "Swollen glands lasting more than a few weeks"
+        "Skin rash or lesions"
       ],
       "referralCriteria": [
-        "Same as for symptomatic HIV",
         "Any new symptoms suggesting WHO stage 2, 3, or 4 progression",
-        "Virological failure on first-line ART"
+        "Virological failure"
       ],
       "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 11, Section 11.1"
     },
@@ -528,7 +506,7 @@
     "Z29.2": {
       "icd10Code": "Z29.2",
       "conditionName": "HIV prophylaxis (cotrimoxazole and TB preventive therapy)",
-      "overview": "Preventive treatment for people living with HIV to reduce the risk of opportunistic infections. Includes cotrimoxazole prophylaxis and TB Preventive Therapy (TPT) with isoniazid.",
+      "overview": "Preventive treatment for people living with HIV to reduce the risk of opportunistic infections. Includes cotrimoxazole and TB Preventive Therapy (TPT) with isoniazid.",
       "isChronic": true,
       "durationWeeks": 0,
       "treatmentDurationText": "Varies — cotrimoxazole until CD4 >200; TPT for 12 months",
@@ -540,11 +518,11 @@
       "medications": [
         {
           "name": "Cotrimoxazole",
-          "dosage": "160/800 mg (double-strength tablet)",
+          "dosage": "160/800 mg",
           "frequency": "Once daily",
           "duration": "Until CD4 >200 cells/mm³ on ART",
           "phase": "OI prophylaxis",
-          "notes": "Indicated for WHO Clinical stage 3 or 4, or CD4 <200 cells/mm³. Watch for maculopapular rash.",
+          "notes": "Indicated for WHO Clinical stage 3 or 4, or CD4 <200. Watch for maculopapular rash.",
           "isClinical": false
         },
         {
@@ -552,7 +530,7 @@
           "dosage": "300 mg",
           "frequency": "Once daily",
           "duration": "12 months",
-          "phase": "TB Preventive Therapy (TPT)",
+          "phase": "TB Preventive Therapy",
           "notes": "Give to all adult PLHIV. Exclude active TB first.",
           "isClinical": false
         },
@@ -575,46 +553,35 @@
       "monitoring": {
         "everyVisit": [
           "Check for rash (cotrimoxazole hypersensitivity)",
-          "Ask about tingling in hands/feet (isoniazid neuropathy)",
-          "Ask about nausea, vomiting, yellow eyes (isoniazid hepatotoxicity)",
+          "Ask about tingling in hands/feet",
+          "Ask about nausea, vomiting, yellow eyes",
           "Confirm adherence"
         ],
         "baseline": [
           "Exclude active TB before starting TPT",
           "Screen for liver disease",
-          "Confirm no MDR/XDR-TB history",
-          "Check for peripheral neuropathy"
+          "Confirm no MDR/XDR-TB history"
         ]
       },
-      "followUpSchedule": "Cotrimoxazole: until CD4 >200. TPT: monthly for first 3 months, then routine; complete 12-month course.",
+      "followUpSchedule": "Cotrimoxazole: until CD4 >200. TPT: monthly for first 3 months, then routine.",
       "warningSigns": [
         "New rash with fever or mucosal involvement",
         "Tingling or numbness in hands/feet",
         "Nausea, vomiting, or loss of appetite",
-        "Yellow eyes or skin (jaundice)",
-        "Dark brown urine",
-        "Any TB symptom appearing while on prophylaxis"
+        "Yellow eyes or skin",
+        "Dark brown urine"
       ],
       "referralCriteria": [
         "Severe cotrimoxazole hypersensitivity",
         "Suspected isoniazid hepatotoxicity",
         "Severe peripheral neuropathy despite pyridoxine",
-        "Active TB develops during prophylaxis",
+        "Active TB during prophylaxis",
         "Pregnancy (defer TPT)"
       ],
       "specialCases": [
-        {
-          "case": "Pregnancy",
-          "note": "Defer TPT until after delivery."
-        },
-        {
-          "case": "Patient on protease inhibitor-based ART",
-          "note": "Do NOT use rifapentine-containing 3HP regimen."
-        },
-        {
-          "case": "Patient with prior MDR/XDR-TB",
-          "note": "Exclude from TPT."
-        }
+        { "case": "Pregnancy", "note": "Defer TPT until after delivery." },
+        { "case": "On protease inhibitor ART", "note": "Do NOT use rifapentine-containing 3HP regimen." },
+        { "case": "Prior MDR/XDR-TB", "note": "Exclude from TPT." }
       ],
       "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 11, Sections 11.2.1 and 11.2.2"
     },
@@ -622,152 +589,14 @@
     "A15": {
       "icd10Code": "A15",
       "conditionName": "Respiratory tuberculosis, bacteriologically confirmed",
-      "overview": "Tuberculosis is an infection caused by Mycobacterium tuberculosis, most commonly affecting the lungs. It spreads through the air when an infected person coughs or sneezes. TB is a notifiable disease. Drug-sensitive TB is treated with a 6-month regimen: 2 months of intensive-phase RHZE followed by 4 months of continuation-phase RH.",
-      "isChronic": false,
-      "durationWeeks": 26,
-      "treatmentDurationText": "6 months (2 months intensive + 4 months continuation)",
-      "phases": [
-        "Intensive phase (Months 1–2) — RHZE 4-drug combination daily",
-        "Continuation phase (Months 3–6) — RH 2-drug combination daily",
-        "Cure — sputum smear-negative at month 5 or 6"
-      ],
-      "medications": [
-        {
-          "name": "RHZE — Rifampicin + Isoniazid + Pyrazinamide + Ethambutol (fixed-dose combination)",
-          "dosage": "Weight-based dosing (see table below)",
-          "frequency": "Once daily, same time each day",
-          "duration": "2 months (intensive phase)",
-          "phase": "Intensive phase",
-          "notes": "The 4-in-1 tablet contains Rifampicin 150 mg + Isoniazid 75 mg + Pyrazinamide 400 mg + Ethambutol 275 mg. Take all tablets in ONE dose. Rifampicin may turn urine, sweat and tears orange — this is harmless. Rifampicin reduces the effectiveness of combined oral contraceptives — advise alternative contraception.",
-          "isClinical": false,
-          "weightBands": [
-            { "weight": "30–37 kg", "dose": "2 tablets daily" },
-            { "weight": "38–54 kg", "dose": "3 tablets daily" },
-            { "weight": "55–70 kg", "dose": "4 tablets daily" },
-            { "weight": "≥ 71 kg",   "dose": "5 tablets daily" }
-          ]
-        },
-        {
-          "name": "RH — Rifampicin + Isoniazid (fixed-dose combination)",
-          "dosage": "Weight-based dosing (see table below)",
-          "frequency": "Once daily, same time each day",
-          "duration": "4 months (continuation phase)",
-          "phase": "Continuation phase",
-          "notes": "Two formulations: RH 150/75 mg and RH 300/150 mg.",
-          "isClinical": false,
-          "weightBands": [
-            { "weight": "30–37 kg", "dose": "2 tablets RH 150/75" },
-            { "weight": "38–54 kg", "dose": "3 tablets RH 150/75" },
-            { "weight": "55–70 kg", "dose": "2 tablets RH 300/150" },
-            { "weight": "≥ 71 kg",   "dose": "2 tablets RH 300/150" }
-          ]
-        },
-        {
-          "name": "Pyridoxine (Vitamin B6)",
-          "dosage": "25 mg",
-          "frequency": "Once daily",
-          "duration": "Full duration of TB treatment (6 months)",
-          "phase": "Adjunct",
-          "notes": "Prevents isoniazid-induced peripheral neuropathy.",
-          "isClinical": false
-        }
-      ],
-      "lifestyleAdvice": [
-        "Take all your TB tablets every day without missing any dose",
-        "Take all tablets together in ONE dose at the same time each day",
-        "Do not stop treatment even if you feel better — completing 6 months is essential",
-        "Cover your mouth when you cough or sneeze",
-        "Open windows and let in sunlight at home",
-        "Eat a nutritious, balanced diet",
-        "Stop smoking and avoid excessive alcohol",
-        "Attend every follow-up appointment, including sputum tests",
-        "Inform close contacts so they can be screened",
-        "Report immediately: yellow eyes/skin, dark urine, severe nausea, tingling, skin rash"
-      ],
-      "monitoring": {
-        "everyVisit": [
-          "Weight — adjust tablet count if weight changes",
-          "Ask about adherence",
-          "Ask about side effects",
-          "Check for new symptoms"
-        ],
-        "baseline": [
-          "Sputum TB-NAAT — confirm TB and check for rifampicin resistance",
-          "Sputum smear microscopy",
-          "Baseline weight",
-          "HIV test",
-          "Baseline ALT"
-        ],
-        "atMonths": [
-          "Month 2 — sputum smear microscopy",
-          "Month 5 — sputum smear microscopy",
-          "Month 6 — sputum smear microscopy"
-        ]
-      },
-      "followUpSchedule": "Monthly clinical review. Sputum smear at month 2, 5, 6. If smear positive at month 2, consider adherence and DR-TB. If positive at month 5/6, refer for treatment failure.",
-      "warningSigns": [
-        "Yellow eyes or skin (jaundice)",
-        "Dark brown urine",
-        "Severe nausea or vomiting with abdominal pain",
-        "New skin rash with fever or facial swelling",
-        "Tingling or numbness in hands/feet",
-        "Persistent fever or worsening cough",
-        "Coughing up blood",
-        "Severe chest pain or difficulty breathing"
-      ],
-      "referralCriteria": [
-        "Disseminated forms of TB (miliary, extrapulmonary)",
-        "TB meningitis",
-        "Drug-resistant TB",
-        "Failure to convert to smear-negative at month 2 despite adherence",
-        "Treatment failure (positive smear at month 5 or 6)",
-        "Severe adverse drug reactions",
-        "TB in children (<12 years)",
-        "Previously treated TB requiring re-treatment",
-        "Contact of drug-resistant TB patient",
-        "Pregnancy"
-      ],
-      "emergencyProtocol": {
-        "trigger": "Signs of disseminated TB, TB meningitis, or severe adverse drug reaction",
-        "immediateAction": "Refer to hospital same day. For suspected TB meningitis: urgent LP. For suspected drug-induced hepatitis: STOP all TB medicines before referral.",
-        "outcome": "Life-threatening if not treated promptly."
-      },
-      "specialCases": [
-        {
-          "case": "HIV co-infection",
-          "note": "Treat TB and HIV. Start TB first, then add ART based on CD4. Rifampicin reduces DTG concentration — double DTG dose while on rifampicin."
-        },
-        {
-          "case": "Renal impairment (eGFR <30)",
-          "note": "Ethambutol and pyrazinamide three times weekly. Rifampicin and isoniazid do not require adjustment."
-        },
-        {
-          "case": "Pregnancy and breastfeeding",
-          "note": "All first-line TB drugs are safe in pregnancy. Give pyridoxine 25 mg daily."
-        },
-        {
-          "case": "Drug-induced hepatitis",
-          "note": "Stop all TB medicines, refer urgently for same-day ALT."
-        },
-        {
-          "case": "Contraception while on TB treatment",
-          "note": "Rifampicin reduces efficacy of combined oral contraceptives. Advise IUD or DMPA."
-        }
-      ],
-      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 17, Sections 17.4.1 and 17.4.1.2"
-    },
-
-    "A16": {
-      "icd10Code": "A16",
-      "conditionName": "Respiratory tuberculosis, not confirmed",
-      "overview": "Tuberculosis is an infection caused by Mycobacterium tuberculosis. This entry is used when TB is diagnosed clinically without bacteriological confirmation — the clinical picture strongly suggests TB. Treatment follows the same 6-month regimen as confirmed TB.",
+      "overview": "Tuberculosis is an infection caused by Mycobacterium tuberculosis, most commonly affecting the lungs. It spreads through the air. Drug-sensitive TB is treated with a 6-month regimen: 2 months of intensive-phase RHZE followed by 4 months of continuation-phase RH.",
       "isChronic": false,
       "durationWeeks": 26,
       "treatmentDurationText": "6 months (2 months intensive + 4 months continuation)",
       "phases": [
         "Intensive phase (Months 1–2) — RHZE daily",
         "Continuation phase (Months 3–6) — RH daily",
-        "Completion — clinical resolution at month 6"
+        "Cure — sputum smear-negative at month 5 or 6"
       ],
       "medications": [
         {
@@ -776,7 +605,7 @@
           "frequency": "Once daily",
           "duration": "2 months (intensive phase)",
           "phase": "Intensive phase",
-          "notes": "The 4-in-1 tablet. Take all tablets in ONE dose. Rifampicin may turn urine orange — harmless.",
+          "notes": "The 4-in-1 tablet. Take all tablets in ONE dose. Rifampicin may turn urine orange — harmless. Rifampicin reduces efficacy of oral contraceptives — advise IUD or DMPA.",
           "isClinical": false,
           "weightBands": [
             { "weight": "30–37 kg", "dose": "2 tablets daily" },
@@ -812,24 +641,138 @@
       ],
       "lifestyleAdvice": [
         "Take all your TB tablets every day without missing any dose",
+        "Take all tablets together in ONE dose",
         "Do not stop treatment even if you feel better",
         "Cover your mouth when you cough or sneeze",
-        "Open windows and let in sunlight at home",
+        "Open windows and let in sunlight",
         "Eat a nutritious, balanced diet",
         "Stop smoking and avoid excessive alcohol",
+        "Attend every follow-up appointment",
         "Inform close contacts so they can be screened",
-        "Report immediately: yellow eyes/skin, dark urine, severe nausea, tingling, skin rash"
+        "Report: yellow eyes/skin, dark urine, severe nausea, tingling, skin rash"
       ],
       "monitoring": {
         "everyVisit": [
-          "Weight",
+          "Weight — adjust tablet count if weight changes",
           "Adherence",
-          "Side effects",
-          "Clinical improvement"
+          "Side effects"
         ],
         "baseline": [
           "Sputum TB-NAAT",
-          "Sputum smear microscopy and culture",
+          "Sputum smear",
+          "Baseline weight",
+          "HIV test",
+          "Baseline ALT"
+        ],
+        "atMonths": [
+          "Month 2 — sputum smear",
+          "Month 5 — sputum smear",
+          "Month 6 — sputum smear"
+        ]
+      },
+      "followUpSchedule": "Monthly review. Sputum smear at month 2, 5, 6.",
+      "warningSigns": [
+        "Yellow eyes or skin",
+        "Dark brown urine",
+        "Severe nausea or vomiting with abdominal pain",
+        "New skin rash with fever or facial swelling",
+        "Tingling or numbness in hands/feet",
+        "Persistent fever or worsening cough",
+        "Coughing up blood",
+        "Severe chest pain or difficulty breathing"
+      ],
+      "referralCriteria": [
+        "Disseminated forms of TB",
+        "TB meningitis",
+        "Drug-resistant TB",
+        "Failure to convert to smear-negative at month 2",
+        "Treatment failure (positive smear at month 5/6)",
+        "Severe adverse drug reactions",
+        "TB in children <12 years",
+        "Previously treated TB requiring re-treatment",
+        "Pregnancy"
+      ],
+      "emergencyProtocol": {
+        "trigger": "Signs of disseminated TB, TB meningitis, or severe adverse drug reaction",
+        "immediateAction": "Refer to hospital same day. STOP all TB medicines if suspected hepatitis.",
+        "outcome": "Life-threatening if not treated promptly."
+      },
+      "specialCases": [
+        { "case": "HIV co-infection", "note": "Start TB first, then add ART based on CD4. Double DTG dose while on rifampicin." },
+        { "case": "Renal impairment (eGFR <30)", "note": "Ethambutol and pyrazinamide three times weekly." },
+        { "case": "Pregnancy", "note": "All first-line drugs safe. Give pyridoxine daily." },
+        { "case": "Drug-induced hepatitis", "note": "Stop all TB medicines, refer urgently." }
+      ],
+      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 17, Sections 17.4.1 and 17.4.1.2"
+    },
+
+    "A16": {
+      "icd10Code": "A16",
+      "conditionName": "Respiratory tuberculosis, not confirmed",
+      "overview": "Tuberculosis is an infection caused by Mycobacterium tuberculosis. This entry is used when TB is diagnosed clinically without bacteriological confirmation. Treatment follows the same 6-month regimen as confirmed TB.",
+      "isChronic": false,
+      "durationWeeks": 26,
+      "treatmentDurationText": "6 months (2 months intensive + 4 months continuation)",
+      "phases": [
+        "Intensive phase (Months 1–2) — RHZE daily",
+        "Continuation phase (Months 3–6) — RH daily",
+        "Completion — clinical resolution at month 6"
+      ],
+      "medications": [
+        {
+          "name": "RHZE — Rifampicin + Isoniazid + Pyrazinamide + Ethambutol",
+          "dosage": "Weight-based dosing (see table below)",
+          "frequency": "Once daily",
+          "duration": "2 months",
+          "phase": "Intensive phase",
+          "notes": "The 4-in-1 tablet. Take all tablets in ONE dose.",
+          "isClinical": false,
+          "weightBands": [
+            { "weight": "30–37 kg", "dose": "2 tablets daily" },
+            { "weight": "38–54 kg", "dose": "3 tablets daily" },
+            { "weight": "55–70 kg", "dose": "4 tablets daily" },
+            { "weight": "≥ 71 kg",   "dose": "5 tablets daily" }
+          ]
+        },
+        {
+          "name": "RH — Rifampicin + Isoniazid",
+          "dosage": "Weight-based dosing (see table below)",
+          "frequency": "Once daily",
+          "duration": "4 months",
+          "phase": "Continuation phase",
+          "notes": "Two formulations: RH 150/75 mg and RH 300/150 mg.",
+          "isClinical": false,
+          "weightBands": [
+            { "weight": "30–37 kg", "dose": "2 tablets RH 150/75" },
+            { "weight": "38–54 kg", "dose": "3 tablets RH 150/75" },
+            { "weight": "55–70 kg", "dose": "2 tablets RH 300/150" },
+            { "weight": "≥ 71 kg",   "dose": "2 tablets RH 300/150" }
+          ]
+        },
+        {
+          "name": "Pyridoxine (Vitamin B6)",
+          "dosage": "25 mg",
+          "frequency": "Once daily",
+          "duration": "6 months",
+          "phase": "Adjunct",
+          "notes": "Prevents isoniazid-induced peripheral neuropathy.",
+          "isClinical": false
+        }
+      ],
+      "lifestyleAdvice": [
+        "Take all your TB tablets every day without missing any dose",
+        "Do not stop treatment even if you feel better",
+        "Cover your mouth when you cough or sneeze",
+        "Eat a nutritious, balanced diet",
+        "Stop smoking and avoid excessive alcohol",
+        "Inform close contacts so they can be screened",
+        "Report: yellow eyes/skin, dark urine, severe nausea, tingling, skin rash"
+      ],
+      "monitoring": {
+        "everyVisit": ["Weight", "Adherence", "Side effects"],
+        "baseline": [
+          "Sputum TB-NAAT",
+          "Sputum smear and culture",
           "Chest X-ray if available",
           "Baseline weight",
           "HIV test"
@@ -840,7 +783,7 @@
           "Month 6 — sputum smear"
         ]
       },
-      "followUpSchedule": "Monthly clinical review. Sputum smear at month 2, 5, 6. Response to treatment is the main confirmation of diagnosis.",
+      "followUpSchedule": "Monthly review. Sputum smear at month 2, 5, 6.",
       "warningSigns": [
         "Yellow eyes or skin",
         "Dark brown urine",
@@ -848,14 +791,13 @@
         "New skin rash with fever or facial swelling",
         "Tingling in hands/feet",
         "Persistent fever or worsening cough",
-        "Coughing up blood",
-        "Severe chest pain"
+        "Coughing up blood"
       ],
       "referralCriteria": [
         "Disseminated forms of TB",
         "TB meningitis",
         "Drug-resistant TB",
-        "Failure to improve after 2 months despite adherence",
+        "Failure to improve after 2 months",
         "Treatment failure",
         "Severe adverse drug reactions",
         "TB in children <12 years",
@@ -863,22 +805,13 @@
       ],
       "emergencyProtocol": {
         "trigger": "Signs of disseminated TB, TB meningitis, or severe adverse drug reaction",
-        "immediateAction": "Refer to hospital same day. STOP all TB medicines if suspected hepatitis before referral.",
+        "immediateAction": "Refer to hospital same day. STOP all TB medicines if suspected hepatitis.",
         "outcome": "Life-threatening if not treated promptly."
       },
       "specialCases": [
-        {
-          "case": "HIV co-infection",
-          "note": "Start TB first, then add ART based on CD4. Double DTG dose while on rifampicin."
-        },
-        {
-          "case": "Pregnancy",
-          "note": "All first-line TB drugs are safe. Give pyridoxine daily."
-        },
-        {
-          "case": "Drug-induced hepatitis",
-          "note": "Stop all TB medicines, refer urgently."
-        }
+        { "case": "HIV co-infection", "note": "Start TB first, then add ART based on CD4." },
+        { "case": "Pregnancy", "note": "All first-line drugs safe. Give pyridoxine daily." },
+        { "case": "Drug-induced hepatitis", "note": "Stop all TB medicines, refer urgently." }
       ],
       "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 17, Sections 17.4.1 and 17.4.1.2"
     },
@@ -886,51 +819,51 @@
     "J45": {
       "icd10Code": "J45",
       "conditionName": "Chronic asthma",
-      "overview": "Asthma is a chronic inflammatory disorder of the airways. Exposure to triggers causes inflammation, bronchospasm, and increased mucus production, leading to episodes of wheezing, shortness of breath, chest tightness, and cough — especially at night or early morning. Asthma cannot be cured, but it can be well-controlled with regular treatment. Most treatment failures are due to poor inhaler technique or poor adherence.",
+      "overview": "Asthma is a chronic inflammatory disorder of the airways. Exposure to triggers causes inflammation, bronchospasm, and increased mucus production, leading to episodes of wheezing, shortness of breath, chest tightness, and cough. Asthma cannot be cured, but it can be well-controlled with regular treatment. Most treatment failures are due to poor inhaler technique or poor adherence.",
       "isChronic": true,
       "durationWeeks": 0,
-      "treatmentDurationText": "Lifelong management — controlled with regular treatment",
+      "treatmentDurationText": "Lifelong management",
       "severityLevels": [
         { "level": "Step 1 (Mild)", "systolic": "Symptoms <2× per month; no exacerbations in last 12 months", "diastolic": "Salbutamol as needed + low-dose ICS with each dose" },
-        { "level": "Step 2 (Moderate)", "systolic": "Symptoms or reliever need ≥2× per month; any exacerbations", "diastolic": "Low-dose daily ICS + reliever" },
-        { "level": "Step 3 (Severe)", "systolic": "Symptoms most days; waking at night ≥1× per week", "diastolic": "High-dose ICS + reliever; escalate to LABA/ICS if uncontrolled" }
+        { "level": "Step 2 (Moderate)", "systolic": "Symptoms ≥2× per month; any exacerbations", "diastolic": "Low-dose daily ICS + reliever" },
+        { "level": "Step 3 (Severe)", "systolic": "Symptoms most days; waking at night ≥1× per week", "diastolic": "High-dose ICS + reliever; escalate to LABA/ICS" }
       ],
       "phases": [
-        "Step 1 — Reliever + low-dose ICS with each reliever dose (mild asthma)",
-        "Step 2 — Daily low-dose ICS controller + reliever as needed (moderate asthma)",
-        "Step 3 — High-dose daily ICS + reliever; escalate to LABA/ICS combination if not controlled",
-        "Step-down — Only after 6 months of stability, taper slowly"
+        "Step 1 — Reliever + low-dose ICS with each reliever dose",
+        "Step 2 — Daily low-dose ICS controller + reliever",
+        "Step 3 — High-dose daily ICS + reliever; escalate to LABA/ICS",
+        "Step-down — After 6 months of stability, taper slowly"
       ],
       "medications": [
         {
-          "name": "Salbutamol (Reliever / Rescue Inhaler)",
+          "name": "Salbutamol (Reliever)",
           "dosage": "100 mcg per puff",
           "frequency": "200 mcg (2 puffs) as needed",
           "duration": "As needed",
           "phase": "All steps — reliever",
-          "notes": "Short-acting beta-2 agonist. Provides immediate relief. Increasing use means asthma is NOT controlled.",
+          "notes": "Short-acting beta-2 agonist. Immediate relief. Increasing use = asthma NOT controlled.",
           "isClinical": false
         },
         {
-          "name": "Beclomethasone (Inhaled Corticosteroid — Controller)",
+          "name": "Beclomethasone (Controller)",
           "dosage": "100 mcg per puff",
           "frequency": "Step 1: 200 mcg with each salbutamol. Step 2: 200 mcg twice daily. Step 3: 400 mcg twice daily",
           "duration": "Ongoing",
-          "phase": "Steps 1–3 — controller",
-          "notes": "Use every day even when well. Rinse mouth after each dose. Preferred ICS in patients on protease inhibitors (HIV).",
+          "phase": "Controller",
+          "notes": "Use every day even when well. Rinse mouth after each dose. Preferred ICS on protease inhibitors.",
           "isClinical": false
         },
         {
-          "name": "Budesonide (Inhaled Corticosteroid — Controller)",
+          "name": "Budesonide (Controller)",
           "dosage": "200 mcg per puff",
           "frequency": "Step 1: 200 mcg with each reliever. Step 2: 200 mcg twice daily. Step 3: 400 mcg twice daily",
           "duration": "Ongoing",
-          "phase": "Steps 1–3 — controller",
+          "phase": "Controller",
           "notes": "Alternative ICS. Interacts with protease inhibitors.",
           "isClinical": false
         },
         {
-          "name": "Salmeterol/Fluticasone Combination (LABA/ICS)",
+          "name": "Salmeterol/Fluticasone Combination",
           "dosage": "50/250 mcg per puff",
           "frequency": "1 puff twice daily",
           "duration": "Ongoing",
@@ -947,29 +880,12 @@
         "Use a spacer with your inhaler",
         "Rinse mouth after using the preventer inhaler",
         "Keep a reliever inhaler with you at all times",
-        "Track peak flow at home if you have a PEFR meter",
-        "Follow your asthma action plan",
-        "Get your annual flu vaccine",
-        "If symptoms wake you at night, your asthma is not controlled"
+        "Get your annual flu vaccine"
       ],
       "monitoring": {
-        "everyVisit": [
-          "Daytime and night-time symptoms",
-          "Reliever use",
-          "Inhaler technique",
-          "Adherence",
-          "Peak flow"
-        ],
-        "baseline": [
-          "PEFR improvement test (salbutamol 200 mcg → ≥20% or ≥60 L/min improvement)",
-          "Inhaler technique",
-          "Rule out COPD"
-        ],
-        "everyThreeMonths": [
-          "Review control",
-          "Step down if stable 6 months",
-          "Step up if uncontrolled"
-        ]
+        "everyVisit": ["Daytime and night-time symptoms", "Reliever use", "Inhaler technique", "Adherence", "Peak flow"],
+        "baseline": ["PEFR improvement test", "Inhaler technique", "Rule out COPD"],
+        "everyThreeMonths": ["Review control", "Step up/down as needed"]
       },
       "followUpSchedule": "Review every 3 months. Step up if uncontrolled; step down slowly after 6 months. If >2 courses of oral prednisone in 6 months, refer to doctor.",
       "warningSigns": [
@@ -981,7 +897,7 @@
         "Drowsiness or confusion during an attack"
       ],
       "referralCriteria": [
-        "All children <6 years of age",
+        "All children <6 years",
         ">2 courses of oral prednisone within 6 months",
         "Brittle asthma",
         "Inadequate control on Step 2 or 3",
@@ -1003,27 +919,14 @@
           "Use a spacer for ALL children and adults on Step 3.",
           "Rinse mouth after using a preventer inhaler.",
           "Wait 30 seconds between puffs.",
-          "If using both reliever and preventer: reliever first, wait 5 min, then preventer.",
-          "Store inhalers at room temperature."
+          "If using both reliever and preventer: reliever first, wait 5 min, then preventer."
         ]
       },
       "specialCases": [
-        {
-          "case": "Children <6 years",
-          "note": "Diagnosis is difficult — refer all for assessment."
-        },
-        {
-          "case": "Patients on protease inhibitors (HIV)",
-          "note": "Use beclomethasone — budesonide and fluticasone interact with protease inhibitors."
-        },
-        {
-          "case": "Exercise-induced asthma",
-          "note": "Use reliever 15 minutes before exercise."
-        },
-        {
-          "case": "Pregnancy",
-          "note": "Continue asthma treatment — uncontrolled asthma is more dangerous."
-        }
+        { "case": "Children <6 years", "note": "Diagnosis is difficult — refer all for assessment." },
+        { "case": "Patients on protease inhibitors (HIV)", "note": "Use beclomethasone — budesonide and fluticasone interact with PIs." },
+        { "case": "Exercise-induced asthma", "note": "Use reliever 15 minutes before exercise." },
+        { "case": "Pregnancy", "note": "Continue asthma treatment — uncontrolled asthma is more dangerous." }
       ],
       "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 17, Section 17.1.3"
     },
@@ -1031,12 +934,12 @@
     "J45.9": {
       "icd10Code": "J45.9",
       "conditionName": "Asthma, unspecified",
-      "overview": "Asthma is a chronic inflammatory disorder of the airways. Exposure to triggers causes inflammation, bronchospasm, and increased mucus production, leading to episodes of wheezing, shortness of breath, chest tightness, and cough. This is the same condition as J45 — the code is used when the specific asthma subtype is not specified.",
+      "overview": "Asthma is a chronic inflammatory disorder of the airways. This is the same condition as J45 — the code is used when the specific subtype is not specified.",
       "isChronic": true,
       "durationWeeks": 0,
       "treatmentDurationText": "Lifelong management",
       "severityLevels": [
-        { "level": "Step 1 (Mild)", "systolic": "Symptoms <2× per month", "diastolic": "Salbutamol as needed + low-dose ICS with each dose" },
+        { "level": "Step 1 (Mild)", "systolic": "Symptoms <2× per month", "diastolic": "Salbutamol + low-dose ICS with each dose" },
         { "level": "Step 2 (Moderate)", "systolic": "Symptoms ≥2× per month", "diastolic": "Low-dose daily ICS + reliever" },
         { "level": "Step 3 (Severe)", "systolic": "Symptoms most days", "diastolic": "High-dose ICS + reliever; escalate to LABA/ICS" }
       ],
@@ -1051,7 +954,7 @@
           "dosage": "100 mcg per puff",
           "frequency": "200 mcg (2 puffs) as needed",
           "duration": "As needed",
-          "phase": "All steps — reliever",
+          "phase": "Reliever",
           "notes": "Immediate relief. Increasing use means asthma is NOT controlled.",
           "isClinical": false
         },
@@ -1074,7 +977,7 @@
           "isClinical": false
         },
         {
-          "name": "Salmeterol/Fluticasone Combination (LABA/ICS)",
+          "name": "Salmeterol/Fluticasone Combination",
           "dosage": "50/250 mcg per puff",
           "frequency": "1 puff twice daily",
           "duration": "Ongoing",
@@ -1084,46 +987,30 @@
         }
       ],
       "lifestyleAdvice": [
-        "Avoid triggers — dust, pollen, smoke, cold air",
+        "Avoid triggers",
         "Stop smoking and avoid second-hand smoke",
         "Use a spacer with your inhaler",
         "Rinse mouth after using the preventer inhaler",
         "Keep a reliever inhaler with you at all times",
-        "Get your annual flu vaccine",
-        "If symptoms wake you at night, your asthma is not controlled"
+        "Get your annual flu vaccine"
       ],
       "monitoring": {
-        "everyVisit": [
-          "Symptoms",
-          "Reliever use",
-          "Inhaler technique",
-          "Adherence",
-          "Peak flow"
-        ],
-        "baseline": [
-          "PEFR improvement test",
-          "Inhaler technique",
-          "Rule out COPD"
-        ],
-        "everyThreeMonths": [
-          "Review control",
-          "Step up/down as needed"
-        ]
+        "everyVisit": ["Symptoms", "Reliever use", "Inhaler technique", "Adherence", "Peak flow"],
+        "baseline": ["PEFR improvement test", "Inhaler technique", "Rule out COPD"],
+        "everyThreeMonths": ["Review control", "Step up/down as needed"]
       },
-      "followUpSchedule": "Review every 3 months. If >2 oral prednisone courses in 6 months, refer to doctor.",
+      "followUpSchedule": "Review every 3 months.",
       "warningSigns": [
         "Reliever needed more than 4 times a day",
         "Waking up at night with cough or wheeze",
         "Unable to speak full sentences",
-        "Chest tightness not responding to reliever",
         "Bluish lips or fingertips"
       ],
       "referralCriteria": [
-        "Children <6 years of age",
+        "Children <6 years",
         ">2 courses of oral prednisone within 6 months",
         "Brittle asthma",
-        "Inadequate control on Step 2 or 3",
-        "Uncontrolled asthma"
+        "Inadequate control on Step 2 or 3"
       ],
       "inhalerTechnique": {
         "mdi": "1. Shake inhaler well.\n2. Breathe out gently.\n3. Seal lips around mouthpiece.\n4. Press canister and breathe in slowly.\n5. Hold breath 10 sec.\n6. Rinse mouth after steroid inhaler.",
@@ -1131,8 +1018,7 @@
         "generalTips": [
           "Always shake the inhaler.",
           "Use a spacer for all children and Step 3 adults.",
-          "Rinse mouth after preventer inhaler.",
-          "Wait 30 seconds between puffs."
+          "Rinse mouth after preventer inhaler."
         ]
       },
       "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 17, Section 17.1.3"
@@ -1141,58 +1027,46 @@
     "J46": {
       "icd10Code": "J46",
       "conditionName": "Status asthmaticus (severe acute asthma)",
-      "overview": "Status asthmaticus is a severe, life-threatening asthma attack that does not respond to usual reliever treatment. It is a medical emergency requiring immediate treatment and urgent referral. Patients present with severe breathlessness, inability to speak in full sentences, agitation, and often cyanosis. Early recognition and rapid treatment saves lives. Do NOT sedate the patient.",
+      "overview": "Status asthmaticus is a severe, life-threatening asthma attack that does not respond to usual reliever treatment. It is a medical emergency requiring immediate treatment and urgent referral. Do NOT sedate the patient.",
       "isChronic": false,
       "durationWeeks": 0,
       "treatmentDurationText": "Acute emergency — refer after initial treatment",
       "severityLevels": [
-        {
-          "level": "Mild–Moderate",
-          "systolic": "O2 sat >90%, talks in phrases, HR 100–120, PEFR >60%",
-          "diastolic": "Salbutamol + spacer or nebulizer every 20–30 min + prednisone 40 mg"
-        },
-        {
-          "level": "Severe",
-          "systolic": "O2 sat <90%, talks in words, RR >30, HR >120, PEFR <60%",
-          "diastolic": "Oxygen + salbutamol every 20–30 min + ipratropium + prednisone 40 mg — REFER"
-        },
-        {
-          "level": "Life-threatening",
-          "systolic": "O2 sat <90%, unable to speak, drowsy, silent chest, PEFR <33%",
-          "diastolic": "Oxygen + salbutamol + ipratropium × 4 doses + hydrocortisone IV 100 mg — REFER URGENTLY"
-        }
+        { "level": "Mild–Moderate", "systolic": "O2 sat >90%, talks in phrases, HR 100–120, PEFR >60%", "diastolic": "Salbutamol + prednisone 40 mg" },
+        { "level": "Severe", "systolic": "O2 sat <90%, talks in words, RR >30, HR >120, PEFR <60%", "diastolic": "Oxygen + salbutamol + ipratropium + prednisone 40 mg — REFER" },
+        { "level": "Life-threatening", "systolic": "O2 sat <90%, unable to speak, drowsy, silent chest, PEFR <33%", "diastolic": "Oxygen + salbutamol + ipratropium × 4 doses + hydrocortisone IV — REFER URGENTLY" }
       ],
       "phases": [
-        "Step 1 — Assess severity (O2 sat, speech, HR, RR, PEFR)",
-        "Step 2 — Give oxygen to keep O2 sat 93–95%",
+        "Step 1 — Assess severity",
+        "Step 2 — Oxygen to keep O2 sat 93–95%",
         "Step 3 — Salbutamol by spacer OR nebulizer every 20–30 min",
         "Step 4 — Add ipratropium if poor response",
-        "Step 5 — Give prednisone 40 mg (or hydrocortisone IV 100 mg)",
-        "Step 6 — Refer to hospital after initial treatment"
+        "Step 5 — Prednisone 40 mg (or hydrocortisone IV)",
+        "Step 6 — Refer to hospital"
       ],
       "medications": [
         {
           "name": "Salbutamol 100 mcg MDI",
           "dosage": "400–1000 mcg (4–10 puffs)",
-          "frequency": "Every 20–30 min for the first hour, then every 2–4 hours",
-          "duration": "Until PEFR >60% predicted",
-          "phase": "Acute management — reliever",
-          "notes": "Use with a spacer — as effective as nebulizer. Shake between each puff.",
+          "frequency": "Every 20–30 min for the first hour",
+          "duration": "Until PEFR >60%",
+          "phase": "Acute management",
+          "notes": "Use with a spacer. Shake between each puff.",
           "isClinical": false
         },
         {
           "name": "Salbutamol 0.5% nebulizer solution",
-          "dosage": "1 mL (5 mg) made up to 4 mL with sodium chloride 0.9%",
-          "frequency": "Every 20–30 min for the first hour, then every 2–4 hours",
-          "duration": "Until PEFR >60% predicted",
+          "dosage": "1 mL (5 mg) made up to 4 mL with NaCl 0.9%",
+          "frequency": "Every 20–30 min for the first hour",
+          "duration": "Until PEFR >60%",
           "phase": "Severe attack — reliever",
           "notes": "Deliver at 8 L/min with oxygen.",
           "isClinical": false
         },
         {
-          "name": "Ipratropium bromide 0.5 mg/2 mL nebulizer solution",
+          "name": "Ipratropium bromide 0.5 mg/2 mL nebulizer",
           "dosage": "2 mL (0.5 mg) added to salbutamol",
-          "frequency": "Every 20–30 min up to 3 doses (severe attack)",
+          "frequency": "Every 20–30 min up to 3 doses",
           "duration": "First hour",
           "phase": "Severe attack — add-on",
           "notes": "For life-threatening attack: 4 doses over 2 hours.",
@@ -1208,10 +1082,10 @@
           "isClinical": false
         },
         {
-          "name": "Hydrocortisone (IV/IM corticosteroid)",
+          "name": "Hydrocortisone IV",
           "dosage": "100 mg",
           "frequency": "Single dose",
-          "duration": "Once, then switch to oral",
+          "duration": "Once",
           "phase": "Severe/life-threatening — if oral not possible",
           "notes": "Follow with oral prednisone 40 mg daily × 7 days.",
           "isClinical": true
@@ -1222,17 +1096,15 @@
           "frequency": "Continuous",
           "duration": "Until stabilized",
           "phase": "Severe/life-threatening attacks",
-          "notes": "COPD patients: 24–28% Venturi mask, close monitoring.",
+          "notes": "COPD: 24–28% Venturi mask, close monitoring.",
           "isClinical": true
         }
       ],
       "lifestyleAdvice": [
-        "Do NOT sedate the patient at any point",
-        "Sit the patient upright — do not lay them flat",
-        "Keep the patient calm",
+        "Do NOT sedate the patient",
+        "Sit the patient upright",
         "Do NOT give antibiotics routinely",
         "After recovery, review: adherence, inhaler technique, trigger exposure",
-        "Warn the patient that asthma often flares again in the week after an attack",
         "Refer patients with >2 oral prednisone courses in 6 months"
       ],
       "monitoring": {
@@ -1241,17 +1113,17 @@
           "Ability to speak",
           "Respiratory rate",
           "Heart rate",
-          "Peak flow (PEFR)",
+          "Peak flow",
           "Consciousness level"
         ],
         "afterAttack": [
-          "Reassess full asthma control",
+          "Reassess asthma control",
           "Review inhaler technique",
           "Review adherence",
-          "Consider stepping up maintenance therapy"
+          "Consider stepping up maintenance"
         ]
       },
-      "followUpSchedule": "After an acute attack: review within 1–2 weeks. If >2 courses of oral steroids in 6 months, refer to doctor.",
+      "followUpSchedule": "After an acute attack: review within 1–2 weeks.",
       "warningSigns": [
         "Unable to speak in full sentences",
         "Bluish lips or fingertips",
@@ -1262,33 +1134,20 @@
         "Poor response to initial salbutamol"
       ],
       "referralCriteria": [
-        "All patients with severe or life-threatening attack",
+        "All severe or life-threatening attacks",
         "Poor response to initial treatment",
-        "PEFR <75% predicted 15–30 min after salbutamol",
-        "Lower threshold if: seen in afternoon/evening, recent nocturnal symptoms, previous severe attacks, rapid onset"
+        "PEFR <75% predicted 15–30 min after salbutamol"
       ],
       "emergencyProtocol": {
         "trigger": "Severe or life-threatening asthma attack",
-        "immediateAction": "Sit patient upright. Oxygen (93–95% target). Salbutamol 400–1000 mcg via spacer every 20–30 min. Add ipratropium if poor response. Give prednisone 40 mg (or hydrocortisone 100 mg IV). Continue treatment while arranging urgent referral. NEVER sedate.",
+        "immediateAction": "Sit patient upright. Oxygen. Salbutamol 400–1000 mcg every 20–30 min. Add ipratropium if poor response. Prednisone 40 mg (or hydrocortisone 100 mg IV). Refer urgently. NEVER sedate.",
         "outcome": "Life-threatening — refer urgently after initial treatment."
       },
       "specialCases": [
-        {
-          "case": "COPD exacerbation",
-          "note": "Treat the same, but give oxygen with care (24–28% Venturi mask). Add antibiotics ONLY if increased sputum purulence PLUS increased volume or dyspnoea."
-        },
-        {
-          "case": "Pulmonary oedema masquerading as asthma",
-          "note": "In patients >50 years with first-time wheeze, consider pulmonary oedema due to LV failure."
-        },
-        {
-          "case": "Pregnancy",
-          "note": "Continue acute asthma management — treatment is the same."
-        },
-        {
-          "case": "Sedation",
-          "note": "AVOID sedation of any kind — critical."
-        }
+        { "case": "COPD exacerbation", "note": "Treat the same, but oxygen with care (24–28% Venturi mask)." },
+        { "case": "Pulmonary oedema", "note": "Consider in patients >50 years with first-time wheeze." },
+        { "case": "Pregnancy", "note": "Treatment is the same." },
+        { "case": "Sedation", "note": "AVOID sedation of any kind." }
       ],
       "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 17, Section 17.1.1"
     },
@@ -1296,161 +1155,7 @@
     "A09": {
       "icd10Code": "A09",
       "conditionName": "Diarrhoea and gastroenteritis (acute)",
-      "overview": "A sudden onset of increased frequency of stools that are looser than normal, with or without vomiting. Commonly caused by a virus, but may be caused by bacteria or parasites. The cause cannot be diagnosed without laboratory investigation. Most cases are self-limiting and can be managed with rehydration. Dehydration is the main danger — especially in children.",
-      "isChronic": false,
-      "durationWeeks": 1,
-      "treatmentDurationText": "Usually resolves in 3–7 days with correct rehydration",
-      "phases": [
-        "Assess hydration status (Plan A: no dehydration / Plan B: some / Plan C: severe)",
-        "Rehydrate according to Plan A, B, or C",
-        "Zinc for children (10 mg daily × 14 days)",
-        "Continue feeding — do not starve the patient",
-        "Refer if severe dehydration, persistent diarrhoea, or danger signs"
-      ],
-      "medications": [
-        {
-          "name": "Oral Rehydration Solution (ORS)",
-          "dosage": "Plan B: 80 mL/kg over 4 hours (5 mL/kg every 15 min). Plan A: 10 mL/kg after each loose stool",
-          "frequency": "Frequent small sips from a cup and spoon",
-          "duration": "Until diarrhoea stops",
-          "phase": "Rehydration — all plans",
-          "notes": "ORAL USE ONLY. Show caregiver how to give ORS with a cup and spoon using frequent small sips. If child vomits, wait 10 minutes and continue more slowly. Encourage continued feeding, especially breastfeeding.",
-          "isClinical": false
-        },
-        {
-          "name": "Homemade Sugar and Salt Solution (SSS)",
-          "dosage": "½ level teaspoon table salt + 8 level teaspoons sugar in 1 litre of boiled (or clean) water",
-          "frequency": "As needed for rehydration at home",
-          "duration": "Until diarrhoea stops",
-          "phase": "Home rehydration — Plan A",
-          "notes": "1 level medicine measure ≈ 1 level 5 mL teaspoon. Use for home prevention of dehydration. Discard after 24 hours and make fresh.",
-          "isClinical": false
-        },
-        {
-          "name": "Zinc (elemental) — for children",
-          "dosage": "10 mg",
-          "frequency": "Once daily",
-          "duration": "14 days",
-          "phase": "Children with acute diarrhoea",
-          "notes": "Give zinc to ALL children with acute diarrhoea. Reduces duration and severity of diarrhoea and prevents future episodes.",
-          "isClinical": false
-        },
-        {
-          "name": "Loperamide — for adults",
-          "dosage": "4 mg initially, then 2 mg after each loose stool",
-          "frequency": "As required",
-          "duration": "Up to 48 hours",
-          "phase": "Adults (acute, no blood)",
-          "notes": "Maximum daily dose depends on weight — see table below. NOT for children. NOT for bloody diarrhoea or suspected dysentery.",
-          "isClinical": false,
-          "weightBands": [
-            { "weight": "34–39 kg", "dose": "Max 10 mg/day (5 tablets)" },
-            { "weight": "40–46 kg", "dose": "Max 12 mg/day (6 tablets)" },
-            { "weight": "47–53 kg", "dose": "Max 14 mg/day (7 tablets)" },
-            { "weight": "≥ 54 kg",   "dose": "Max 16 mg/day (8 tablets)" }
-          ]
-        },
-        {
-          "name": "Ceftriaxone (only before referral)",
-          "dosage": "100 mg/kg/dose",
-          "frequency": "Single dose",
-          "duration": "Once only, before referral",
-          "phase": "Neonates with severe dehydration OR children with SAM + severe dehydration or shock",
-          "notes": "Do NOT give routinely. Give ONLY to: neonates with severe dehydration, or children with severe acute malnutrition (SAM) who have severe dehydration or shock. Avoid calcium-containing IV fluids with ceftriaxone in neonates. For IM: do not inject >1 g at one site.",
-          "isClinical": true
-        }
-      ],
-      "lifestyleAdvice": [
-        "Keep giving ORS or SSS even if the patient vomits — wait 10 minutes and continue slowly",
-        "Continue feeding — do NOT starve the patient. Breastfeed more frequently",
-        "Give small frequent meals at least 6 times a day",
-        "Give zinc to children every day for 14 days — do not stop early",
-        "Wash hands with soap after using the toilet and before preparing food",
-        "Boil drinking water if unsure of its safety",
-        "Wash all fruits and vegetables before eating",
-        "Keep food covered to prevent contamination by flies",
-        "Use a clean latrine or toilet — dispose of stools safely",
-        "Return to the clinic IMMEDIATELY if any warning signs appear",
-        "Come back for a follow-up visit in 5 days if diarrhoea has not stopped"
-      ],
-      "monitoring": {
-        "duringEpisode": [
-          "Assess hydration status at each contact",
-          "Count stools per day",
-          "Check for blood in stool",
-          "Check ability to drink and feed",
-          "Check for danger signs — sunken eyes, slow skin pinch, lethargy"
-        ],
-        "followUp": [
-          "5-day follow-up for persistent diarrhoea (7–14 days)",
-          "Weight check at follow-up"
-        ]
-      },
-      "followUpSchedule": "Return immediately if: condition does not improve, poor drinking or feeding, blood in stool, fever, sunken eyes, slow skin pinch. Follow-up in 5 days if diarrhoea persists.",
-      "warningSigns": [
-        "Lethargic or unconscious",
-        "Sunken eyes",
-        "Not able to drink or drinks poorly",
-        "Skin pinch returning slowly (≥2 seconds)",
-        "Blood in stool",
-        "High fever",
-        "Intractable vomiting",
-        "Convulsions or altered consciousness",
-        "Diarrhoea in a malnourished child",
-        "Diarrhoea for 7+ days (persistent)"
-      ],
-      "referralCriteria": [
-        "Severe dehydration (Plan C) — refer urgently after starting IV fluids",
-        "Failure to maintain hydration with oral fluids after Plan B (Some dehydration)",
-        "General danger signs: convulsions, altered consciousness, inability to feed",
-        "Dysentery in children <12 months of age or with dehydration",
-        "Malnourished children",
-        "Suspected acute abdomen or surgical problem",
-        "Persistent diarrhoea >14 days not resolving",
-        "Diarrhoea in neonates"
-      ],
-      "emergencyProtocol": {
-        "trigger": "Severe dehydration (Plan C) — lethargy, sunken eyes, unable to drink, very slow skin pinch",
-        "immediateAction": "Ringers lactate or sodium chloride 0.9% IV, 20 mL/kg rapidly. If SAM: reduce to 10 mL/kg over 10 minutes. Repeat up to twice if weak radial pulse. Continue 20 mL/kg every hour for 5 hours while arranging urgent referral. Give ORS 5 mL/kg/hour as soon as the child can drink. If IV not possible, insert NG tube and give ORS 20 mL/kg/hour.",
-        "outcome": "Life-threatening — refer urgently while continuing rehydration."
-      },
-      "specialCases": [
-        {
-          "case": "Bloody diarrhoea",
-          "note": "Consider dysentery — refer. Dysentery in children <12 months requires hospital referral."
-        },
-        {
-          "case": "High fever or very ill child",
-          "note": "Consider typhoid — refer."
-        },
-        {
-          "case": "Persistent diarrhoea (7–14 days)",
-          "note": "See K52.9 — persistent diarrhoea. Give Vitamin A + zinc, review feeding, follow up in 5 days."
-        },
-        {
-          "case": "Diarrhoea during adult cholera epidemic",
-          "note": "Consider cholera — refer immediately for isolation and treatment."
-        },
-        {
-          "case": "Neonates with severe dehydration",
-          "note": "Give ceftriaxone IM/IV 100 mg/kg single dose BEFORE referral. Avoid calcium-containing IV fluids."
-        },
-        {
-          "case": "Severe Acute Malnutrition (SAM)",
-          "note": "Reduce IV fluid bolus to 10 mL/kg over 10 minutes. Give ceftriaxone 100 mg/kg before referral."
-        },
-        {
-          "case": "Children on zinc",
-          "note": "Give zinc 10 mg daily for 14 days — do not stop early. Give with ORS at each loose stool."
-        }
-      ],
-      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 2, Sections 2.9.1 and 2.9.3"
-    },
-
-    "A09.9": {
-      "icd10Code": "A09.9",
-      "conditionName": "Gastroenteritis and colitis of unspecified origin",
-      "overview": "A sudden onset of increased frequency of stools that are looser than normal, with or without vomiting. This entry is used when the specific cause of gastroenteritis is not specified. Most cases are self-limiting and can be managed with rehydration. Dehydration is the main danger — especially in children.",
+      "overview": "A sudden onset of increased frequency of stools that are looser than normal, with or without vomiting. Commonly caused by a virus, but may be caused by bacteria or parasites. Most cases are self-limiting and can be managed with rehydration. Dehydration is the main danger — especially in children.",
       "isChronic": false,
       "durationWeeks": 1,
       "treatmentDurationText": "Usually resolves in 3–7 days with correct rehydration",
@@ -1510,7 +1215,7 @@
           "frequency": "Single dose",
           "duration": "Once, before referral",
           "phase": "Neonates with severe dehydration OR children with SAM + severe dehydration",
-          "notes": "Only before referral in specific high-risk groups. Avoid calcium-containing IV fluids in neonates.",
+          "notes": "Do NOT give routinely. Only before referral in specific high-risk groups. Avoid calcium-containing IV fluids in neonates.",
           "isClinical": true
         }
       ],
@@ -1560,26 +1265,128 @@
       ],
       "emergencyProtocol": {
         "trigger": "Severe dehydration (Plan C)",
-        "immediateAction": "Ringers lactate or sodium chloride 0.9% IV, 20 mL/kg rapidly. Repeat up to twice if weak pulse. Continue 20 mL/kg hourly × 5 hours. Give ORS as soon as child can drink. Refer urgently.",
+        "immediateAction": "Ringers lactate or sodium chloride 0.9% IV, 20 mL/kg rapidly. If SAM: 10 mL/kg over 10 min. Repeat up to twice if weak pulse. Continue 20 mL/kg hourly × 5 hours. Give ORS as soon as child can drink. Refer urgently.",
         "outcome": "Life-threatening — refer urgently while continuing rehydration."
       },
       "specialCases": [
+        { "case": "Bloody diarrhoea", "note": "Consider dysentery — refer." },
+        { "case": "Neonates with severe dehydration", "note": "Give ceftriaxone 100 mg/kg single dose before referral." },
+        { "case": "Severe Acute Malnutrition (SAM)", "note": "Reduce IV bolus to 10 mL/kg over 10 minutes. Give ceftriaxone before referral." },
+        { "case": "Persistent diarrhoea", "note": "See K52.9 for persistent diarrhoea." }
+      ],
+      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 2, Sections 2.9.1 and 2.9.3"
+    },
+
+    "A09.9": {
+      "icd10Code": "A09.9",
+      "conditionName": "Gastroenteritis and colitis of unspecified origin",
+      "overview": "A sudden onset of increased frequency of stools that are looser than normal, with or without vomiting. This entry is used when the specific cause of gastroenteritis is not specified. Most cases are self-limiting and can be managed with rehydration.",
+      "isChronic": false,
+      "durationWeeks": 1,
+      "treatmentDurationText": "Usually resolves in 3–7 days with correct rehydration",
+      "phases": [
+        "Assess hydration status (Plan A: no dehydration / Plan B: some / Plan C: severe)",
+        "Rehydrate according to Plan A, B, or C",
+        "Zinc for children (10 mg daily × 14 days)",
+        "Continue feeding"
+      ],
+      "medications": [
         {
-          "case": "Bloody diarrhoea",
-          "note": "Consider dysentery — refer."
+          "name": "Oral Rehydration Solution (ORS)",
+          "dosage": "Plan B: 80 mL/kg over 4 hours. Plan A: 10 mL/kg after each loose stool",
+          "frequency": "Frequent small sips",
+          "duration": "Until diarrhoea stops",
+          "phase": "Rehydration — all plans",
+          "notes": "Show caregiver how to give with a cup and spoon.",
+          "isClinical": false
         },
         {
-          "case": "Neonates with severe dehydration",
-          "note": "Give ceftriaxone 100 mg/kg single dose before referral."
+          "name": "Homemade Sugar and Salt Solution (SSS)",
+          "dosage": "½ level teaspoon salt + 8 level teaspoons sugar in 1 L water",
+          "frequency": "As needed at home",
+          "duration": "Until diarrhoea stops",
+          "phase": "Home rehydration",
+          "notes": "Discard after 24 hours.",
+          "isClinical": false
         },
         {
-          "case": "Severe Acute Malnutrition (SAM)",
-          "note": "Reduce IV bolus to 10 mL/kg over 10 minutes. Give ceftriaxone before referral."
+          "name": "Zinc — for children",
+          "dosage": "10 mg",
+          "frequency": "Once daily",
+          "duration": "14 days",
+          "phase": "Children",
+          "notes": "Give zinc to ALL children with acute diarrhoea.",
+          "isClinical": false
         },
         {
-          "case": "Persistent diarrhoea",
-          "note": "See K52.9 for persistent diarrhoea."
+          "name": "Loperamide — for adults",
+          "dosage": "4 mg initially, then 2 mg after each loose stool",
+          "frequency": "As required",
+          "duration": "Up to 48 hours",
+          "phase": "Adults (no blood)",
+          "notes": "NOT for children. NOT for bloody diarrhoea.",
+          "isClinical": false,
+          "weightBands": [
+            { "weight": "34–39 kg", "dose": "Max 10 mg/day (5 tablets)" },
+            { "weight": "40–46 kg", "dose": "Max 12 mg/day (6 tablets)" },
+            { "weight": "47–53 kg", "dose": "Max 14 mg/day (7 tablets)" },
+            { "weight": "≥ 54 kg",   "dose": "Max 16 mg/day (8 tablets)" }
+          ]
+        },
+        {
+          "name": "Ceftriaxone (only before referral)",
+          "dosage": "100 mg/kg/dose",
+          "frequency": "Single dose",
+          "duration": "Once, before referral",
+          "phase": "Neonates with severe dehydration OR children with SAM",
+          "notes": "Only before referral in specific high-risk groups.",
+          "isClinical": true
         }
+      ],
+      "lifestyleAdvice": [
+        "Keep giving ORS or SSS even if the patient vomits",
+        "Continue feeding",
+        "Give small frequent meals 6× a day",
+        "Give zinc to children for 14 full days",
+        "Wash hands with soap",
+        "Boil drinking water if unsure of safety",
+        "Return IMMEDIATELY if warning signs appear"
+      ],
+      "monitoring": {
+        "duringEpisode": [
+          "Assess hydration",
+          "Count stools per day",
+          "Check for blood in stool",
+          "Check for danger signs"
+        ]
+      },
+      "followUpSchedule": "Return immediately if: no improvement, poor drinking/feeding, blood in stool, fever, sunken eyes, slow skin pinch.",
+      "warningSigns": [
+        "Lethargic or unconscious",
+        "Sunken eyes",
+        "Not able to drink",
+        "Slow skin pinch (≥2 seconds)",
+        "Blood in stool",
+        "High fever",
+        "Convulsions",
+        "Persistent diarrhoea (7+ days)"
+      ],
+      "referralCriteria": [
+        "Severe dehydration (Plan C)",
+        "Failure of Plan B after 8 hours",
+        "General danger signs",
+        "Dysentery in children <12 months",
+        "Malnourished children",
+        "Persistent diarrhoea >14 days"
+      ],
+      "emergencyProtocol": {
+        "trigger": "Severe dehydration (Plan C)",
+        "immediateAction": "Ringers lactate or sodium chloride 0.9% IV, 20 mL/kg rapidly. Repeat up to twice if weak pulse. Refer urgently.",
+        "outcome": "Life-threatening — refer urgently."
+      },
+      "specialCases": [
+        { "case": "Bloody diarrhoea", "note": "Consider dysentery — refer." },
+        { "case": "SAM", "note": "Reduce IV bolus to 10 mL/kg over 10 minutes. Give ceftriaxone before referral." }
       ],
       "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 2, Sections 2.9.1 and 2.9.3"
     },
@@ -1587,7 +1394,7 @@
     "K52.9": {
       "icd10Code": "K52.9",
       "conditionName": "Non-infective gastroenteritis and colitis (persistent diarrhoea)",
-      "overview": "Diarrhoea lasting 7–14 days in children, or >4 weeks in adults. In children, persistent diarrhoea often follows an acute episode and can lead to malnutrition. In adults, it may be a sign of underlying HIV or giardiasis. Management focuses on rehydration, nutritional support, and treating the underlying cause.",
+      "overview": "Diarrhoea lasting 7–14 days in children, or >4 weeks in adults. In children, persistent diarrhoea often follows an acute episode and can lead to malnutrition. In adults, it may be a sign of underlying HIV or giardiasis.",
       "isChronic": true,
       "durationWeeks": 0,
       "treatmentDurationText": "Variable — depends on cause; usually 1–4 weeks",
@@ -1605,7 +1412,7 @@
           "frequency": "Single dose (may repeat if vomited immediately)",
           "duration": "Once",
           "phase": "Children with persistent diarrhoea",
-          "notes": "Cut the narrow end of the capsule with scissors. Open the child's mouth by gently squeezing the cheeks. Squeeze drops directly into the back of the mouth. Do NOT give the capsule to the caregiver. If the child spits up most of the liquid immediately, give one more dose.",
+          "notes": "Cut the narrow end of the capsule with scissors. Open the child's mouth by gently squeezing the cheeks. Squeeze drops directly into the back of the mouth. Do NOT give the capsule to the caregiver.",
           "isClinical": false,
           "weightBands": [
             { "weight": "6–11 months", "dose": "100,000 IU (1 capsule of 100,000 IU)" },
@@ -1627,7 +1434,7 @@
           "frequency": "Once daily",
           "duration": "3 days",
           "phase": "Empiric treatment for giardiasis in adults",
-          "notes": "Empiric treatment is recommended before referring adults with chronic diarrhoea. Avoid alcohol during treatment — can cause a disulfiram-like reaction.",
+          "notes": "Empiric treatment is recommended before referring adults with chronic diarrhoea. Avoid alcohol during treatment.",
           "isClinical": false
         },
         {
@@ -1636,7 +1443,7 @@
           "frequency": "Continuous",
           "duration": "Until weight gain",
           "phase": "Children with persistent diarrhoea + malnutrition",
-          "notes": "If breastfeeding, give more frequent longer feeds. If replacement feeding, use fermented milk (amasi/maas) or yoghurt if available. Continue solids throughout.",
+          "notes": "If breastfeeding, give more frequent longer feeds. If replacement feeding, use fermented milk (amasi) or yoghurt if available.",
           "isClinical": false
         }
       ],
@@ -1679,20 +1486,208 @@
         "All HIV-negative adults with no pathogen identified and significant diarrhoea"
       ],
       "specialCases": [
-        {
-          "case": "HIV-associated diarrhoea",
-          "note": "See B20 — HIV-associated diarrhoea. Start ART."
-        },
-        {
-          "case": "Giardiasis",
-          "note": "Empiric treatment with metronidazole 2 g daily × 3 days is recommended before referring adults with chronic diarrhoea."
-        },
-        {
-          "case": "Vitamin A in children",
-          "note": "Give Vitamin A as a single dose to children with persistent diarrhoea. Follow the weight/age-band dosing above."
-        }
+        { "case": "HIV-associated diarrhoea", "note": "See B20 — HIV-associated diarrhoea. Start ART." },
+        { "case": "Giardiasis", "note": "Empiric metronidazole 2 g daily × 3 days before referring adults with chronic diarrhoea." },
+        { "case": "Vitamin A in children", "note": "Give Vitamin A as a single dose to children with persistent diarrhoea." }
       ],
       "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 2, Sections 2.9.2 and 2.9.4"
+    },
+
+    "D50": {
+      "icd10Code": "D50",
+      "conditionName": "Iron deficiency anaemia",
+      "overview": "A common cause of anaemia in young children and women of child-bearing age. Low MCV on a full blood count suggests the diagnosis. Iron deficiency is caused by inadequate dietary intake, chronic blood loss (parasites, ulcers, heavy menstruation), or increased requirements (growth, pregnancy). In children under 5, iron deficiency is the most common cause of anaemia and is often accompanied by worm infestation.",
+      "isChronic": true,
+      "durationWeeks": 0,
+      "treatmentDurationText": "Treatment typically 3–6 months after Hb normalises to fully replenish iron stores",
+      "phases": [
+        "Diagnose — Hb below threshold, low MCV on FBC (children <5 don't need FBC unless referral criteria met)",
+        "Treat cause — identify and address underlying blood loss or dietary deficiency",
+        "Iron therapy — oral iron supplements",
+        "Empiric deworming for children",
+        "Follow-up Hb at 14 days (children) or 4 weeks (adults)",
+        "Continue 3–6 months after Hb normalises"
+      ],
+      "medications": [
+        {
+          "name": "Ferrous sulphate compound BPC (dried) — adults",
+          "dosage": "170 mg tablet (± 55 mg elemental iron)",
+          "frequency": "Twice daily with meals",
+          "duration": "3–6 months after Hb normalises",
+          "phase": "Adults — first-line oral iron",
+          "notes": "Do NOT take with tea, coffee, antacids, or calcium supplements/milk — these reduce absorption. Ideally on an empty stomach, but take with meals if GI side effects occur. Continue for 3–6 months after Hb normalises to fully replace iron stores.",
+          "isClinical": false
+        },
+        {
+          "name": "Ferrous fumarate — adults (alternative)",
+          "dosage": "200 mg tablet (± 65 mg elemental iron)",
+          "frequency": "Twice daily",
+          "duration": "3–6 months after Hb normalises",
+          "phase": "Adults — alternative to ferrous sulphate",
+          "notes": "Same precautions as ferrous sulphate. Continue for 3–6 months after Hb normalises.",
+          "isClinical": false
+        },
+        {
+          "name": "Ferrous sulphate — intermittent dosing (if daily poorly tolerated)",
+          "dosage": "340 mg per week (± 110 mg elemental iron)",
+          "frequency": "Once weekly",
+          "duration": "3–6 months after Hb normalises",
+          "phase": "Alternative — if daily iron causes epigastric pain, nausea, vomiting or constipation",
+          "notes": "Only used when daily iron is poorly tolerated. Take with meals.",
+          "isClinical": false
+        },
+        {
+          "name": "Ferrous fumarate — intermittent dosing (if daily poorly tolerated)",
+          "dosage": "400 mg per week (± 130 mg elemental iron)",
+          "frequency": "Once weekly",
+          "duration": "3–6 months after Hb normalises",
+          "phase": "Alternative — if daily iron is poorly tolerated",
+          "notes": "Only when daily iron causes significant GI side effects.",
+          "isClinical": false
+        },
+        {
+          "name": "Iron — children <5 years",
+          "dosage": "1–2 mg/kg/dose of elemental iron",
+          "frequency": "Three times daily (8 hourly) with meals",
+          "duration": "3 months after Hb normalises",
+          "phase": "Children <5 years",
+          "notes": "Follow up Hb after 14 days. If Hb is lower — refer. If Hb is the same or higher — continue and repeat after another 28 days. Continue treatment for 3 months after Hb normalises.",
+          "isClinical": false
+        },
+        {
+          "name": "Mebendazole — empiric deworming for children",
+          "dosage": "Children 1–2 years: 100 mg. Children >2–5 years: 500 mg",
+          "frequency": "Once (may repeat after 2 weeks)",
+          "duration": "Single dose",
+          "phase": "Empiric deworming — children",
+          "notes": "Give to all children with iron deficiency anaemia in endemic areas. Does NOT treat tapeworm.",
+          "isClinical": false,
+          "weightBands": [
+            { "weight": "Children 1–2 years", "dose": "100 mg single dose" },
+            { "weight": "Children >2–5 years", "dose": "500 mg single dose" }
+          ]
+        },
+        {
+          "name": "Albendazole — empiric deworming alternative",
+          "dosage": "Children 1–2 years: 200 mg. Children ≥2 years and adults: 400 mg",
+          "frequency": "Once",
+          "duration": "Single dose",
+          "phase": "Empiric deworming",
+          "notes": "Alternative to mebendazole. Does NOT treat tapeworm.",
+          "isClinical": false,
+          "weightBands": [
+            { "weight": "Children 1–2 years", "dose": "200 mg single dose" },
+            { "weight": "Children ≥2 years and adults", "dose": "400 mg single dose" }
+          ]
+        },
+        {
+          "name": "Ferrous lactate drops — prophylaxis for low birth-weight infants",
+          "dosage": "0.6 mL daily (± 15 mg elemental iron)",
+          "frequency": "Once daily",
+          "duration": "From 6 weeks until 6 months of age",
+          "phase": "Prophylaxis — infants born <2.5 kg",
+          "notes": "Give to preterm/low birth weight infants from 6 weeks of age.",
+          "isClinical": false
+        },
+        {
+          "name": "Ferrous gluconate syrup — prophylaxis for low birth-weight infants",
+          "dosage": "2.5 mL daily (± 15 mg elemental iron)",
+          "frequency": "Once daily",
+          "duration": "From 6 weeks until 6 months of age",
+          "phase": "Prophylaxis — infants born <2.5 kg",
+          "notes": "Alternative to ferrous lactate drops.",
+          "isClinical": false
+        }
+      ],
+      "lifestyleAdvice": [
+        "Avoid drinking tea or coffee with meals — these reduce iron absorption",
+        "Increase vitamin C intake with meals (citrus fruit, orange juice, broccoli, cauliflower, guavas, strawberries)",
+        "Increase dietary iron: liver, kidney, beef, dried beans and peas, green leafy vegetables, fortified wholegrain breads, cereals",
+        "Take iron tablets with meals if they cause stomach upset",
+        "Do NOT take iron with tea, coffee, antacids, milk, or calcium supplements",
+        "Keep all iron tablets OUT OF REACH OF CHILDREN — iron is extremely toxic in overdose",
+        "Continue taking iron for 3–6 months after your Hb normalises — even if you feel better",
+        "Attend all follow-up visits for Hb monitoring",
+        "If you have heavy periods, tell your CHW or doctor — this may be the cause of the anaemia",
+        "If you notice blood in your stool or black tarry stools, report immediately"
+      ],
+      "monitoring": {
+        "everyVisit": [
+          "Pallor check (palmar, conjunctival)",
+          "Tiredness and shortness of breath",
+          "Adherence to iron therapy",
+          "GI side effects"
+        ],
+        "baseline": [
+          "Full blood count with MCV (children <5 years don't need FBC unless referral criteria met)",
+          "Identify underlying cause — bleeding, dietary deficiency",
+          "Screen for parasites if risk factors"
+        ],
+        "followUp": [
+          "Children <5 years: Hb after 14 days",
+          "If Hb lower — refer",
+          "If Hb same or higher — repeat after 28 days",
+          "Adults: Hb after 1 month — should rise by at least 2 g/dL in adherent patients without ongoing blood loss"
+        ]
+      },
+      "followUpSchedule": "Children <5 years: Hb after 14 days; if improving, repeat at 28 days; continue 3 months after normalisation. Adults: Hb after 1 month (expect rise ≥2 g/dL); continue iron 3–6 months after Hb normalises.",
+      "warningSigns": [
+        "Palpitations",
+        "Shortness of breath",
+        "Evidence of cardiac failure",
+        "Enlargement of liver, spleen or lymph nodes",
+        "Signs of acute blood loss",
+        "Blood in stool, or melaena (black tarry stools)",
+        "Menorrhagia or dysfunctional uterine bleeding",
+        "No improvement despite correct treatment"
+      ],
+      "referralCriteria": [
+        "Unknown cause",
+        "Symptomatic anaemia (palpitations, shortness of breath)",
+        "Evidence of cardiac failure",
+        "Signs of chronic disease (investigate for HIV and TB before referral)",
+        "Anaemia with enlarged liver, spleen or lymph nodes",
+        "Evidence of acute blood loss or bleeding disorder",
+        "Menorrhagia or dysfunctional uterine bleeding",
+        "Blood in stool, or melaena",
+        "Children >5 years, adult males, and non-menstruating women (usually occult blood loss)",
+        "Children with Hb ≤7 g/dL (or severe palmar pallor if Hb not available)",
+        "Pregnant women >34 weeks with Hb <7 g/dL",
+        "Anaemia with other abnormalities on FBC or smear",
+        "No or inadequate response to treatment"
+      ],
+      "emergencyProtocol": {
+        "trigger": "Severe symptomatic anaemia — palpitations, shortness of breath at rest, evidence of cardiac failure",
+        "immediateAction": "Refer urgently. If Hb ≤7 g/dL in children or pregnant women >34 weeks, refer for urgent evaluation. Do NOT delay referral.",
+        "outcome": "Severe anaemia can be life-threatening — refer promptly."
+      },
+      "specialCases": [
+        {
+          "case": "Children <5 years",
+          "note": "Iron deficiency is the most common cause of anaemia. Empiric deworming with mebendazole or albendazole is recommended. Follow up Hb after 14 days."
+        },
+        {
+          "case": "Children >5 years, adult males, non-menstruating women",
+          "note": "Iron deficiency anaemia is generally due to occult or overt blood loss. Refer ALL cases for investigation and treatment of the underlying cause."
+        },
+        {
+          "case": "Pregnancy",
+          "note": "See Section 6.4.3 — Anaemia in pregnancy for specific management."
+        },
+        {
+          "case": "Failure to respond to iron therapy",
+          "note": "Consider: non-adherence, continued blood loss, wrong diagnosis, malabsorption, or mixed deficiency (concurrent folate or vitamin B12 deficiency)."
+        },
+        {
+          "case": "Infants <2.5 kg birth weight",
+          "note": "Give ferrous lactate drops 0.6 mL daily OR ferrous gluconate syrup 2.5 mL daily from 6 weeks until 6 months of age."
+        },
+        {
+          "case": "Iron toxicity",
+          "note": "Iron is extremely toxic in overdose — especially in children. Store ALL iron medications out of reach of children."
+        }
+      ],
+      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 3, Sections 3.1 and 3.1.1"
     }
   }
 }

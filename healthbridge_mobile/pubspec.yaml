@@ -44,3 +44,4 @@ flutter:
 
   assets:
     - assets/icd10_common.json
+    - assets/treatment_plans.json

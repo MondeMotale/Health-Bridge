@@ -1,0 +1,282 @@
+{
+  "version": "1.0",
+  "source": "SA PHC Standard Treatment Guidelines 2024",
+  "plans": {
+    "I10": {
+      "icd10Code": "I10",
+      "conditionName": "Essential (primary) hypertension",
+      "overview": "A condition characterised by elevated blood pressure measured on 3 separate occasions, a minimum of 2 days apart: systolic BP ≥ 140 mmHg and/or diastolic BP ≥ 90 mmHg.",
+      "isChronic": true,
+      "durationWeeks": 0,
+      "treatmentDurationText": "Lifelong management",
+      "severityLevels": [
+        { "level": "Mild",     "systolic": "140–159", "diastolic": "90–99"   },
+        { "level": "Moderate", "systolic": "160–179", "diastolic": "100–109" },
+        { "level": "Severe",   "systolic": "≥ 180",   "diastolic": "≥ 110"   }
+      ],
+      "targetBP": "Systolic < 140 mmHg and diastolic < 90 mmHg",
+      "phases": [
+        "Step 1 — Lifestyle modification (3 months trial if no risk factors)",
+        "Step 2 — Add thiazide/thiazide-like diuretic",
+        "Step 3 — Add second antihypertensive",
+        "Step 4 — Increase dose of second medicine",
+        "Step 5 — Add third antihypertensive",
+        "Step 6 — Increase dose of third medicine",
+        "Step 7 — Add fourth medicine (spironolactone) — refer if uncontrolled"
+      ],
+      "medications": [
+        {
+          "name": "Hydrochlorothiazide",
+          "dosage": "12.5 mg",
+          "frequency": "Once daily",
+          "duration": "Ongoing",
+          "phase": "Step 2",
+          "notes": "Thiazide diuretic. Contraindicated in gout, pregnancy, severe liver impairment, eGFR < 30 mL/min.",
+          "isClinical": false
+        },
+        {
+          "name": "Amlodipine",
+          "dosage": "5 mg (can increase to 10 mg)",
+          "frequency": "Once daily",
+          "duration": "Ongoing",
+          "phase": "Step 3 / Step 4",
+          "notes": "Long-acting calcium channel blocker. Avoid in untreated heart failure.",
+          "isClinical": false
+        },
+        {
+          "name": "Enalapril",
+          "dosage": "10 mg (can increase to 20 mg)",
+          "frequency": "Once daily",
+          "duration": "Ongoing",
+          "phase": "Step 3 / Step 4",
+          "notes": "ACE-inhibitor. Contraindicated in pregnancy, bilateral renal artery stenosis, aortic valve stenosis, history of angioedema, hyperkalaemia, eGFR < 30 mL/min.",
+          "isClinical": false
+        },
+        {
+          "name": "Spironolactone",
+          "dosage": "25 mg",
+          "frequency": "Once daily",
+          "duration": "Ongoing",
+          "phase": "Step 7",
+          "notes": "Doctor-initiated only. Risk of severe hyperkalaemia — monitor serum potassium within 1 month of therapy and thereafter. Do NOT use with potassium supplements or NSAIDs.",
+          "isClinical": true
+        }
+      ],
+      "lifestyleAdvice": [
+        "Stop smoking",
+        "Maintain ideal weight (BMI 18–25 kg/m²)",
+        "Salt restriction — remove salt from table, reduce salt in cooking, avoid processed foods",
+        "Increase potassium intake from fresh fruits and vegetables",
+        "Reduce alcohol to ≤ 2 standard drinks/day for males, ≤ 1 for females",
+        "Follow a healthy eating plan (low fat, high fibre, unrefined carbohydrates)",
+        "Regular moderate aerobic exercise — 30 minutes brisk walking, 5–7 times/week"
+      ],
+      "monitoring": {
+        "everyVisit": ["Weight", "Blood pressure"],
+        "baseline": [
+          "Serum creatinine (and eGFR)",
+          "Urine protein by dipstix",
+          "BMI",
+          "Abdominal circumference",
+          "Serum potassium (if on ACE-inhibitor or eGFR < 30 mL/min)"
+        ],
+        "sixMonthly": ["Serum potassium (if on spironolactone or eGFR < 30 mL/min)"],
+        "annually": [
+          "Finger prick blood glucose",
+          "Urine protein by dipstix",
+          "Serum creatinine (and eGFR)"
+        ]
+      },
+      "followUpSchedule": "Monthly monitoring and therapy adjustment until BP is stable. Once target BP achieved, review every 3–6 months. If lifestyle modification alone, re-assess after 3 months.",
+      "warningSigns": [
+        "Severe headache with blurred vision or confusion",
+        "Chest pain / unstable angina",
+        "Shortness of breath / pulmonary oedema",
+        "Neurological signs — coma, seizures, visual disturbances",
+        "Signs of renal failure"
+      ],
+      "referralCriteria": [
+        "Young adults (< 30 years of age)",
+        "BP not controlled on 4 medicines and no doctor available",
+        "Pregnancy",
+        "Signs of hypertension-mediated organ damage",
+        "Severe adverse drug reactions",
+        "Hypertensive urgency or emergency",
+        "Severe renal impairment (eGFR < 30 mL/min)"
+      ],
+      "emergencyProtocol": {
+        "trigger": "Systolic BP > 180 mmHg and/or diastolic BP > 130 mmHg WITH organ damage symptoms",
+        "immediateAction": "Amlodipine 10 mg oral as single dose. If pulmonary oedema: Furosemide 40 mg IV.",
+        "outcome": "Life-threatening — needs immediate referral to hospital"
+      },
+      "specialCases": [
+        {
+          "case": "Elderly (without co-existing disease)",
+          "note": "Initiate medicine treatment only when BP > 160/90 mmHg. Lower BP slowly over a few days."
+        },
+        {
+          "case": "Pregnancy-induced hypertension",
+          "note": "See Section 6.4.2 — Hypertensive disorders of pregnancy"
+        },
+        {
+          "case": "Acute stroke",
+          "note": "Do NOT treat elevated BP at PHC — refer urgently"
+        }
+      ],
+      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 4, Section 4.7.1"
+    },
+
+    "E11.9": {
+      "icd10Code": "E11.9",
+      "conditionName": "Type 2 Diabetes Mellitus",
+      "overview": "A chronic metabolic disease characterised by hyperglycaemia with serious acute and chronic complications. Most adults with type 2 diabetes are overweight.",
+      "isChronic": true,
+      "durationWeeks": 0,
+      "treatmentDurationText": "Lifelong management",
+      "glycaemicTargets": [
+        {
+          "patientType": "Young, low risk / Newly diagnosed / No CVD",
+          "hba1c": "< 6.5%",
+          "fbg": "4.0–7.0 mmol/L",
+          "ppg": "4.4–7.8 mmol/L"
+        },
+        {
+          "patientType": "Majority of patients",
+          "hba1c": "< 7.0%",
+          "fbg": "4.0–7.0 mmol/L",
+          "ppg": "5.0–10.0 mmol/L"
+        },
+        {
+          "patientType": "Elderly / High risk / Hypoglycaemic unawareness",
+          "hba1c": "< 7.5%",
+          "fbg": "4.0–7.0 mmol/L",
+          "ppg": "< 12.0 mmol/L"
+        }
+      ],
+      "nonGlycaemicTargets": {
+        "bmi": "≤ 25 kg/m²",
+        "bloodPressure": "≤ 140/90 mmHg and ≥ 120/70 mmHg"
+      },
+      "phases": [
+        "Step 1 — Lifestyle modification + Metformin",
+        "Step 2 — Add sulphonylurea (if HbA1c not at target after 2–3 months)",
+        "Step 3 — Insulin therapy (doctor-initiated; stop sulphonylurea, continue metformin)"
+      ],
+      "medications": [
+        {
+          "name": "Metformin",
+          "dosage": "500 mg starting dose",
+          "frequency": "Once daily with meals, titrate slowly",
+          "duration": "Ongoing",
+          "phase": "Step 1",
+          "notes": "First-line agent. Contraindicated in uncontrolled congestive cardiac failure, severe liver disease, significant respiratory compromise, and renal impairment (eGFR < 30 mL/min).",
+          "isClinical": false,
+          "renalAdjustment": [
+            { "eGFR": "> 60 mL/min", "dose": "Normal daily dose" },
+            { "eGFR": "45–60 mL/min", "dose": "Standard dose; monitor every 3–6 months" },
+            { "eGFR": "30–45 mL/min", "dose": "Maximum 1 g per day" },
+            { "eGFR": "< 30 mL/min", "dose": "STOP metformin" }
+          ]
+        },
+        {
+          "name": "Gliclazide",
+          "dosage": "30 mg starting",
+          "frequency": "Once daily with breakfast",
+          "duration": "Ongoing",
+          "phase": "Step 2",
+          "notes": "Preferred sulphonylurea in the elderly. Only add if HbA1c > 8% despite 2–3 months of maximal metformin. Missing meals may cause hypoglycaemia.",
+          "isClinical": false
+        },
+        {
+          "name": "Insulin (Intermediate to long-acting)",
+          "dosage": "10 units starting dose",
+          "frequency": "Evening before bed (not after 22:00)",
+          "duration": "Ongoing",
+          "phase": "Step 3",
+          "notes": "Doctor-initiated. If 10 units ineffective, increase gradually to 20 units (2–4 unit increase per week). Continue metformin; STOP sulphonylurea when insulin is initiated.",
+          "isClinical": true
+        }
+      ],
+      "lifestyleAdvice": [
+        "Regular, evenly-spaced meals with small portions",
+        "Nutritionally balanced meals — one protein, one starch, two vegetables, one fruit, water",
+        "Strict carbohydrate control — favour whole grains, legumes, vegetables",
+        "Discourage processed/refined carbs (takeaways, cakes, white bread, sugary drinks)",
+        "Aim for 5 servings of fruit/vegetables per day; limit fruit to 2 servings/day",
+        "Prefer fat-free or low-fat dairy",
+        "Eat oily fish (sardines, pilchards) 2–3 times per week",
+        "Salt: do not exceed half a teaspoon per day",
+        "Increased physical activity — 30 minutes, 5 times a week",
+        "Appropriate weight loss if overweight",
+        "Stop smoking; limit alcohol",
+        "Foot care education — inspect feet daily",
+        "Wear a medical notification bracelet"
+      ],
+      "portionGuide": {
+        "protein": "Size of your palm (about 90 g or ½ cup)",
+        "fruitsVegStarch": "No larger than your clenched fist (1 cup)",
+        "healthyFats": "Size of thumb tip (1 teaspoon)",
+        "hardCheeseOrPeanutButter": "Length of your thumb (1 tablespoon)"
+      },
+      "monitoring": {
+        "everyVisit": [
+          "Finger-prick blood glucose",
+          "Weight",
+          "Blood pressure"
+        ],
+        "baseline": [
+          "Serum creatinine and eGFR",
+          "Urine protein by dipstix",
+          "BMI",
+          "Blood lipids",
+          "Foot examination",
+          "Eye examination for retinopathy"
+        ],
+        "annually": [
+          "Serum creatinine and eGFR",
+          "Urine protein by dipstix",
+          "HbA1c (every 3–6 months while therapy changes)",
+          "Eye examination",
+          "Foot examination"
+        ]
+      },
+      "followUpSchedule": "Review monthly until stable. Once at target, review every 3–6 months. HbA1c every 3–6 months while therapy changes. Annual comprehensive review.",
+      "warningSigns": [
+        "Blood glucose < 4 mmol/L (hypoglycaemia) — treat immediately",
+        "Altered level of consciousness",
+        "Acidotic breathing (DKA)",
+        "Dehydration and hypotension",
+        "Nausea, vomiting, abdominal pain",
+        "Ketonuria (more than 1+)",
+        "Hyperglycaemia > 25 mmol/L",
+        "Sudden deterioration of vision",
+        "Serious infections"
+      ],
+      "referralCriteria": [
+        "Acidotic breathing",
+        "Dehydration and hypotension",
+        "Nausea, vomiting, and abdominal pain",
+        "Ketonuria (> 1+)",
+        "Hyperglycaemia > 25 mmol/L",
+        "Pregnancy",
+        "eGFR < 30 mL/min",
+        "Ischaemic heart disease",
+        "Progressive loss of vision"
+      ],
+      "emergencyProtocol": {
+        "trigger": "Altered level of consciousness, acidotic breathing, dehydration, ketonuria, or glucose > 25 mmol/L",
+        "classification": [
+          { "type": "DKA", "glucose": "≥ 11.1 mmol/L", "ketones": "Positive, often > 1+" },
+          { "type": "HHS", "glucose": "Usually > 40 mmol/L", "ketones": "Usually negative" },
+          { "type": "Hypoglycaemia", "glucose": "< 4 mmol/L", "ketones": "Usually negative" }
+        ],
+        "immediateAction": "Check blood glucose and test urine for ketones. If diagnosis uncertain, treat as hypoglycaemia and refer urgently.",
+        "hypoglycaemiaTreatment": {
+          "conscious": "Sweets, sugar, glucose by mouth, OR oral sugar solution (3 tsp sugar in 200 mL water)",
+          "unconscious": "Dextrose 10% IV, 2–5 mL/kg. Re-check glucose 10–15 min later."
+        }
+      },
+      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 9, Section 9.2.2"
+    }
+  }
+}

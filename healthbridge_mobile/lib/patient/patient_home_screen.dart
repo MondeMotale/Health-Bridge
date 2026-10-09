@@ -65,6 +65,12 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                         _buildHealthTip(),
                         const SizedBox(height: 20),
 
+                        // ---------- YOUR HEALTH CONDITION ----------
+                        if (patient != null && patient.condition.isNotEmpty) ...[
+                          _buildConditionCard(patient),
+                          const SizedBox(height: 20),
+                        ],
+
                         // ---------- YOUR CHW (mini card) ----------
                         _buildChwPreview(patient),
                         const SizedBox(height: 30),
@@ -468,6 +474,66 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                     fontSize: 14,
                     color: Color(0xFF1A1A2E),
                     height: 1.3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ---------- YOUR HEALTH CONDITION ----------
+  Widget _buildConditionCard(Patient patient) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: const Color(0xFF1E3A8A).withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(
+              Icons.medical_information,
+              color: Color(0xFF1E3A8A),
+              size: 22,
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Your Health Condition',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF6B7280),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  patient.condition,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF1A1A2E),
                   ),
                 ),
               ],

@@ -773,7 +773,7 @@
         "TB in children (<12 years) requiring chest X-ray for diagnosis",
         "Previously treated TB requiring re-treatment",
         "Contact of a patient with drug-resistant TB",
-        "Unable to be managed on an ambulatory basis (e.g. severe clinical condition)",
+        "Unable to be managed on an ambulatory basis",
         "Pregnancy — refer for expert TB management"
       ],
       "emergencyProtocol": {
@@ -784,7 +784,7 @@
       "specialCases": [
         {
           "case": "HIV co-infection",
-          "note": "Treat TB and HIV. Start TB treatment first, then add ART based on CD4: <50 = within 2 weeks; ≥50 = defer until 8 weeks. Watch for Immune Reconstitution Inflammatory Syndrome (IRIS). Rifampicin reduces DTG concentration — double DTG dose to 50 mg twice daily while on rifampicin (extra dose 12 hours after TLD)."
+          "note": "Treat TB and HIV. Start TB treatment first, then add ART based on CD4: <50 = within 2 weeks; ≥50 = defer until 8 weeks. Watch for Immune Reconstitution Inflammatory Syndrome (IRIS). Rifampicin reduces DTG concentration — double DTG dose to 50 mg twice daily while on rifampicin."
         },
         {
           "case": "Renal impairment (eGFR <30 mL/min)",
@@ -792,23 +792,19 @@
         },
         {
           "case": "Pregnancy and breastfeeding",
-          "note": "Rifampicin, isoniazid, pyrazinamide and ethambutol are all safe in pregnancy. Do NOT use pyridoxine-free regimen — give pyridoxine 25 mg daily. Refer to Section 6.4.2 for obstetric management."
+          "note": "Rifampicin, isoniazid, pyrazinamide and ethambutol are all safe in pregnancy. Give pyridoxine 25 mg daily."
         },
         {
           "case": "Drug-induced hepatitis",
-          "note": "Rifampicin, isoniazid and pyrazinamide can cause hepatitis. If jaundice or hepatitis symptoms develop: stop all TB medicines, refer urgently for same-day ALT, do not restart until specialist advice."
+          "note": "Rifampicin, isoniazid and pyrazinamide can cause hepatitis. If jaundice or hepatitis symptoms develop: stop all TB medicines, refer urgently for same-day ALT."
         },
         {
           "case": "Pyridoxine (vitamin B6)",
-          "note": "Give 25 mg daily alongside TB treatment to prevent isoniazid-induced peripheral neuropathy — especially important for patients living with HIV, pregnant women, malnourished patients, and those with existing neuropathy."
-        },
-        {
-          "case": "Directly observed therapy (DOT)",
-          "note": "Where possible, all TB patients should have a treatment supporter (family member, CHW, or clinic staff) to observe each dose and support adherence. Missed doses must be followed up the same day."
+          "note": "Give 25 mg daily alongside TB treatment to prevent isoniazid-induced peripheral neuropathy."
         },
         {
           "case": "Contraception while on TB treatment",
-          "note": "Rifampicin reduces the efficacy of combined oral contraceptives and progestin-only implants. Advise IUD or DMPA (injectable) as preferred. If using a progestin-only implant, additional barrier contraception is needed during TB therapy."
+          "note": "Rifampicin reduces the efficacy of combined oral contraceptives and progestin-only implants. Advise IUD or DMPA."
         }
       ],
       "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 17, Sections 17.4.1 and 17.4.1.2 (Pulmonary tuberculosis, in adults)"
@@ -874,39 +870,39 @@
         "Do not stop treatment even if you feel better — completing 6 months is essential to prevent resistance",
         "If you miss more than 2 doses, tell your CHW or clinic immediately",
         "Cover your mouth when you cough or sneeze — TB spreads through the air",
-        "Open windows and let in sunlight at home — TB spreads less in well-ventilated spaces",
+        "Open windows and let in sunlight at home",
         "Sleep in a separate room from others if possible during the first 2 weeks of treatment",
         "Eat a nutritious, balanced diet — TB treatment works best with good nutrition",
-        "Stop smoking and avoid excessive alcohol — both worsen TB and slow recovery",
+        "Stop smoking and avoid excessive alcohol",
         "Attend every follow-up appointment",
         "Wear a mask in crowded public spaces while you are still infectious (first 2 weeks)",
-        "Inform close contacts (family, colleagues) so they can be screened for TB",
+        "Inform close contacts so they can be screened for TB",
         "If you have HIV, take your ART alongside TB treatment every day",
         "Report any of these immediately: yellow eyes/skin, dark urine, severe nausea, tingling in hands/feet, skin rash"
       ],
       "monitoring": {
         "everyVisit": [
           "Weight — adjust tablet count if weight changes significantly",
-          "Ask about adherence — how many doses missed",
-          "Ask about side effects (nausea, rash, tingling, yellow eyes)",
+          "Ask about adherence",
+          "Ask about side effects",
           "Check for clinical improvement (cough, fever, weight gain)"
         ],
         "baseline": [
           "Sputum TB-NAAT — if negative, still treat if clinical picture is convincing",
           "Sputum smear microscopy and culture (for confirmation)",
-          "Chest X-ray if available — suggestive findings support diagnosis",
+          "Chest X-ray if available",
           "Baseline weight for dosing",
           "HIV test — if positive, refer for ART",
-          "Baseline ALT (if jaundiced or risk factors for liver disease)",
+          "Baseline ALT",
           "Screen for diabetes if risk factors"
         ],
         "atMonths": [
-          "Month 2 — sputum smear microscopy (for follow-up)",
+          "Month 2 — sputum smear microscopy",
           "Month 5 — sputum smear microscopy",
           "Month 6 — sputum smear microscopy (confirm completion)"
         ]
       },
-      "followUpSchedule": "Monthly clinical review. Sputum smear microscopy at month 2, month 5, and month 6. If smear remains positive at month 2, consider adherence issues and drug-resistant TB — refer for evaluation. Note: for clinically-diagnosed (unconfirmed) TB, the response to treatment is the main confirmation of the diagnosis.",
+      "followUpSchedule": "Monthly clinical review. Sputum smear microscopy at month 2, month 5, and month 6. If smear remains positive at month 2, consider adherence issues and drug-resistant TB — refer for evaluation.",
       "warningSigns": [
         "Yellow eyes or skin (jaundice)",
         "Dark brown urine",
@@ -920,49 +916,504 @@
       ],
       "referralCriteria": [
         "Disseminated forms of TB (miliary, extrapulmonary)",
-        "TB meningitis (refer urgently — defer ART for 8 weeks)",
+        "TB meningitis",
         "Drug-resistant TB confirmed or suspected",
         "Failure to improve after 2 months of treatment despite adherence",
         "Treatment failure (positive smear at month 5 or 6)",
-        "Severe adverse drug reactions (hepatitis, drug rash, peripheral neuropathy worsening despite pyridoxine)",
-        "TB in children (<12 years) requiring chest X-ray for diagnosis",
+        "Severe adverse drug reactions",
+        "TB in children (<12 years)",
         "Previously treated TB requiring re-treatment",
         "Contact of a patient with drug-resistant TB",
         "Unable to be managed on an ambulatory basis",
-        "Pregnancy — refer for expert TB management"
+        "Pregnancy"
       ],
       "emergencyProtocol": {
-        "trigger": "Signs of disseminated TB, TB meningitis, or severe adverse drug reaction (hepatitis, drug rash with systemic features)",
-        "immediateAction": "Refer to hospital same day. For suspected TB meningitis (fever + neck stiffness + headache): urgent LP and referral. For suspected drug-induced hepatitis: STOP all TB medicines before referral.",
-        "outcome": "Life-threatening if not treated promptly. Do not delay referral."
+        "trigger": "Signs of disseminated TB, TB meningitis, or severe adverse drug reaction",
+        "immediateAction": "Refer to hospital same day. For suspected TB meningitis: urgent LP and referral. For suspected drug-induced hepatitis: STOP all TB medicines before referral.",
+        "outcome": "Life-threatening if not treated promptly."
       },
       "specialCases": [
         {
           "case": "HIV co-infection",
-          "note": "Treat TB and HIV. Start TB treatment first, then add ART based on CD4: <50 = within 2 weeks; ≥50 = defer until 8 weeks. Watch for IRIS. Rifampicin reduces DTG concentration — double DTG dose to 50 mg twice daily while on rifampicin."
+          "note": "Treat TB and HIV. Start TB treatment first, then add ART based on CD4. Rifampicin reduces DTG concentration — double DTG dose while on rifampicin."
         },
         {
           "case": "Renal impairment (eGFR <30 mL/min)",
-          "note": "Ethambutol 15–25 mg/kg three times weekly. Pyrazinamide 20–30 mg/kg three times weekly. Rifampicin and isoniazid do not require dose adjustment."
+          "note": "Ethambutol 15–25 mg/kg three times weekly. Pyrazinamide 20–30 mg/kg three times weekly. Rifampicin and isoniazid do not require adjustment."
         },
         {
           "case": "Pregnancy and breastfeeding",
-          "note": "Rifampicin, isoniazid, pyrazinamide and ethambutol are all safe in pregnancy. Give pyridoxine 25 mg daily."
+          "note": "All first-line TB drugs are safe in pregnancy. Give pyridoxine 25 mg daily."
         },
         {
           "case": "Drug-induced hepatitis",
-          "note": "Rifampicin, isoniazid and pyrazinamide can cause hepatitis. If jaundice or hepatitis symptoms develop: stop all TB medicines, refer urgently for same-day ALT."
+          "note": "Stop all TB medicines, refer urgently for same-day ALT."
         },
         {
-          "case": "Pyridoxine (vitamin B6)",
-          "note": "Give 25 mg daily alongside TB treatment to prevent isoniazid-induced peripheral neuropathy."
+          "case": "Pyridoxine",
+          "note": "Give 25 mg daily alongside TB treatment."
         },
         {
-          "case": "Contraception while on TB treatment",
-          "note": "Rifampicin reduces the efficacy of combined oral contraceptives and progestin-only implants. Advise IUD or DMPA. If using a progestin-only implant, additional barrier contraception is needed during TB therapy."
+          "case": "Contraception",
+          "note": "Rifampicin reduces the efficacy of combined oral contraceptives. Advise IUD or DMPA."
         }
       ],
-      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 17, Sections 17.4.1 and 17.4.1.2 (Pulmonary tuberculosis, in adults)"
+      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 17, Sections 17.4.1 and 17.4.1.2"
+    },
+
+    "J45": {
+      "icd10Code": "J45",
+      "conditionName": "Chronic asthma",
+      "overview": "Asthma is a chronic inflammatory disorder of the airways. Exposure to triggers causes inflammation, bronchospasm, and increased mucus production, leading to episodes of wheezing, shortness of breath, chest tightness, and cough — especially at night or early morning. Asthma cannot be cured, but it can be well-controlled with regular treatment. Most treatment failures are due to poor inhaler technique or poor adherence.",
+      "isChronic": true,
+      "durationWeeks": 0,
+      "treatmentDurationText": "Lifelong management — controlled with regular treatment",
+      "severityLevels": [
+        { "level": "Step 1 (Mild)", "systolic": "Symptoms <2× per month; no exacerbations in last 12 months", "diastolic": "Salbutamol as needed + low-dose ICS with each dose" },
+        { "level": "Step 2 (Moderate)", "systolic": "Symptoms or reliever need ≥2× per month; any exacerbations in last 12 months", "diastolic": "Low-dose daily ICS + reliever as needed" },
+        { "level": "Step 3 (Severe)", "systolic": "Troublesome symptoms most days; waking at night ≥1× per week", "diastolic": "High-dose daily ICS + reliever; escalate to LABA/ICS if uncontrolled" }
+      ],
+      "phases": [
+        "Step 1 — Reliever + low-dose ICS with each reliever dose (mild asthma)",
+        "Step 2 — Daily low-dose ICS controller + reliever as needed (moderate asthma)",
+        "Step 3 — High-dose daily ICS + reliever; escalate to LABA/ICS combination if not controlled",
+        "Step-down — Only after 6 months of stability, taper slowly under clinical supervision"
+      ],
+      "medications": [
+        {
+          "name": "Salbutamol (Reliever / Rescue Inhaler)",
+          "dosage": "100 mcg per puff",
+          "frequency": "200 mcg (2 puffs) as needed",
+          "duration": "As needed",
+          "phase": "All steps — reliever",
+          "notes": "Short-acting beta-2 agonist (SABA). Provides immediate relief of wheeze, cough, chest tightness. Increasing use of reliever means asthma is NOT controlled — escalate controller therapy. Always use with a spacer for best effect. Shake inhaler between puffs.",
+          "isClinical": false
+        },
+        {
+          "name": "Beclomethasone (Inhaled Corticosteroid — Controller)",
+          "dosage": "100 mcg per puff",
+          "frequency": "Step 1: 200 mcg whenever salbutamol taken. Step 2: 200 mcg twice daily. Step 3: 400 mcg twice daily",
+          "duration": "Ongoing",
+          "phase": "Steps 1–3 — controller / preventer",
+          "notes": "Inhaled corticosteroid (ICS). Must be used every day, even when you feel well. Takes 1–2 weeks to work. Rinse mouth after each dose to prevent oral thrush. Preferred ICS in patients on protease inhibitors (HIV).",
+          "isClinical": false
+        },
+        {
+          "name": "Budesonide (Inhaled Corticosteroid — Controller)",
+          "dosage": "200 mcg per puff (or 100 mcg for children <6 years)",
+          "frequency": "Step 1: 200 mcg with each reliever dose. Step 2: 200 mcg twice daily (children: 100 mcg twice daily). Step 3: 400 mcg twice daily",
+          "duration": "Ongoing",
+          "phase": "Steps 1–3 — controller / preventer",
+          "notes": "Alternative ICS. Interacts with protease inhibitors (HIV) — use beclomethasone instead if on PIs. Dose can be halved after 6 months of stability. Adjust at change of seasons.",
+          "isClinical": false
+        },
+        {
+          "name": "Salmeterol/Fluticasone Combination (LABA/ICS)",
+          "dosage": "50/250 mcg per puff",
+          "frequency": "1 puff twice daily",
+          "duration": "Ongoing",
+          "phase": "Step 3 (escalation) — doctor-initiated",
+          "notes": "Long-acting beta agonist + inhaled corticosteroid in one inhaler. Used when Step 3 ICS alone is not controlling symptoms. STOP the standalone ICS before starting this combination.",
+          "isClinical": true
+        }
+      ],
+      "lifestyleAdvice": [
+        "Avoid triggers — dust, pollen, smoke, cold air, exercise-induced (use reliever 15 min before exercise)",
+        "Stop smoking and avoid second-hand smoke",
+        "Keep pets out of the bedroom if pet dander triggers your asthma",
+        "Wash bedding weekly in hot water to reduce dust mites",
+        "Use a spacer with your inhaler — it doubles the amount of medicine that reaches your lungs",
+        "Rinse your mouth after using the preventer inhaler to avoid thrush",
+        "Keep a reliever inhaler with you at all times — for emergencies",
+        "Never run out of your controller inhaler — order refills before they finish",
+        "Track your peak flow at home if you have a PEFR meter — record morning and evening",
+        "Follow your asthma action plan — know your GREEN, YELLOW, and RED zones",
+        "Get your annual flu vaccine — flu can trigger severe asthma attacks",
+        "If symptoms wake you at night or limit exercise, your asthma is not controlled — see your CHW",
+        "Avoid sedatives and sleeping tablets during an asthma attack"
+      ],
+      "monitoring": {
+        "everyVisit": [
+          "Ask about daytime and night-time symptoms",
+          "Ask about reliever use — how many times per week",
+          "Check inhaler technique (watch the patient use it)",
+          "Check adherence to preventer therapy",
+          "Peak flow — compare with personal best"
+        ],
+        "baseline": [
+          "Confirm diagnosis with PEFR improvement test (salbutamol 200 mcg → PEFR improvement ≥20% or ≥60 L/min after 10–20 min)",
+          "Full history: symptoms, triggers, family history, allergy history",
+          "Check inhaler technique — teach correct use",
+          "Rule out COPD (age >40, smoking history, persistent symptoms)"
+        ],
+        "everyThreeMonths": [
+          "Review control: ≤2 daytime symptoms/week, no night-time symptoms, no admissions, PEFR ≥80% personal best",
+          "Step down if stable for 6 months",
+          "Step up if control inadequate — check adherence + technique first"
+        ]
+      },
+      "followUpSchedule": "Review every 3 months once stable. Assess asthma control at each visit: daytime symptoms, night-time waking, reliever use, exercise limitation. Step up if uncontrolled; step down slowly after 6 months of stability. If >2 courses of oral prednisone in 6 months, refer to doctor.",
+      "warningSigns": [
+        "Reliever needed more than 4 times a day — poor control",
+        "Waking up at night with cough or wheeze",
+        "Unable to speak full sentences due to breathlessness",
+        "Chest tightness that doesn't respond to reliever",
+        "Bluish lips or fingertips (cyanosis)",
+        "Drowsiness or confusion during an attack",
+        "Reliever not lasting 4 hours"
+      ],
+      "referralCriteria": [
+        "All children <6 years of age — for diagnosis confirmation",
+        "Any patient who has received >2 courses of oral prednisone within 6 months",
+        "Brittle asthma — very sudden, very severe attacks",
+        "All patients without adequate control on Step 2 or Step 3 treatment",
+        "Patients on protease inhibitors (HIV) requiring inhaled fluticasone",
+        "Uncontrolled asthma — refer to hospital",
+        "Diagnosis uncertain — refer for specialist assessment"
+      ],
+      "emergencyProtocol": {
+        "trigger": "Severe or life-threatening asthma attack (see J46 for full acute protocol)",
+        "immediateAction": "See J46 — Status asthmaticus for the acute severe attack protocol.",
+        "outcome": "Refer urgently after commencing initial treatment."
+      },
+      "inhalerTechnique": {
+        "mdi": "1. Remove the cap and shake the inhaler well.\n2. Breathe out gently, away from the inhaler.\n3. Place the mouthpiece between your teeth and seal your lips around it. Do NOT bite it.\n4. Press the canister down and breathe in slowly and deeply through your mouth (over 3–5 seconds).\n5. Hold your breath for up to 10 seconds, then breathe out slowly.\n6. Wait 30 seconds before the next puff (needed if you must take 2 puffs).\n7. Shake the inhaler between puffs.\n8. Rinse your mouth with water after using a steroid inhaler.",
+        "spacer": "1. Remove the cap from the inhaler and shake it well.\n2. Insert the inhaler into the end of the spacer.\n3. Place the mouthpiece of the spacer in your mouth and seal your lips around it.\n4. Press the canister ONCE to release a puff into the spacer.\n5. Breathe in and out SLOWLY through the spacer 5–6 times (do not breathe rapidly).\n6. Wait 30 seconds before the next puff.\n7. Wash the spacer weekly in warm soapy water, and let it air-dry (do not wipe dry — this causes static that reduces delivery).\n8. Replace the spacer every 6–12 months.",
+        "nebulizer": "1. Wash hands. Assemble the nebulizer and connect to the compressor.\n2. Add the prescribed medicine to the nebulizer chamber.\n3. Sit upright and place the mouthpiece in your mouth (or use a mask covering nose and mouth).\n4. Turn on the compressor — a mist should appear.\n5. Breathe normally through your mouth until the mist stops (usually 5–10 minutes).\n6. Tap the chamber occasionally to move medicine to the bottom.\n7. Wash the nebulizer chamber and mouthpiece after each use in warm soapy water, rinse, and air-dry.",
+        "generalTips": [
+          "Always shake the MDI inhaler well before each use — medicine settles at the bottom.",
+          "Use a spacer for ALL children and ALL adults on Step 3 therapy and above.",
+          "Rinse your mouth with water after using a steroid (preventer) inhaler to prevent oral thrush.",
+          "Wait 30 seconds between each puff of the same medicine.",
+          "If you are using both a reliever and a preventer, use the reliever FIRST, wait 5 minutes, then use the preventer — this opens the airways so the preventer reaches deep into the lungs.",
+          "Check the dose counter on your inhaler — order a refill before it runs out.",
+          "Store inhalers at room temperature — do not leave them in a hot car.",
+          "Bring your inhaler to every clinic appointment so your CHW can check your technique.",
+          "Ask your CHW or pharmacist to watch you use your inhaler if you're not sure about the technique."
+        ]
+      },
+      "specialCases": [
+        {
+          "case": "Children <6 years of age",
+          "note": "Diagnosis is difficult in young children — refer all for assessment. Step 2 dose uses beclomethasone 100 mcg twice daily."
+        },
+        {
+          "case": "Patients on protease inhibitors (HIV)",
+          "note": "Use beclomethasone (not budesonide) — budesonide and fluticasone interact with protease inhibitors. Refer if fluticasone is needed."
+        },
+        {
+          "case": "Exercise-induced asthma",
+          "note": "Use reliever 15 minutes before exercise. If no response to reliever, consider alternative diagnosis."
+        },
+        {
+          "case": "Pregnancy",
+          "note": "Continue asthma treatment in pregnancy — uncontrolled asthma is more dangerous than the medicines. Refer for review."
+        },
+        {
+          "case": "COPD vs. asthma",
+          "note": "Asthma: young onset, allergies, intermittent symptoms, marked response to salbutamol. COPD: older onset, smoking history, persistent symptoms, poor response to salbutamol. Do a PEFR test to distinguish."
+        }
+      ],
+      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 17, Section 17.1.3 (Chronic asthma)"
+    },
+
+    "J45.9": {
+      "icd10Code": "J45.9",
+      "conditionName": "Asthma, unspecified",
+      "overview": "Asthma is a chronic inflammatory disorder of the airways. Exposure to triggers causes inflammation, bronchospasm, and increased mucus production, leading to episodes of wheezing, shortness of breath, chest tightness, and cough. This is the same condition as J45 (asthma) and is treated identically — the code is used when the specific asthma subtype is not specified.",
+      "isChronic": true,
+      "durationWeeks": 0,
+      "treatmentDurationText": "Lifelong management — controlled with regular treatment",
+      "severityLevels": [
+        { "level": "Step 1 (Mild)", "systolic": "Symptoms <2× per month; no exacerbations in last 12 months", "diastolic": "Salbutamol as needed + low-dose ICS with each dose" },
+        { "level": "Step 2 (Moderate)", "systolic": "Symptoms or reliever need ≥2× per month; any exacerbations in last 12 months", "diastolic": "Low-dose daily ICS + reliever as needed" },
+        { "level": "Step 3 (Severe)", "systolic": "Troublesome symptoms most days; waking at night ≥1× per week", "diastolic": "High-dose daily ICS + reliever; escalate to LABA/ICS if uncontrolled" }
+      ],
+      "phases": [
+        "Step 1 — Reliever + low-dose ICS with each reliever dose (mild asthma)",
+        "Step 2 — Daily low-dose ICS controller + reliever as needed (moderate asthma)",
+        "Step 3 — High-dose daily ICS + reliever; escalate to LABA/ICS combination if not controlled"
+      ],
+      "medications": [
+        {
+          "name": "Salbutamol (Reliever / Rescue Inhaler)",
+          "dosage": "100 mcg per puff",
+          "frequency": "200 mcg (2 puffs) as needed",
+          "duration": "As needed",
+          "phase": "All steps — reliever",
+          "notes": "Short-acting beta-2 agonist. Provides immediate relief. Increasing use of reliever means asthma is NOT controlled.",
+          "isClinical": false
+        },
+        {
+          "name": "Beclomethasone (Inhaled Corticosteroid — Controller)",
+          "dosage": "100 mcg per puff",
+          "frequency": "Step 1: 200 mcg with each salbutamol dose. Step 2: 200 mcg twice daily. Step 3: 400 mcg twice daily",
+          "duration": "Ongoing",
+          "phase": "Steps 1–3 — controller",
+          "notes": "Must be used every day, even when you feel well. Preferred ICS in patients on protease inhibitors (HIV). Rinse mouth after use.",
+          "isClinical": false
+        },
+        {
+          "name": "Budesonide (Inhaled Corticosteroid — Controller)",
+          "dosage": "200 mcg per puff",
+          "frequency": "Step 2: 200 mcg twice daily. Step 3: 400 mcg twice daily",
+          "duration": "Ongoing",
+          "phase": "Steps 2–3 — controller",
+          "notes": "Alternative to beclomethasone. Interacts with protease inhibitors (HIV).",
+          "isClinical": false
+        },
+        {
+          "name": "Salmeterol/Fluticasone Combination (LABA/ICS)",
+          "dosage": "50/250 mcg per puff",
+          "frequency": "1 puff twice daily",
+          "duration": "Ongoing",
+          "phase": "Step 3 (escalation) — doctor-initiated",
+          "notes": "Used when Step 3 ICS alone is not controlling symptoms.",
+          "isClinical": true
+        }
+      ],
+      "lifestyleAdvice": [
+        "Avoid triggers — dust, pollen, smoke, cold air",
+        "Stop smoking and avoid second-hand smoke",
+        "Keep pets out of the bedroom if pet dander triggers your asthma",
+        "Wash bedding weekly in hot water",
+        "Use a spacer with your inhaler",
+        "Rinse mouth after using the preventer inhaler",
+        "Keep a reliever inhaler with you at all times",
+        "Track peak flow at home if you have a PEFR meter",
+        "Get your annual flu vaccine",
+        "If symptoms wake you at night, your asthma is not controlled — see your CHW"
+      ],
+      "monitoring": {
+        "everyVisit": [
+          "Ask about daytime and night-time symptoms",
+          "Ask about reliever use",
+          "Check inhaler technique",
+          "Check adherence",
+          "Peak flow — compare with personal best"
+        ],
+        "baseline": [
+          "Confirm diagnosis with PEFR improvement test",
+          "Check inhaler technique",
+          "Rule out COPD"
+        ],
+        "everyThreeMonths": [
+          "Review control: ≤2 daytime symptoms/week, no night-time, no admissions, PEFR ≥80%",
+          "Step down if stable 6 months",
+          "Step up if uncontrolled — check adherence + technique first"
+        ]
+      },
+      "followUpSchedule": "Review every 3 months once stable. Step up if uncontrolled; step down slowly after 6 months of stability. If >2 courses of oral prednisone in 6 months, refer to doctor.",
+      "warningSigns": [
+        "Reliever needed more than 4 times a day — poor control",
+        "Waking up at night with cough or wheeze",
+        "Unable to speak full sentences due to breathlessness",
+        "Chest tightness that doesn't respond to reliever",
+        "Bluish lips or fingertips (cyanosis)",
+        "Drowsiness or confusion during an attack"
+      ],
+      "referralCriteria": [
+        "All children <6 years of age",
+        ">2 courses of oral prednisone within 6 months",
+        "Brittle asthma",
+        "Inadequate control on Step 2 or Step 3",
+        "Patients on protease inhibitors requiring inhaled fluticasone",
+        "Uncontrolled asthma",
+        "Diagnosis uncertain"
+      ],
+      "inhalerTechnique": {
+        "mdi": "1. Remove cap and shake the inhaler well.\n2. Breathe out gently.\n3. Seal your lips around the mouthpiece.\n4. Press the canister and breathe in slowly and deeply (3–5 seconds).\n5. Hold your breath for up to 10 seconds.\n6. Wait 30 seconds between puffs.\n7. Rinse your mouth with water after using a steroid inhaler.",
+        "spacer": "1. Shake the inhaler and insert it into the spacer.\n2. Seal your lips around the mouthpiece.\n3. Press the canister ONCE.\n4. Breathe in and out slowly 5–6 times through the spacer.\n5. Wait 30 seconds between puffs.\n6. Wash the spacer weekly in warm soapy water and air-dry.",
+        "nebulizer": "1. Assemble the nebulizer and add medicine.\n2. Sit upright, place mouthpiece in mouth (or use mask).\n3. Turn on compressor — mist should appear.\n4. Breathe normally until mist stops (5–10 min).\n5. Wash chamber and mouthpiece after each use.",
+        "generalTips": [
+          "Always shake the inhaler before use.",
+          "Use a spacer for ALL children and adults on Step 3 therapy.",
+          "Rinse mouth after using a preventer inhaler.",
+          "Wait 30 seconds between puffs.",
+          "If using both reliever and preventer: reliever first, wait 5 min, then preventer.",
+          "Store inhalers at room temperature.",
+          "Bring your inhaler to every appointment."
+        ]
+      },
+      "specialCases": [
+        {
+          "case": "Children <6 years",
+          "note": "Diagnosis difficult — refer all for assessment."
+        },
+        {
+          "case": "Patients on protease inhibitors (HIV)",
+          "note": "Use beclomethasone instead of budesonide or fluticasone."
+        },
+        {
+          "case": "Exercise-induced asthma",
+          "note": "Use reliever 15 minutes before exercise."
+        },
+        {
+          "case": "Pregnancy",
+          "note": "Continue asthma treatment in pregnancy — refer for review."
+        }
+      ],
+      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 17, Section 17.1.3 (Chronic asthma)"
+    },
+
+    "J46": {
+      "icd10Code": "J46",
+      "conditionName": "Status asthmaticus (severe acute asthma)",
+      "overview": "Status asthmaticus is a severe, life-threatening asthma attack that does not respond to usual reliever treatment. It is a medical emergency requiring immediate treatment and urgent referral. Patients present with severe breathlessness, inability to speak in full sentences, agitation, and often cyanosis. Early recognition and rapid treatment saves lives. Do NOT sedate the patient.",
+      "isChronic": false,
+      "durationWeeks": 0,
+      "treatmentDurationText": "Acute emergency — refer after initial treatment",
+      "severityLevels": [
+        {
+          "level": "Mild–Moderate",
+          "systolic": "Oxygen sat >90%, talks in phrases, HR 100–120, PEFR >60% predicted",
+          "diastolic": "Salbutamol + spacer OR nebulizer every 20–30 min + oral prednisone 40 mg"
+        },
+        {
+          "level": "Severe",
+          "systolic": "Oxygen sat <90%, talks in words, agitated, RR >30, HR >120, PEFR <60% predicted",
+          "diastolic": "Oxygen + salbutamol nebulizer every 20–30 min + ipratropium + oral prednisone 40 mg — REFER"
+        },
+        {
+          "level": "Life-threatening",
+          "systolic": "Oxygen sat <90%, unable to speak, drowsy/confused, silent chest, bradycardia, PEFR <33%",
+          "diastolic": "Oxygen + salbutamol + ipratropium nebulizer every 20–30 min × 4 doses + hydrocortisone IV 100 mg — REFER URGENTLY"
+        }
+      ],
+      "phases": [
+        "Step 1 — Assess severity quickly (O2 sat, ability to speak, HR, RR, PEFR)",
+        "Step 2 — Give oxygen to keep O2 sat 93–95% (COPD patients: 24–28% Venturi mask with close monitoring)",
+        "Step 3 — Salbutamol by spacer OR nebulizer every 20–30 minutes",
+        "Step 4 — Add ipratropium if poor response to first salbutamol dose",
+        "Step 5 — Give prednisone 40 mg immediately (or hydrocortisone IV 100 mg if unable to swallow)",
+        "Step 6 — Refer to hospital after initial treatment"
+      ],
+      "medications": [
+        {
+          "name": "Salbutamol 100 mcg MDI (Mild-Moderate)",
+          "dosage": "400–1000 mcg (4–10 puffs)",
+          "frequency": "Every 20–30 min for the first hour, then every 2–4 hours as needed",
+          "duration": "Until PEFR >60% predicted",
+          "phase": "Acute management — reliever",
+          "notes": "Use with a spacer if available — as effective as a nebulizer and cheaper. Shake inhaler between each puff. If no relief, escalate to severe protocol.",
+          "isClinical": false
+        },
+        {
+          "name": "Salbutamol 0.5% nebulizer solution",
+          "dosage": "1 mL (5 mg) made up to 4 mL with sodium chloride 0.9%",
+          "frequency": "Every 20–30 min for the first hour, then every 2–4 hours",
+          "duration": "Until PEFR >60% predicted",
+          "phase": "Severe attack — reliever",
+          "notes": "Deliver at 8 L/min with oxygen. Alternative to MDI + spacer if available.",
+          "isClinical": false
+        },
+        {
+          "name": "Ipratropium bromide 0.5 mg/2 mL nebulizer solution",
+          "dosage": "2 mL (0.5 mg) added to salbutamol nebulizer solution, made up to 4 mL",
+          "frequency": "Every 20–30 min up to 3 doses (in severe attack)",
+          "duration": "First hour of acute management",
+          "phase": "Severe attack — add-on to salbutamol",
+          "notes": "For life-threatening attack: 4 doses over 2 hours. Also available as MDI (80–160 mcg / 2–4 puffs) via spacer.",
+          "isClinical": true
+        },
+        {
+          "name": "Prednisone (oral corticosteroid)",
+          "dosage": "40 mg",
+          "frequency": "Immediately, then 40 mg once daily",
+          "duration": "7 days",
+          "phase": "Acute management — all severity levels",
+          "notes": "Give immediately in all attacks. Reduces airway inflammation and prevents relapse. If patient cannot swallow, use hydrocortisone IV/slow IM 100 mg single dose instead.",
+          "isClinical": false
+        },
+        {
+          "name": "Hydrocortisone (IV/IM corticosteroid)",
+          "dosage": "100 mg",
+          "frequency": "Single dose",
+          "duration": "Once, then switch to oral prednisone",
+          "phase": "Severe/life-threatening attack — if oral not possible",
+          "notes": "Use when patient cannot take oral prednisone. Follow with oral prednisone 40 mg daily for 7 days.",
+          "isClinical": true
+        },
+        {
+          "name": "Oxygen",
+          "dosage": "Titrate to keep oxygen saturation 93–95%",
+          "frequency": "Continuous",
+          "duration": "Until stabilized",
+          "phase": "All severe/life-threatening attacks",
+          "notes": "In COPD patients: give oxygen with care (24–28% Venturi mask if available), and observe closely — some patients may deteriorate with high-flow oxygen.",
+          "isClinical": true
+        }
+      ],
+      "lifestyleAdvice": [
+        "Do NOT sedate the patient at any point — sedation can mask signs of deterioration and is dangerous in asthma",
+        "Sit the patient upright — do not lay them flat",
+        "Keep the patient calm — reassure them, but do not delay treatment",
+        "Have the patient use their own inhaler + spacer if available while awaiting ambulance",
+        "Do NOT give antibiotics routinely — acute asthma does not respond to antibiotics",
+        "After recovery, review: adherence, inhaler technique, trigger exposure, current treatment",
+        "Warn the patient that asthma often flares again in the week after an attack",
+        "Refer patients with >2 oral prednisone courses in 6 months for maintenance therapy review"
+      ],
+      "monitoring": {
+        "duringAttack": [
+          "Oxygen saturation continuously",
+          "Ability to speak in full sentences",
+          "Respiratory rate",
+          "Heart rate",
+          "Peak flow (PEFR) — before and after each salbutamol dose, if possible",
+          "Consciousness level"
+        ],
+        "afterAttack": [
+          "Reassess full asthma control at follow-up",
+          "Review inhaler technique",
+          "Review adherence to preventer therapy",
+          "Consider stepping up maintenance therapy"
+        ]
+      },
+      "followUpSchedule": "After an acute attack: review within 1–2 weeks. If >2 courses of oral steroids in 6 months, refer to doctor for maintenance therapy review. Consider stepping up controller therapy.",
+      "warningSigns": [
+        "Unable to speak in full sentences",
+        "Bluish lips or fingertips",
+        "Drowsiness or confusion",
+        "Silent chest (no wheeze — the airways are so narrow no air moves)",
+        "Bradycardia (slow heart rate in a severe attack)",
+        "Oxygen saturation <90%",
+        "Poor response to initial salbutamol treatment"
+      ],
+      "referralCriteria": [
+        "All patients with severe or life-threatening attack — refer urgently after commencing treatment",
+        "Poor response to initial treatment",
+        "PEFR <75% of predicted 15–30 minutes after salbutamol",
+        "Lower threshold for admission if: seen in the afternoon/evening, recent onset of nocturnal symptoms, previous severe attacks, rapid onset"
+      ],
+      "emergencyProtocol": {
+        "trigger": "Severe or life-threatening asthma attack — O2 sat <90%, unable to speak, drowsy/confused, silent chest",
+        "immediateAction": "Sit patient upright. Give oxygen (93–95% target; COPD: 24–28% Venturi mask). Salbutamol 400–1000 mcg via spacer every 20–30 min OR salbutamol nebulizer 5 mg every 20–30 min. Add ipratropium 0.5 mg if poor response. Give prednisone 40 mg (or hydrocortisone 100 mg IV if unable to swallow). Continue treatment while arranging urgent referral. NEVER sedate.",
+        "outcome": "Life-threatening — refer urgently after initial treatment. If response is adequate and severity improves to severe (not life-threatening), continue as per severe protocol."
+      },
+      "specialCases": [
+        {
+          "case": "COPD exacerbation vs. acute asthma",
+          "note": "Treat the same way, but give oxygen with care (24–28% Venturi mask) and observe closely. Add antibiotics ONLY if there is increased sputum purulence PLUS increased sputum volume or dyspnoea — Amoxicillin 500 mg 8-hourly for 5 days."
+        },
+        {
+          "case": "Pulmonary oedema masquerading as asthma",
+          "note": "In patients >50 years presenting with wheeze for the first time, consider pulmonary oedema due to left ventricular failure. Features: orthopnoea, bilateral crackles, elevated JVP."
+        },
+        {
+          "case": "Pregnancy",
+          "note": "Continue acute asthma management — treatment is the same. Refer urgently."
+        },
+        {
+          "case": "Antibiotics",
+          "note": "Routine antibiotics are NOT indicated for acute asthma. Only use if there is clear evidence of bacterial infection."
+        },
+        {
+          "case": "Sedation",
+          "note": "AVOID sedation of any kind — this is critical. Sedation masks signs of deterioration and can be lethal in acute severe asthma."
+        }
+      ],
+      "source": "SA PHC Standard Treatment Guidelines 2024, Chapter 17, Section 17.1.1 (Acute asthma & acute exacerbation of COPD, adults)"
     }
   }
 }

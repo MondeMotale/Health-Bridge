@@ -128,6 +128,12 @@ class _PatientResourcesScreenState extends State<PatientResourcesScreen> {
                   const SizedBox(height: 20),
                 ],
 
+                // Inhaler technique (asthma / COPD)
+                if (plan.inhalerTechnique != null) ...[
+                  _buildInhalerTechniqueSection(plan.inhalerTechnique!),
+                  const SizedBox(height: 20),
+                ],
+
                 if (plan.lifestyleAdvice.isNotEmpty) ...[
                   _buildSection(
                     '🥗 Lifestyle Recommendations',
@@ -184,6 +190,173 @@ class _PatientResourcesScreenState extends State<PatientResourcesScreen> {
                 ),
                 const SizedBox(height: 40),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ---------- Inhaler technique section ----------
+  Widget _buildInhalerTechniqueSection(InhalerTechnique tech) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          '🌬️ Inhaler Technique',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF1A1A2E),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          'Getting the technique right is essential — most treatment failures are due to poor technique.',
+          style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+        ),
+        const SizedBox(height: 12),
+
+        if (tech.mdi != null)
+          _buildTechniqueCard(
+            title: 'Using an Inhaler (MDI)',
+            icon: Icons.air,
+            color: const Color(0xFF1E3A8A),
+            body: tech.mdi!,
+          ),
+
+        if (tech.spacer != null) ...[
+          const SizedBox(height: 10),
+          _buildTechniqueCard(
+            title: 'Using a Spacer',
+            icon: Icons.blur_circular,
+            color: const Color(0xFF10B981),
+            body: tech.spacer!,
+          ),
+        ],
+
+        if (tech.nebulizer != null) ...[
+          const SizedBox(height: 10),
+          _buildTechniqueCard(
+            title: 'Using a Nebulizer',
+            icon: Icons.cloud,
+            color: const Color(0xFF3B82F6),
+            body: tech.nebulizer!,
+          ),
+        ],
+
+        if (tech.generalTips.isNotEmpty) ...[
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF59E0B).withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                  color: const Color(0xFFF59E0B).withValues(alpha: 0.3)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: const [
+                    Icon(Icons.lightbulb_outline,
+                        color: Color(0xFFF59E0B), size: 18),
+                    SizedBox(width: 8),
+                    Text(
+                      'Important Tips',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFFF59E0B),
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                ...tech.generalTips.map(
+                  (tip) => Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('• ',
+                            style: TextStyle(fontSize: 13)),
+                        Expanded(
+                          child: Text(
+                            tip,
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: Color(0xFF1A1A2E),
+                              height: 1.4,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildTechniqueCard({
+    required String title,
+    required IconData icon,
+    required Color color,
+    required String body,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withValues(alpha: 0.25)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(icon, color: color, size: 18),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: color,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            body,
+            style: const TextStyle(
+              fontSize: 13,
+              color: Color(0xFF1A1A2E),
+              height: 1.5,
             ),
           ),
         ],

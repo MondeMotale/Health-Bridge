@@ -53,7 +53,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
     return allPatients;
   }
 
-  // --- CLEAN MAIN POP-UP (Info Only + 1 Action Button) ---
   void _showPatientQuickInfo(Patient patient) {
     showDialog(
       context: context,
@@ -149,7 +148,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
     );
   }
 
-  // --- CENTERED ACTION DIALOG ---
   void _showActionSheet(Patient patient) {
     showDialog(
       context: context,
@@ -177,7 +175,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
                 ),
                 const SizedBox(height: 24),
 
-                // --- OPTION 1: REFER ---
                 InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
@@ -219,7 +216,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
                 ),
                 const Divider(height: 24),
 
-                // --- OPTION 2: BOOK APPOINTMENT ---
                 InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
@@ -261,7 +257,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
                 ),
                 const Divider(height: 24),
 
-                // --- OPTION 3: VIEW TREATMENT PLAN ---
                 InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
@@ -303,7 +298,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
                 ),
                 const Divider(height: 24),
 
-                // --- OPTION 4: DELETE ---
                 InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
@@ -368,7 +362,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
     );
   }
 
-  // --- REFERRAL DIALOG ---
   void _showReferralDialog(Patient patient) {
     final TextEditingController deptController = TextEditingController();
     final TextEditingController locationController = TextEditingController();
@@ -492,7 +485,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
     );
   }
 
-  // --- APPOINTMENT DIALOG ---
   void _showBookAppointmentDialog(Patient patient) {
     final TextEditingController locationController = TextEditingController();
     final TextEditingController notesController = TextEditingController();
@@ -655,7 +647,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
     );
   }
 
-  // --- DELETE CONFIRMATION DIALOG ---
   void _confirmDeletePatient(BuildContext context, Patient patient) {
     showDialog(
       context: context,
@@ -722,9 +713,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
     );
   }
 
-  // ================================================================
-  // TREATMENT PLAN MODAL
-  // ================================================================
   void _showTreatmentPlan(Patient patient) async {
     if (patient.icd10Code == null || patient.icd10Code!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -952,6 +940,52 @@ class _PatientsScreenState extends State<PatientsScreen> {
                   ),
                 );
               }).toList(),
+            ),
+          ],
+
+          // Inhaler technique (CHW view)
+          if (plan.inhalerTechnique != null) ...[
+            const SizedBox(height: 20),
+            _chwSection(
+              '🌬️ Inhaler Technique',
+              [
+                if (plan.inhalerTechnique!.mdi != null) ...[
+                  const Text('Using an MDI:',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 13)),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4, bottom: 12),
+                    child: Text(plan.inhalerTechnique!.mdi!,
+                        style: const TextStyle(fontSize: 13)),
+                  ),
+                ],
+                if (plan.inhalerTechnique!.spacer != null) ...[
+                  const Text('Using a Spacer:',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 13)),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4, bottom: 12),
+                    child: Text(plan.inhalerTechnique!.spacer!,
+                        style: const TextStyle(fontSize: 13)),
+                  ),
+                ],
+                if (plan.inhalerTechnique!.nebulizer != null) ...[
+                  const Text('Using a Nebulizer:',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 13)),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4, bottom: 12),
+                    child: Text(plan.inhalerTechnique!.nebulizer!,
+                        style: const TextStyle(fontSize: 13)),
+                  ),
+                ],
+                ...plan.inhalerTechnique!.generalTips.map((t) =>
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Text('• $t',
+                          style: const TextStyle(fontSize: 13)),
+                    )),
+              ],
             ),
           ],
 

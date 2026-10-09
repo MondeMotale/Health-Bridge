@@ -90,6 +90,7 @@
     { "code": "J40",    "name": "Bronchitis, not specified as acute or chronic",             "category": "Respiratory" },
     { "code": "J45",    "name": "Asthma",                                                    "category": "Respiratory" },
     { "code": "J45.9",  "name": "Asthma, unspecified",                                       "category": "Respiratory" },
+    { "code": "J46",    "name": "Status asthmaticus (severe acute asthma)",                  "category": "Respiratory" },
     { "code": "J44",    "name": "Chronic obstructive pulmonary disease (COPD)",              "category": "Respiratory" },
     { "code": "J90",    "name": "Pleural effusion",                                          "category": "Respiratory" },
     { "code": "K02",    "name": "Dental caries",                                             "category": "Digestive" },

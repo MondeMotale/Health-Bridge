@@ -22,6 +22,7 @@ class TreatmentPlan {
   final EmergencyProtocol? emergencyProtocol;
   final List<SpecialCase>? specialCases;
   final Map<String, String>? portionGuide;
+  final InhalerTechnique? inhalerTechnique;
   final String source;
 
   TreatmentPlan({
@@ -45,6 +46,7 @@ class TreatmentPlan {
     this.emergencyProtocol,
     this.specialCases,
     this.portionGuide,
+    this.inhalerTechnique,
     required this.source,
   });
 
@@ -98,7 +100,37 @@ class TreatmentPlan {
       portionGuide: map['portionGuide'] != null
           ? Map<String, String>.from(map['portionGuide'])
           : null,
+      inhalerTechnique: map['inhalerTechnique'] != null
+          ? InhalerTechnique.fromMap(
+              Map<String, dynamic>.from(map['inhalerTechnique']))
+          : null,
       source: map['source'] ?? '',
+    );
+  }
+}
+
+/// Inhaler / spacer / nebulizer technique guide for asthma & COPD.
+class InhalerTechnique {
+  final String? mdi;          // Metered-dose inhaler steps (as one text block)
+  final String? spacer;       // Spacer technique
+  final String? nebulizer;    // Nebulizer technique
+  final List<String> generalTips;
+
+  InhalerTechnique({
+    this.mdi,
+    this.spacer,
+    this.nebulizer,
+    this.generalTips = const [],
+  });
+
+  factory InhalerTechnique.fromMap(Map<String, dynamic> m) {
+    return InhalerTechnique(
+      mdi: m['mdi'],
+      spacer: m['spacer'],
+      nebulizer: m['nebulizer'],
+      generalTips: (m['generalTips'] as List? ?? [])
+          .map((e) => e.toString())
+          .toList(),
     );
   }
 }

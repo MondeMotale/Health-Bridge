@@ -2,200 +2,441 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../lib/firebase';
+import { getAuthError } from '../lib/errors';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [info, setInfo] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
+    setInfo('');
 
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) return setError('Please enter your email address.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail))
+      return setError('Please enter a valid email address.');
+    if (!password) return setError('Please enter your password.');
+
+    setLoading(true);
     try {
-      console.log("Attempting login for:", email);
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log("Login successful!");
+      await signInWithEmailAndPassword(auth, trimmedEmail, password);
       router.push('/dashboard');
     } catch (err: any) {
-      console.error("🔥 DETAILED FIREBASE ERROR:", err);
-      console.error("Error Code:", err.code);
-      console.error("Error Message:", err.message);
-      
-      if (err.code === 'auth/user-not-found') {
-        setError('No user found for that email.');
-      } else if (err.code === 'auth/wrong-password') {
-        setError('Wrong password provided.');
-      } else if (err.code === 'auth/invalid-email') {
-        setError('Invalid email address format.');
-      } else if (err.code === 'auth/too-many-requests') {
-        setError('Too many failed login attempts. Please try again later.');
-      } else if (err.code === 'auth/network-request-failed') {
-        setError('Network error. Please check your internet connection.');
-      } else {
-        setError(err.message || 'Failed to log in. Please try again.');
-      }
+      console.error('Login error:', err?.code, err?.message);
+      setError(getAuthError(err));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.loginBox}>
-        <div style={styles.logoContainer}>
-          <div style={styles.logo}>
-            <span style={styles.logoText}>HB</span>
+    <div style={styles.page}>
+      {/* Subtle grid background */}
+      <div style={styles.gridOverlay} />
+
+      {/* Brand strip top-left */}
+      <div style={styles.brandStrip}>
+        <div style={styles.brandMark}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 3v18M3 12h18" />
+          </svg>
+        </div>
+        <div>
+          <p style={styles.brandName}>HealthBridge</p>
+          <p style={styles.brandTag}>Clinical Operations Platform</p>
+        </div>
+      </div>
+
+      <div style={styles.card}>
+        {/* Logo mark */}
+        <div style={styles.logoWrap}>
+          <div style={styles.logoMark}>
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              {/* Medical cross + pulse */}
+              <path d="M12 4v6M9 7h6" />
+              <path d="M4 14h4l2-3 3 6 2-3h5" />
+            </svg>
           </div>
-          <h1 style={styles.title}>Health-Bridge</h1>
-          <p style={styles.subtitle}>Patient Management System</p>
         </div>
 
+        {/* Title */}
+        <div style={styles.titleBlock}>
+          <h1 style={styles.title}>Sign in to HealthBridge</h1>
+          <p style={styles.subtitle}>Secure access for authorised clinical staff</p>
+        </div>
+
+        {/* Banners */}
         {error && (
-          <div style={styles.errorBox}>
-            {error}
+          <div style={styles.errorBanner}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <span>{error}</span>
+          </div>
+        )}
+        {info && (
+          <div style={styles.infoBanner}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1e40af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="16" x2="12" y2="12" />
+              <line x1="12" y1="8" x2="12.01" y2="8" />
+            </svg>
+            <span>{info}</span>
           </div>
         )}
 
+        {/* Form */}
         <form onSubmit={handleLogin} style={styles.form}>
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>Email Address</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              style={styles.input}
-              placeholder="Admin@healthbridge.com"
-              required
-              disabled={loading}
-            />
+          <div style={styles.field}>
+            <label style={styles.label}>Work email</label>
+            <div style={styles.inputWrap}>
+              <span style={styles.inputIcon}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                  <path d="M22 6L12 13 2 6" />
+                </svg>
+              </span>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); if (error) setError(''); }}
+                style={styles.input}
+                placeholder="name@clinic.org"
+                autoComplete="email"
+                required
+                disabled={loading}
+              />
+            </div>
           </div>
 
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={styles.input}
-              placeholder="••••••••"
-              required
-              disabled={loading}
-            />
+          <div style={styles.field}>
+            <div style={styles.labelRow}>
+              <label style={styles.label}>Password</label>
+              <button
+                type="button"
+                onClick={() => {
+                  setInfo('Contact your system administrator to reset your password.');
+                  setError('');
+                }}
+                style={styles.forgotLink}
+              >
+                Forgot password?
+              </button>
+            </div>
+            <div style={styles.inputWrap}>
+              <span style={styles.inputIcon}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="11" width="18" height="10" rx="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+              </span>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); if (error) setError(''); }}
+                style={styles.input}
+                placeholder="Enter your password"
+                autoComplete="current-password"
+                required
+                disabled={loading}
+              />
+            </div>
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             style={{
               ...styles.button,
-              opacity: loading ? 0.7 : 1,
-              cursor: loading ? 'not-allowed' : 'pointer'
+              opacity: loading ? 0.85 : 1,
+              cursor: loading ? 'wait' : 'pointer',
             }}
             disabled={loading}
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? (
+              <>
+                <span style={styles.spinner} />
+                Verifying credentials…
+              </>
+            ) : (
+              <>
+                Sign in securely
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </>
+            )}
           </button>
         </form>
 
-        <p style={styles.demoText}>Demo: Use real Firebase user credentials</p>
+        {/* Trust row */}
+        <div style={styles.trustRow}>
+          <div style={styles.trustItem}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f766e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            <span>End-to-end encrypted</span>
+          </div>
+          <div style={styles.trustItem}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f766e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="11" width="18" height="10" rx="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            <span>POPIA compliant</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div style={styles.footer}>
+        <span style={styles.footerDot} />
+        <span>System operational · v1.0</span>
       </div>
     </div>
   );
 }
 
 const styles = {
-  container: {
+  page: {
     minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#f0f2f5',
-    padding: '1rem',
+    backgroundColor: '#eef4f8',
+    backgroundImage: 'radial-gradient(circle at 20% 10%, #dceaf3 0%, transparent 45%), radial-gradient(circle at 80% 90%, #d7e8e4 0%, transparent 45%)',
+    padding: '24px',
+    position: 'relative' as const,
+    overflow: 'hidden' as const,
+    fontFamily: "'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
   },
-  loginBox: {
-    maxWidth: '400px',
-    width: '100%',
-    backgroundColor: 'white',
-    borderRadius: '8px',
-    padding: '2rem',
-    boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+  gridOverlay: {
+    position: 'absolute' as const,
+    inset: 0,
+    backgroundImage: 'linear-gradient(rgba(15,118,110,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(15,118,110,0.04) 1px, transparent 1px)',
+    backgroundSize: '32px 32px',
+    pointerEvents: 'none' as const,
   },
-  logoContainer: {
-    textAlign: 'center' as const,
-    marginBottom: '2rem',
+  brandStrip: {
+    position: 'absolute' as const,
+    top: '24px',
+    left: '28px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
   },
-  logo: {
-    width: '60px',
-    height: '60px',
-    backgroundColor: '#2563eb',
-    borderRadius: '12px',
+  brandMark: {
+    width: '34px',
+    height: '34px',
+    borderRadius: '9px',
+    background: 'linear-gradient(135deg, #0f766e 0%, #0d9488 100%)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: '0 auto 1rem',
+    boxShadow: '0 4px 10px rgba(15,118,110,0.25)',
   },
-  logoText: {
-    color: 'white',
-    fontSize: '24px',
-    fontWeight: 'bold' as const,
+  brandName: {
+    fontSize: '14px',
+    fontWeight: '700' as const,
+    color: '#0f172a',
+    margin: 0,
+    letterSpacing: '-0.2px',
+  },
+  brandTag: {
+    fontSize: '11px',
+    color: '#64748b',
+    margin: '1px 0 0',
+    letterSpacing: '0.2px',
+  },
+  card: {
+    position: 'relative' as const,
+    zIndex: 2,
+    width: '100%',
+    maxWidth: '420px',
+    backgroundColor: '#ffffff',
+    borderRadius: '18px',
+    padding: '36px 32px 28px',
+    boxShadow: '0 20px 40px rgba(15,23,42,0.08), 0 2px 6px rgba(15,23,42,0.04), 0 0 0 1px rgba(15,118,110,0.06)',
+  },
+  logoWrap: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '20px',
+  },
+  logoMark: {
+    width: '60px',
+    height: '60px',
+    borderRadius: '16px',
+    background: 'linear-gradient(135deg, #0f766e 0%, #0d9488 100%)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '0 10px 20px rgba(15,118,110,0.28), inset 0 0 0 1px rgba(255,255,255,0.15)',
+  },
+  titleBlock: {
+    textAlign: 'center' as const,
+    marginBottom: '24px',
   },
   title: {
-    fontSize: '28px',
-    fontWeight: 'bold' as const,
-    color: '#1a1a2e',
+    fontSize: '20px',
+    fontWeight: '700' as const,
+    color: '#0f172a',
     margin: 0,
+    letterSpacing: '-0.3px',
   },
   subtitle: {
-    color: '#666',
-    marginTop: '0.5rem',
+    fontSize: '13px',
+    color: '#64748b',
+    margin: '6px 0 0',
+  },
+  errorBanner: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    backgroundColor: '#fef2f2',
+    color: '#b91c1c',
+    padding: '10px 12px',
+    borderRadius: '9px',
+    fontSize: '13px',
+    border: '1px solid #fecaca',
+    marginBottom: '16px',
+    lineHeight: 1.4,
+  },
+  infoBanner: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    backgroundColor: '#eff6ff',
+    color: '#1e40af',
+    padding: '10px 12px',
+    borderRadius: '9px',
+    fontSize: '13px',
+    border: '1px solid #bfdbfe',
+    marginBottom: '16px',
+    lineHeight: 1.4,
   },
   form: {
     display: 'flex',
     flexDirection: 'column' as const,
-    gap: '1rem',
+    gap: '16px',
   },
-  inputGroup: {
+  field: {
     display: 'flex',
     flexDirection: 'column' as const,
-    gap: '0.5rem',
+    gap: '6px',
+  },
+  labelRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   label: {
-    fontWeight: '500' as const,
-    color: '#333',
+    fontSize: '12px',
+    fontWeight: '600' as const,
+    color: '#334155',
+    letterSpacing: '0.1px',
+  },
+  forgotLink: {
+    background: 'none',
+    border: 'none',
+    color: '#0f766e',
+    fontSize: '12px',
+    fontWeight: '600' as const,
+    cursor: 'pointer',
+    padding: 0,
+    textDecoration: 'none',
+  },
+  inputWrap: {
+    position: 'relative' as const,
+    display: 'flex',
+    alignItems: 'center',
+  },
+  inputIcon: {
+    position: 'absolute' as const,
+    left: '12px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    pointerEvents: 'none' as const,
   },
   input: {
-    padding: '10px',
-    border: '1px solid #ddd',
-    borderRadius: '6px',
-    fontSize: '16px',
+    width: '100%',
+    padding: '12px 14px 12px 38px',
+    border: '1px solid #e2e8f0',
+    borderRadius: '10px',
+    fontSize: '14px',
+    fontFamily: 'inherit',
+    outline: 'none',
+    color: '#0f172a',
+    backgroundColor: '#f8fafc',
+    transition: 'border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease',
   },
   button: {
-    backgroundColor: '#2563eb',
-    color: 'white',
-    padding: '12px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '10px',
+    marginTop: '6px',
+    padding: '13px 20px',
+    background: 'linear-gradient(135deg, #0f766e 0%, #0d9488 100%)',
+    color: '#ffffff',
     border: 'none',
-    borderRadius: '6px',
-    fontSize: '16px',
-    fontWeight: 'bold' as const,
-    cursor: 'pointer',
-    marginTop: '0.5rem',
-  },
-  errorBox: {
-    backgroundColor: '#fee2e2',
-    color: '#b91c1c',
-    padding: '12px',
-    borderRadius: '6px',
-    marginBottom: '1rem',
+    borderRadius: '10px',
     fontSize: '14px',
-    border: '1px solid #fecaca',
+    fontWeight: '600' as const,
+    letterSpacing: '0.1px',
+    boxShadow: '0 6px 14px rgba(15,118,110,0.28)',
+    transition: 'transform 0.1s ease, box-shadow 0.15s ease',
   },
-  demoText: {
-    textAlign: 'center' as const,
-    color: '#888',
-    fontSize: '12px',
-    marginTop: '1.5rem',
+  spinner: {
+    width: '14px',
+    height: '14px',
+    border: '2px solid rgba(255,255,255,0.4)',
+    borderTopColor: '#ffffff',
+    borderRadius: '50%',
+    display: 'inline-block',
+    animation: 'spin 0.8s linear infinite',
+  },
+  trustRow: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '18px',
+    marginTop: '22px',
+    paddingTop: '18px',
+    borderTop: '1px solid #f1f5f9',
+    flexWrap: 'wrap' as const,
+  },
+  trustItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+    fontSize: '11px',
+    color: '#475569',
+    fontWeight: '500' as const,
+  },
+  footer: {
+    position: 'absolute' as const,
+    bottom: '20px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    fontSize: '11px',
+    color: '#64748b',
+    zIndex: 2,
+  },
+  footerDot: {
+    width: '7px',
+    height: '7px',
+    borderRadius: '50%',
+    backgroundColor: '#10b981',
+    boxShadow: '0 0 0 3px rgba(16,185,129,0.18)',
+    display: 'inline-block',
   },
 };

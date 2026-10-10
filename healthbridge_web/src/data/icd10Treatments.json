@@ -1,0 +1,832 @@
+{
+  "A09": {
+    "firstLine": "ORS + Zinc",
+    "treatment": "ORS oral — 5 mL/kg after each loose stool. Zinc (elemental) oral 10mg daily × 14 days in children <5y. Homemade SSS (3 tsp sugar + ½ tsp salt in 200 mL water) if ORS unavailable. Antibiotics NOT indicated unless dysentery or cholera.",
+    "referral": "Severe dehydration, bloody stools, altered consciousness, <2 months of age, SAM with dehydration."
+  },
+  "A15": {
+    "firstLine": "RHZE (Intensive phase)",
+    "treatment": "Intensive phase (2 months): RHZE (Rifampicin 150mg + Isoniazid 75mg + Pyrazinamide 400mg + Ethambutol 275mg) — weight-based daily. Continuation phase (4 months): RH (Rifampicin 150mg + Isoniazid 75mg). Notifiable condition.",
+    "referral": "Disseminated TB, unable to manage on ambulatory basis, DR-TB contacts."
+  },
+  "A16": {
+    "firstLine": "RHZE (Intensive phase)",
+    "treatment": "Intensive phase (2 months): RHZE weight-based daily. Continuation phase (4 months): RH. Notifiable condition.",
+    "referral": "Disseminated TB, DR-TB contacts."
+  },
+  "A17": {
+    "firstLine": "TB meningitis regimen",
+    "treatment": "Intensive phase: RHZE for 2 months. Continuation phase: RH for 7–10 months (total 9–12 months for CNS TB). Corticosteroids (Prednisone 40mg daily, taper over 4–6 weeks) usually added by specialist. Notifiable condition.",
+    "referral": "All cases — refer urgently for specialist management and monitoring."
+  },
+  "A18": {
+    "firstLine": "Extrapulmonary TB regimen",
+    "treatment": "Standard RHZE × 2 months → RH × 4 months for most extrapulmonary TB. Duration may extend to 9–12 months for bone, joint, or CNS involvement. Notifiable condition.",
+    "referral": "All suspected cases — refer for diagnostic confirmation and specialist management."
+  },
+  "A19": {
+    "firstLine": "Miliary TB regimen",
+    "treatment": "RHZE × 2 months → RH × 4 months. Screen for TB meningitis. Notifiable condition.",
+    "referral": "All cases — urgent referral for specialist management."
+  },
+  "A22": {
+    "firstLine": "Ciprofloxacin (post-exposure)",
+    "treatment": "Cutaneous anthrax: Ciprofloxacin 500mg oral 12 hourly × 60 days. Doxycycline 100mg 12 hourly × 60 days as alternative. Notifiable condition.",
+    "referral": "All cases — urgent specialist referral."
+  },
+  "A36": {
+    "firstLine": "Diphtheria antitoxin",
+    "treatment": "Diphtheria antitoxin IM/IV + Benzathine benzylpenicillin 1.2 MU IM single dose. Notifiable condition.",
+    "referral": "All cases — urgent referral for antitoxin and airway management."
+  },
+  "A37": {
+    "firstLine": "Azithromycin",
+    "treatment": "Azithromycin 10 mg/kg oral once daily × 5 days (children) OR 500mg daily × 5 days (adults). Notifiable condition.",
+    "referral": "Infants <6 months, respiratory distress, notifiable — refer."
+  },
+  "A46": {
+    "firstLine": "Penicillin",
+    "treatment": "Phenoxymethylpenicillin 500mg oral 6 hourly × 10 days (adults) OR 250mg 6 hourly × 10 days (children). Severe penicillin allergy: Azithromycin 500mg daily × 5 days.",
+    "referral": "Systemic symptoms, immunocompromised, poor response."
+  },
+  "A54": {
+    "firstLine": "Ceftriaxone + Azithromycin",
+    "treatment": "Uncomplicated gonorrhoea: Ceftriaxone 250mg IM single dose + Azithromycin 1g oral single dose. Treat partners. Test for other STIs including HIV.",
+    "referral": "PID, disseminated infection, ophthalmia neonatorum, pregnancy."
+  },
+  "A69.2": {
+    "firstLine": "Doxycycline",
+    "treatment": "Doxycycline 100mg oral 12 hourly × 14–21 days (adults). Children <8y and pregnancy: Amoxicillin 500mg 8 hourly × 14–21 days.",
+    "referral": "Cardiac, neurological, or joint involvement."
+  },
+  "A75": {
+    "firstLine": "Doxycycline",
+    "treatment": "Doxycycline 100mg oral 12 hourly × 7 days (adults). Children: Azithromycin. Notifiable (epidemic typhus).",
+    "referral": "Severe cases, pregnancy, epidemic context."
+  },
+  "A78": {
+    "firstLine": "Doxycycline",
+    "treatment": "Doxycycline 100mg oral 12 hourly × 14 days (adults). Pregnancy: Azithromycin 500mg daily × 5 days. Children <8y: Azithromycin 10 mg/kg daily × 5 days.",
+    "referral": "Endocarditis, hepatitis, pregnancy."
+  },
+  "A90": {
+    "firstLine": "Supportive care",
+    "treatment": "Dengue fever: supportive care with paracetamol (avoid NSAIDs and aspirin due to bleeding risk). Encourage oral fluids. Monitor platelets. Notifiable.",
+    "referral": "Warning signs: severe abdominal pain, persistent vomiting, bleeding, plasma leakage, shock."
+  },
+  "A91": {
+    "firstLine": "Urgent supportive care",
+    "treatment": "Dengue haemorrhagic fever requires aggressive fluid resuscitation and inpatient care. Avoid NSAIDs/aspirin. Notifiable.",
+    "referral": "All cases — urgent hospital admission."
+  },
+  "B15": {
+    "firstLine": "Supportive care",
+    "treatment": "Hepatitis A: supportive care, rest, hydration, avoid hepatotoxic medicines and alcohol. Usually self-limiting.",
+    "referral": "Acute liver failure, coagulopathy, encephalopathy."
+  },
+  "B16": {
+    "firstLine": "Supportive + Tenofovir if chronic",
+    "treatment": "Acute hepatitis B: supportive care. If chronic (HBsAg+ >6 months) with active disease: Tenofovir 300mg daily (specialist). Screen contacts, vaccinate.",
+    "referral": "Acute liver failure, chronic HBV with cirrhosis, HIV co-infection."
+  },
+  "B18": {
+    "firstLine": "Tenofovir",
+    "treatment": "Chronic viral hepatitis: Tenofovir 300mg daily for HBV. HCV: direct-acting antivirals (specialist only). Avoid alcohol. Monitor LFTs and viral load.",
+    "referral": "All cases for specialist assessment."
+  },
+  "B20": {
+    "firstLine": "TLD regimen",
+    "treatment": "TLD (Tenofovir 300mg + Lamivudine 300mg + Dolutegravir 50mg) — 1 tab once daily. Add Cotrimoxazole 160/800mg daily if CD4 <200. Screen for TB at every visit. Baseline: CD4, VL, creatinine, HBsAg.",
+    "referral": "Cryptococcal meningitis (defer ART 4–6 weeks), TB meningitis (defer 8 weeks), pregnancy complications."
+  },
+  "B24": {
+    "firstLine": "TLD regimen",
+    "treatment": "Unspecified HIV disease: initiate TLD (TDF+3TC+DTG) once daily. Add Cotrimoxazole prophylaxis if CD4 <200. Screen for TB, STIs, mental health.",
+    "referral": "Same as B20."
+  },
+  "B50": {
+    "firstLine": "Artemether/lumefantrine",
+    "treatment": "Uncomplicated: Artemether/lumefantrine 20/120mg with fatty food. Weight-based: >5–15kg 1 tab, >15–25kg 2 tabs, >25–35kg 3 tabs, >35kg 4 tabs. 1st dose immediately, 2nd after 8h, then 12 hourly × 2 days (6 doses). Notifiable.",
+    "referral": "Severe malaria, vomiting, children <2y, pregnancy, HIV co-infection."
+  },
+  "B51": {
+    "firstLine": "Artemether/lumefantrine",
+    "treatment": "P. vivax malaria: Artemether/lumefantrine as per P. falciparum PLUS Primaquine 15mg daily × 14 days (after G6PD test) to prevent relapse. Notifiable.",
+    "referral": "Severe malaria, pregnancy, G6PD deficiency."
+  },
+  "B54": {
+    "firstLine": "Artemether/lumefantrine",
+    "treatment": "Unspecified malaria: Artemether/lumefantrine 20/120mg weight-based, 6 doses over 3 days with fatty food. Notifiable.",
+    "referral": "Severe malaria, children <2y, pregnancy, vomiting."
+  },
+  "B86": {
+    "firstLine": "Permethrin 5%",
+    "treatment": "Permethrin 5% topical — apply neck to feet overnight, wash off after 8–12h. Repeat after 7 days. Treat all household contacts simultaneously. Wash linen in hot water. Children <2 months: Benzyl benzoate 12.5% diluted.",
+    "referral": "Secondary bacterial infection, crusted (Norwegian) scabies, immunocompromised."
+  },
+  "C50": {
+    "firstLine": "Specialist oncology",
+    "treatment": "Breast cancer: refer for staging and specialist oncology (surgery, chemotherapy, radiotherapy, hormonal therapy). Palliative care for advanced disease (see Chapter 22).",
+    "referral": "All cases — urgent specialist referral."
+  },
+  "C53": {
+    "firstLine": "Specialist oncology",
+    "treatment": "Cervical cancer: refer for staging and specialist oncology. Prevention: HPV vaccine (Grade 5 girls), cervical screening from age 30. Palliative care if advanced.",
+    "referral": "All cases — urgent specialist referral."
+  },
+  "C61": {
+    "firstLine": "Specialist oncology",
+    "treatment": "Prostate cancer: refer for staging and specialist oncology (surgery, radiotherapy, hormonal therapy). Palliative care if metastatic.",
+    "referral": "All suspected cases — refer for PSA, biopsy, staging."
+  },
+  "C80": {
+    "firstLine": "Specialist oncology",
+    "treatment": "Malignancy without site specification: refer urgently for diagnostic workup and staging. Initiate palliative care if advanced.",
+    "referral": "All cases — urgent specialist referral."
+  },
+  "D50": {
+    "firstLine": "Ferrous sulfate",
+    "treatment": "Adults: Ferrous sulfate 170mg (55mg elemental iron) oral 12 hourly with meals. OR Ferrous fumarate 200mg 12 hourly. Children <5y: Iron 1–2 mg/kg elemental iron 8 hourly. Continue 3 months after Hb normalises. Deworm: Mebendazole or Albendazole.",
+    "referral": "Unknown cause, symptomatic anaemia, Hb ≤7 g/dL, men and non-menstruating women."
+  },
+  "D64.9": {
+    "firstLine": "Investigate cause",
+    "treatment": "Unspecified anaemia: request FBC, iron studies, B12, folate. Treat cause. Iron therapy if iron deficiency. Consider HIV, TB, chronic disease.",
+    "referral": "Unknown cause, symptomatic, cardiac failure, signs of chronic disease."
+  },
+  "E03.9": {
+    "firstLine": "Levothyroxine",
+    "treatment": "Levothyroxine 100mcg oral daily on empty stomach. If ischaemic heart disease risk: start 25mcg daily, increase by 25mcg every 4 weeks. Elderly: start 50mcg daily. Check TSH after 2–3 months, then annually.",
+    "referral": "Suspected hypopituitarism, hypothyroidism in pregnancy."
+  },
+  "E05": {
+    "firstLine": "Carbimazole (specialist)",
+    "treatment": "Thyrotoxicosis: refer to specialist. Carbimazole, methimazole, or propylthiouracil are specialist-initiated. Beta-blockers (Propranolol 40mg 8 hourly) for symptom control while awaiting specialist.",
+    "referral": "All cases — urgent specialist referral."
+  },
+  "E10": {
+    "firstLine": "Insulin (basal-bolus)",
+    "treatment": "Short-acting insulin SC 3 times daily 30 min before meals + intermediate-acting at bedtime. Total daily dose 0.6 units/kg — 40–50% basal, rest split equally before meals. Monitor BG 3–4 times daily. Target HbA1c <7%.",
+    "referral": "All patients — hospital level management required."
+  },
+  "E11.9": {
+    "firstLine": "Metformin + lifestyle",
+    "treatment": "Step 1: Metformin 500mg oral once daily with meals, titrate to max 850mg 8 hourly. Step 2: Add Glimepiride 1mg daily, titrate to max 6mg. Step 3: Add insulin (intermediate-acting 10 units at bedtime), stop sulphonylurea. Target HbA1c <7%.",
+    "referral": "Acidotic breathing, hyperglycaemia >25 mmol/L, gangrene, sudden vision deterioration, eGFR <30, pregnancy."
+  },
+  "E11.6": {
+    "firstLine": "Metformin + additional agent",
+    "treatment": "Type 2 diabetes with complications: Metformin 500–850mg 8 hourly. Add Glimepiride 1–6mg daily or insulin (basal 10 units at bedtime). Manage complications (nephropathy, neuropathy, retinopathy). Target HbA1c <7%, BP <140/90, LDL <1.8.",
+    "referral": "Progressive complications, eGFR <30, pregnancy."
+  },
+  "E16.2": {
+    "firstLine": "Glucose 10% IV",
+    "treatment": "Hypoglycaemia: if conscious — oral sugar/glucose. If unconscious — Dextrose 10% IV 2–5 mL/kg (adults: 5 mL/kg), recheck after 15 min, may repeat. Maintain with 5–10% dextrose infusion. Thiamine 200mg IV/IM if alcoholic/malnourished.",
+    "referral": "All on oral hypoglycaemics, no recovery after treatment, children."
+  },
+  "E40": {
+    "firstLine": "F-75 therapeutic milk",
+    "treatment": "Kwashiorkor (SAM with oedema): stabilisation with F-75 (100 kcal/kg/day in 8 feeds) for 2–7 days, then transition to F-100/RUTF. Give Amoxicillin 45 mg/kg 12 hourly. Vitamin A, multivitamins, zinc, potassium, magnesium. Do NOT give iron initially.",
+    "referral": "All complicated SAM — refer urgently. Stabilise first."
+  },
+  "E43": {
+    "firstLine": "F-75 + antibiotics",
+    "treatment": "Severe acute malnutrition: F-75 (100 kcal/kg/day) if complicated, or RUTF if uncomplicated SAM. Amoxicillin 45 mg/kg 12 hourly. Vitamin A, multivitamins, zinc, potassium, magnesium. Watch for hypoglycaemia and hypothermia.",
+    "referral": "All complicated SAM, <6 months, weight <4kg, oedema, refusing feeds."
+  },
+  "E44": {
+    "firstLine": "RUTF + supplements",
+    "treatment": "Moderate acute malnutrition: RUTF (Ready-to-Use Therapeutic Food) — 1 sachet daily. Multivitamins, zinc, vitamin A every 6 months. Deworming. Follow up monthly.",
+    "referral": "No weight gain after 2 months, medical complications, SAM develops."
+  },
+  "E55": {
+    "firstLine": "Vitamin D3",
+    "treatment": "Vitamin D deficiency: Cholecalciferol (Vitamin D3) 50,000 IU weekly × 6–8 weeks, then 1,000–2,000 IU daily maintenance. Calcium supplementation if dietary intake inadequate.",
+    "referral": "Rickets with fractures, hypocalcaemic seizures, malabsorption."
+  },
+  "E66": {
+    "firstLine": "Lifestyle modification",
+    "treatment": "Obesity: diet (reduce refined carbs, increase fibre/veg), exercise 30 min × 5/week, weight loss target 5–10%. Screen for diabetes, hypertension, dyslipidaemia. Consider referral to dietician.",
+    "referral": "BMI >40, obesity-related complications (diabetes, hypertension, OSA)."
+  },
+  "E86": {
+    "firstLine": "ORS",
+    "treatment": "Dehydration: assess severity. Mild: ORS oral 5 mL/kg after each loose stool. Moderate: ORS 75 mL/kg over 4 hours. Severe: Sodium chloride 0.9% IV (or Ringer's lactate) 20 mL/kg bolus, repeat as needed.",
+    "referral": "Severe dehydration, shock, unable to take oral fluids."
+  },
+  "F10": {
+    "firstLine": "Thiamine + Diazepam",
+    "treatment": "Alcohol use disorder: Thiamine 300mg oral daily × 14 days. Withdrawal: Diazepam 10mg oral, then 5mg 6 hourly × 3 days, 5mg 12 hourly × 2 days, 5mg daily × 2 days. Counselling, motivational interviewing. Refer for rehab.",
+    "referral": "Seizures, delirium tremens, severe dependence, pregnancy, failed community detox."
+  },
+  "F17": {
+    "firstLine": "Nicotine replacement",
+    "treatment": "Tobacco use disorder: nicotine replacement therapy (patch/gum) + behavioural support. Varenicline or Bupropion as adjunct (specialist). Counselling at every visit.",
+    "referral": "Heavy dependence, cardiovascular disease, pregnancy."
+  },
+  "F20": {
+    "firstLine": "Haloperidol",
+    "treatment": "Schizophrenia: Haloperidol 1.5–5mg oral daily (adults) or 0.75mg 12 hourly (elderly). Once stabilised: Flupenthixol decanoate 10–40mg IM every 4 weeks OR Zuclopenthixol decanoate 100–400mg IM every 4 weeks. Monitor for EPSE — Orphenadrine 50mg 8 hourly if needed.",
+    "referral": "Poor social support, suicidal/homicidal risk, children, elderly, pregnancy, no response."
+  },
+  "F31": {
+    "firstLine": "Mood stabiliser (specialist)",
+    "treatment": "Bipolar disorder: Lithium (specialist-initiated, target 0.6–0.8 mmol/L) OR Valproate (avoid in women of childbearing potential). Antipsychotics (Haloperidol, Risperidone) for acute mania. Do NOT start antidepressants without specialist.",
+    "referral": "All cases — refer for specialist confirmation and management."
+  },
+  "F32.9": {
+    "firstLine": "SSRI + psychotherapy",
+    "treatment": "Fluoxetine 20mg oral alternate days × 2 weeks, then 20mg daily. Reassess after 4 weeks. Continue minimum 9 months after remission. If sedating required: Amitriptyline 25mg at night (max 150mg). Ask about suicidal ideation at every visit.",
+    "referral": "Suicidal ideation, psychotic features, bipolar, pregnancy, children, failure after 8 weeks."
+  },
+  "F41.9": {
+    "firstLine": "SSRI + CBT",
+    "treatment": "Fluoxetine 20mg oral alternate days × 2–4 weeks, then 20mg daily. Continue minimum 12 months. Acute panic: Diazepam 2.5–5mg oral short-term (max 10 days). Psychotherapy (CBT) preferred first-line if available.",
+    "referral": "Risk of harm, comorbid severe conditions, poor response, repeated panic attacks, children."
+  },
+  "F43.1": {
+    "firstLine": "Psychotherapy + SSRI",
+    "treatment": "PTSD: trauma-focused CBT is first-line. Add Fluoxetine 20mg daily if needed. Treat comorbid depression, anxiety, substance use. Consider Prazosin for nightmares (specialist).",
+    "referral": "Severe symptoms, comorbid substance use, suicidal ideation."
+  },
+  "F70": {
+    "firstLine": "Supportive + behavioural",
+    "treatment": "Mild intellectual disability: supportive care, behavioural therapy, family education. Treat comorbid psychiatric and medical conditions. Consider anxiety, depression, epilepsy before psychosis. Refer for developmental and educational support.",
+    "referral": "For assessment, rehabilitation, placement if needed."
+  },
+  "G40": {
+    "firstLine": "Antiseizure medicine",
+    "treatment": "Focal epilepsy: Lamotrigine (start 25mg daily, titrate every 2 weeks to 100–200mg daily) OR Carbamazepine 100mg 12 hourly. Generalised: Lamotrigine OR Levetiracetam 500mg 12 hourly. Women of childbearing potential: avoid valproate. Acute seizure: Midazolam buccal 0.5 mg/kg (children) OR Diazepam 10mg IV.",
+    "referral": "New onset, mixed seizure types, focal needing MRI, seizure-free on therapy ≥5 years."
+  },
+  "G43": {
+    "firstLine": "Analgesia + anti-emetic",
+    "treatment": "Migraine: Paracetamol 1g oral + Metoclopramide 10mg oral at onset. NSAID (Ibuprofen 400mg) if no relief. Prophylaxis if ≥4 attacks/month: Amitriptyline 25mg at night OR Propranolol 40mg 12 hourly.",
+    "referral": "Atypical presentation, sudden severe headache, neurological signs."
+  },
+  "G44.2": {
+    "firstLine": "Paracetamol + lifestyle",
+    "treatment": "Tension headache: Paracetamol 1g oral 4–6 hourly as needed (max 4g daily). Lifestyle: stress management, relaxation, sleep hygiene, exercise. Exclude medication-overuse headache.",
+    "referral": "New headache >1 week, neurological signs, chronic >1 month no improvement."
+  },
+  "G47.0": {
+    "firstLine": "Sleep hygiene",
+    "treatment": "Insomnia: sleep hygiene (fixed wake time, no screens 1h before bed, no caffeine after 2pm), CBT-I. Short-term: Chlorphenamine 4mg at night (max 2 weeks). Avoid benzodiazepines long-term.",
+    "referral": "Chronic insomnia, suspected sleep apnoea, depression."
+  },
+  "H10": {
+    "firstLine": "Chloramphenicol eye ointment",
+    "treatment": "Bacterial conjunctivitis: Chloramphenicol 1% ophthalmic ointment 6 hourly × 7 days. Viral: supportive (Oxymetazoline drops for redness). Allergic: Sodium cromoglycate 2% drops + Cetirizine 10mg daily.",
+    "referral": "No response in 5 days, unilateral, vision loss, pupil irregularity, corneal haziness, gonococcal."
+  },
+  "H25": {
+    "firstLine": "Surgical referral",
+    "treatment": "Senile cataract: no medical treatment. Refer for surgical assessment. Manage reversible causes (diabetes, hypertension). Provide spectacles for refractive error.",
+    "referral": "Visual acuity <6/12, affecting daily activities."
+  },
+  "H40": {
+    "firstLine": "Timolol eye drops",
+    "treatment": "Chronic open-angle glaucoma: Timolol 0.5% eye drops 12 hourly (specialist-initiated). Acute closed-angle glaucoma: Acetazolamide 500mg oral immediately, then 250mg 6 hourly. Pilocarpine 2% drops. Urgent referral.",
+    "referral": "All cases — ophthalmologist. Acute: within 12 hours."
+  },
+  "H54": {
+    "firstLine": "Rehabilitation",
+    "treatment": "Blindness/low vision: refer for low vision assessment, spectacles, magnifiers, orientation and mobility training. Address reversible causes. Register with Department of Social Development for disability grant.",
+    "referral": "All patients — ophthalmology + rehabilitation."
+  },
+  "H60": {
+    "firstLine": "Acetic acid 2% in alcohol",
+    "treatment": "Otitis externa: Acetic acid 2% in alcohol 3–4 drops into ear 6 hourly × 5 days after cleaning. Furuncular: Cefalexin 500mg 6 hourly × 5 days OR Flucloxacillin 500mg 6 hourly × 5 days. Keep ear dry.",
+    "referral": "No response, severe pain, systemic symptoms, diabetic patient."
+  },
+  "H65": {
+    "firstLine": "Supportive + antihistamine",
+    "treatment": "Non-suppurative otitis media (with effusion): often self-limiting. Treat allergic rhinitis (Cetirizine 10mg daily). Valsalva, autoinflation. Reassess in 3 months.",
+    "referral": "Persistent >3 months, hearing loss, speech delay, structural abnormalities."
+  },
+  "H66": {
+    "firstLine": "Amoxicillin",
+    "treatment": "Acute otitis media: Amoxicillin 45 mg/kg 12 hourly × 5 days (children). Adults: Amoxicillin 1500mg 12 hourly × 5 days. If amoxicillin in last 30 days: Amoxicillin/clavulanic acid. Severe penicillin allergy: Azithromycin 10 mg/kg daily × 3 days.",
+    "referral": "No response after 72 hours, recurrent, mastoid swelling, suspected meningitis."
+  },
+  "H81": {
+    "firstLine": "Betahistine",
+    "treatment": "Vertigo: Betahistine 16mg oral 8 hourly (or 8mg 8 hourly). Acute: Prochlorperazine 5mg oral 8 hourly. Vestibular rehabilitation exercises. Exclude central causes.",
+    "referral": "Atypical presentation, neurological signs, hearing loss, persistent >4 weeks."
+  },
+  "I10": {
+    "firstLine": "Lifestyle (Step 1)",
+    "treatment": "Step 1: Lifestyle — salt restriction, weight loss, exercise 30 min × 5/week, stop smoking. Step 2: Hydrochlorothiazide 12.5mg daily. Step 3: Add Amlodipine 5mg daily OR Enalapril 10mg daily. Titrate monthly. Target BP <140/90 mmHg.",
+    "referral": "Young adults <30y, pregnancy, uncontrolled on 4 medicines, signs of organ damage, hypertensive emergency."
+  },
+  "I11.9": {
+    "firstLine": "Lifestyle + ACE-inhibitor",
+    "treatment": "Hypertensive heart disease without failure: Lifestyle modification + Hydrochlorothiazide 12.5mg daily + Enalapril 10mg daily. Target BP <140/90. Add Aspirin 150mg daily if secondary prevention indicated. Statin if 10-year CVD risk ≥20%.",
+    "referral": "Heart failure develops, poor control, LVH on ECG."
+  },
+  "I15.9": {
+    "firstLine": "Treat underlying cause",
+    "treatment": "Secondary hypertension: investigate cause (renal, endocrine, drugs). Treat underlying condition. Antihypertensives as for primary hypertension if needed. Specialist referral for workup.",
+    "referral": "All cases — specialist for investigation and management."
+  },
+  "I20": {
+    "firstLine": "Aspirin + Beta-blocker",
+    "treatment": "Stable angina: Aspirin 150mg daily. Beta-blocker (Atenolol 50mg daily, titrate to HR ~60). Nitrate (Isosorbide dinitrate 5mg SL for attacks). Statin (Rosuvastatin 10mg at night). If still symptomatic: add Amlodipine 5mg daily. Then Isosorbide mononitrate 10–20mg BD.",
+    "referral": "Unstable angina, poor control, diagnostic uncertainty."
+  },
+  "I21": {
+    "firstLine": "Emergency — Aspirin + thrombolysis",
+    "treatment": "Acute MI: Aspirin 150mg chewed. Isosorbide dinitrate 5mg SL. Morphine 5–10mg slow IV. Streptokinase 1.5 million units IV over 30–60 min if within 12 hours and no contraindications. Refer URGENTLY.",
+    "referral": "All cases — urgent transfer to hospital."
+  },
+  "I25": {
+    "firstLine": "Aspirin + statin",
+    "treatment": "Chronic ischaemic heart disease: Aspirin 150mg daily. Statin (Rosuvastatin 10mg at night). Beta-blocker (Atenolol 50mg daily). ACE-inhibitor (Enalapril 5–10mg BD). Nitrate as needed. Lifestyle modification.",
+    "referral": "Unstable symptoms, heart failure, poor control."
+  },
+  "I48": {
+    "firstLine": "Rate control + anticoagulation",
+    "treatment": "Atrial fibrillation: rate control with Beta-blocker (Atenolol 50mg daily) OR Digoxin (specialist). Anticoagulation (Warfarin or DOAC — specialist). Treat underlying cause. Assess CHA2DS2-VASc score.",
+    "referral": "All cases — specialist for anticoagulation decision."
+  },
+  "I50": {
+    "firstLine": "Diuretic + ACE-inhibitor",
+    "treatment": "Furosemide 40mg oral daily (titrate to effect, max 80mg BD). Enalapril 2.5mg 12 hourly, titrate to 10mg twice daily. Add Carvedilol 3.125mg twice daily after ACE-inhibitor stabilised, titrate every 2 weeks. Add Spironolactone 25mg daily if still symptomatic.",
+    "referral": "All suspected cases for initiation of treatment, poor response, prosthetic valve, suspected endocarditis."
+  },
+  "I63": {
+    "firstLine": "Aspirin + urgent referral",
+    "treatment": "Ischaemic stroke: Aspirin 300mg oral as pre-referral dose (if able to swallow, no haemorrhagic signs). Do NOT treat elevated BP at PHC. Nil per mouth until swallowing assessed. Refer URGENTLY (preferably within 3 hours).",
+    "referral": "All acute stroke — urgent transfer."
+  },
+  "I64": {
+    "firstLine": "Aspirin + urgent referral",
+    "treatment": "Stroke unspecified: Aspirin 300mg oral pre-referral if not haemorrhagic. Nil per mouth. Refer URGENTLY.",
+    "referral": "All acute stroke — urgent transfer."
+  },
+  "I80": {
+    "firstLine": "Anticoagulation",
+    "treatment": "DVT: Enoxaparin 1 mg/kg SC 12 hourly OR Warfarin (target INR 2–3, specialist). Continue 3–6 months. Compression stockings. Investigate cause.",
+    "referral": "All suspected DVT — refer for confirmation and anticoagulation initiation."
+  },
+  "I83": {
+    "firstLine": "Compression therapy",
+    "treatment": "Varicose veins: compression stockings (30–40 mmHg). Elevation. Avoid prolonged standing. Refer if symptomatic, skin changes, ulceration.",
+    "referral": "Ulceration, bleeding, severe symptoms, cosmetic concern."
+  },
+  "I84": {
+    "firstLine": "Stool softener + topical",
+    "treatment": "Haemorrhoids: high fibre diet, hydration, avoid straining. Lactulose 10–20 mL daily. Topical Bismuth subgallate ointment. Lidocaine 2% cream for pain. Sitz baths.",
+    "referral": "Thrombosed, irreducible, bleeding, poor response, children."
+  },
+  "I95": {
+    "firstLine": "Assess cause",
+    "treatment": "Hypotension: identify cause (dehydration, sepsis, cardiac, medication). If symptomatic: Sodium chloride 0.9% IV. If drug-induced (antihypertensives): adjust dose. Adrenal insufficiency: Hydrocortisone.",
+    "referral": "Shock, syncope, chest pain, suspected cardiac cause."
+  },
+  "J00": {
+    "firstLine": "Symptomatic relief",
+    "treatment": "Common cold: rest, hydration, Sodium chloride 0.9% nose drops (infants). Paracetamol 15 mg/kg (children) or 1g (adults) 6 hourly for fever/discomfort. No antibiotics. Reassess if symptoms >14 days.",
+    "referral": "Severe complications, symptoms >14 days."
+  },
+  "J01": {
+    "firstLine": "Amoxicillin",
+    "treatment": "Acute sinusitis: Amoxicillin 500mg oral 8 hourly × 5 days (children ≤3y: 45 mg/kg 12 hourly). Severe penicillin allergy: Azithromycin 500mg daily × 3 days. Add Oxymetazoline 0.05% nose drops (max 5 days). Saline nasal irrigation.",
+    "referral": "Fever >48h, poor response >5 days, periorbital cellulitis, recurrent, meningeal signs."
+  },
+  "J02": {
+    "firstLine": "Symptomatic relief",
+    "treatment": "Acute pharyngitis (sore throat): salt water gargles (2.5 mL salt in 200 mL warm water). Paracetamol for pain. Antibiotics only if streptococcal risk (age 3–21y with enlarged tonsils + no cough + exudates): Benzathine benzylpenicillin 1.2 MU IM single dose OR Amoxicillin 50 mg/kg daily × 10 days.",
+    "referral": "Suppurative complications, recurrent (≥6/year), suspected rheumatic fever, difficulty opening mouth."
+  },
+  "J03": {
+    "firstLine": "Antibiotics if streptococcal",
+    "treatment": "Acute tonsillitis: same as J02 — antibiotics only if streptococcal risk. Benzathine benzylpenicillin 1.2 MU IM single dose (children ≥30kg and adults) OR 600,000 IU (<30kg). OR Amoxicillin 50 mg/kg daily × 10 days. Severe penicillin allergy: Azithromycin.",
+    "referral": "Peritonsillar/retropharyngeal abscess, trismus, recurrent, suspected rheumatic fever."
+  },
+  "J04": {
+    "firstLine": "Symptomatic relief",
+    "treatment": "Acute laryngitis and tracheitis: rest voice, hydration, humidifier. Paracetamol for pain/fever. Antibiotics not usually indicated.",
+    "referral": "Stridor, respiratory distress, symptoms >2 weeks."
+  },
+  "J06.9": {
+    "firstLine": "Symptomatic relief",
+    "treatment": "Acute URTI: rest, hydration, Paracetamol for fever/pain. Saline nose drops for infants. Antibiotics not indicated for viral URTI.",
+    "referral": "Symptoms >14 days, complications (otitis media, sinusitis, pneumonia)."
+  },
+  "J18.9": {
+    "firstLine": "Amoxicillin",
+    "treatment": "Uncomplicated: Amoxicillin 1g oral 8 hourly × 5 days. Severe penicillin allergy: Moxifloxacin 400mg daily × 5 days. With comorbidities/>65y: Amoxicillin/clavulanic acid 875/125mg 12 hourly × 5 days. Chest X-ray, sputum for TB-NAAT.",
+    "referral": "Confusion, cyanosis, RR ≥30, SBP <90, no response after 48h, comorbidities."
+  },
+  "J30": {
+    "firstLine": "Intranasal corticosteroid",
+    "treatment": "Allergic rhinitis: Fluticasone nasal spray 100mcg each nostril 12 hourly. If no response in 7 days: Sodium cromoglycate 2% eye drops for eye symptoms. Add Cetirizine 10mg daily for long-term. Avoid sedation-causing antihistamines in children <2y.",
+    "referral": "Chronic symptoms, severe, patients on protease inhibitors requiring steroids."
+  },
+  "J40": {
+    "firstLine": "Symptomatic relief",
+    "treatment": "Bronchitis: usually viral, antibiotics not indicated. Paracetamol for fever/pain. Salbutamol inhaler if wheeze. Reassess if not improving in 1 week.",
+    "referral": "Symptoms >3 weeks, haemoptysis, weight loss, suspected pneumonia."
+  },
+  "J45": {
+    "firstLine": "SABA reliever",
+    "treatment": "Step 1: Salbutamol MDI 200mcg as needed. Step 2: Budesonide 200mcg 12 hourly. Step 3: Salmeterol/Fluticasone 50/250mcg 12 hourly. Acute: Prednisone 40mg daily × 7 days. Use spacer for all inhalers.",
+    "referral": "Children <6y, brittle asthma, >2 prednisone courses in 6 months, poor control on Step 2–3."
+  },
+  "J45.9": {
+    "firstLine": "SABA reliever",
+    "treatment": "Asthma: Salbutamol 100mcg MDI 200mcg (2 puffs) as needed. Add Budesonide 200mcg 12 hourly if using SABA >2×/week. Step-up as per J45.",
+    "referral": "Same as J45."
+  },
+  "J44": {
+    "firstLine": "SABA + LABA",
+    "treatment": "COPD: Salbutamol 100mcg MDI 1–2 puffs 3–4× daily as needed. If uncontrolled: Formoterol 12mcg 12 hourly. Frequent exacerbations (≥2/year) with eosinophils >0.1: Salmeterol/Fluticasone 50/250mcg 12 hourly. Influenza vaccine annually. Smoking cessation.",
+    "referral": "Poor response, patients on protease inhibitors requiring ICS."
+  },
+  "J90": {
+    "firstLine": "Treat underlying cause",
+    "treatment": "Pleural effusion: diagnose cause (TB, malignancy, cardiac failure, pneumonia). Treat underlying condition. Therapeutic aspiration if large. TB pleural effusion: RHZE × 2 months → RH × 4 months + corticosteroids.",
+    "referral": "All cases — refer for diagnostic workup."
+  },
+  "K02": {
+    "firstLine": "Refer to dentist",
+    "treatment": "Dental caries: refer to dentist/dental therapist. Paracetamol for pain. Oral hygiene education. Lidocaine 2% with adrenaline for dental procedures (dentist).",
+    "referral": "All cases — dentist."
+  },
+  "K04": {
+    "firstLine": "Refer to dentist",
+    "treatment": "Pulp/periapical disease: refer to dentist. Paracetamol for pain. Root canal or extraction by dentist.",
+    "referral": "All cases — dentist."
+  },
+  "K05": {
+    "firstLine": "Chlorhexidine mouthwash",
+    "treatment": "Gingivitis: oral hygiene (brush 2× daily, floss, salt mouthwash). Chlorhexidine 0.2% mouthwash 15 mL twice daily × 5 days. Periodontitis: same + refer for scaling. Necrotising: Metronidazole 400mg 8 hourly × 5 days + Chlorhexidine.",
+    "referral": "All periodontitis cases — dentist."
+  },
+  "K21": {
+    "firstLine": "PPI + lifestyle",
+    "treatment": "GERD: Pantoprazole 40mg oral daily for max 14 days. Lifestyle: stop smoking, small frequent meals, avoid late meals, weight loss, elevate head of bed. Stop NSAIDs if possible.",
+    "referral": "Weight loss, anaemia, persistent vomiting, haematemesis, dysphagia, palpable mass, no response in 7 days."
+  },
+  "K25": {
+    "firstLine": "PPI + H. pylori eradication",
+    "treatment": "Gastric ulcer: Pantoprazole 40mg daily × 8 weeks. If H. pylori positive: triple therapy — Pantoprazole 40mg 12 hourly + Amoxicillin 1g 12 hourly + Clarithromycin 500mg 12 hourly × 14 days. Stop NSAIDs, stop smoking.",
+    "referral": "Bleeding, perforation, obstruction, no healing after 8 weeks."
+  },
+  "K27": {
+    "firstLine": "PPI",
+    "treatment": "Peptic ulcer: Pantoprazole 40mg oral daily × 4–8 weeks. H. pylori eradication if positive. Stop NSAIDs/smoking. Antacids for breakthrough symptoms.",
+    "referral": "Bleeding (haematemesis, melaena), perforation, obstruction, poor response."
+  },
+  "K29": {
+    "firstLine": "PPI + antacid",
+    "treatment": "Gastritis/duodenitis: Pantoprazole 40mg daily × 4 weeks. Antacids (Aluminium/Magnesium hydroxide) for breakthrough symptoms. Avoid NSAIDs, alcohol, spicy food, smoking.",
+    "referral": "Bleeding, weight loss, persistent vomiting, poor response."
+  },
+  "K30": {
+    "firstLine": "PPI trial",
+    "treatment": "Functional dyspepsia: Pantoprazole 40mg daily × 4 weeks. Lifestyle: small frequent meals, avoid triggers. Reassure (no serious pathology). If no response, refer to exclude organic disease.",
+    "referral": "Warning signs (weight loss, anaemia, vomiting, dysphagia), no response in 4 weeks."
+  },
+  "K35": {
+    "firstLine": "Nil per mouth + IV fluids",
+    "treatment": "Acute appendicitis: keep nil per mouth, IV Sodium chloride 0.9%, analgesia (Morphine 5–10mg IM if severe). Refer URGENTLY for surgical assessment.",
+    "referral": "All cases — urgent surgical referral."
+  },
+  "K40": {
+    "firstLine": "Surgical referral",
+    "treatment": "Inguinal hernia: refer for surgical repair. If incarcerated/strangulated: urgent referral. Advise avoiding straining/heavy lifting.",
+    "referral": "All cases — surgical. Urgent if incarcerated."
+  },
+  "K42": {
+    "firstLine": "Surgical referral",
+    "treatment": "Umbilical hernia: refer for surgical repair if symptomatic or >2 cm. In children <2y, may resolve spontaneously.",
+    "referral": "Incarcerated, strangulated, symptomatic, adults."
+  },
+  "K52.9": {
+    "firstLine": "Symptomatic + diet",
+    "treatment": "Non-infective gastroenteritis: hydration (ORS). Loperamide 4mg then 2mg after each loose stool (adults). Avoid lactose, caffeine, alcohol. Reassess if >4 weeks.",
+    "referral": "Blood in stool, weight loss, symptoms >4 weeks, dehydration."
+  },
+  "K59.0": {
+    "firstLine": "Lifestyle + lactulose",
+    "treatment": "Constipation: high fibre diet, hydration, exercise, regular bowel habits. Lactulose 10–20 mL daily (adults) or 0.5 mL/kg (children). Sennosides 13.5mg at night if needed.",
+    "referral": "Recent change in bowel habit, faecal impaction, poor response."
+  },
+  "K76.0": {
+    "firstLine": "Lifestyle + metabolic workup",
+    "treatment": "Fatty liver: weight loss 7–10%, exercise, avoid alcohol, control diabetes/lipids. Investigate for metabolic syndrome. No specific medicine.",
+    "referral": "Elevated LFTs, cirrhosis signs, metabolic complications."
+  },
+  "K80": {
+    "firstLine": "Analgesia + surgical referral",
+    "treatment": "Gallstones: if asymptomatic — no treatment. Symptomatic: analgesia (Morphine 5–10mg IM for severe colic). Refer for cholecystectomy.",
+    "referral": "All symptomatic cases — surgical."
+  },
+  "L01": {
+    "firstLine": "Povidone iodine + antibiotic",
+    "treatment": "Impetigo: Povidone iodine 5% cream 8 hourly. If extensive/systemic: Cefalexin 500mg 6 hourly × 5 days OR Flucloxacillin 500mg 6 hourly × 5 days. Severe penicillin allergy: Azithromycin.",
+    "referral": "No improvement after 2nd course, haematuria (post-strep GN)."
+  },
+  "L02": {
+    "firstLine": "Drainage + antibiotics",
+    "treatment": "Boil/abscess: incision and drainage is primary treatment. Antibiotics only if: extensive cellulitis, fever, face boils, immunocompromised, diabetic, neonate. Cefalexin 500mg 6 hourly × 5 days OR Flucloxacillin 500mg 6 hourly × 5 days.",
+    "referral": "Palm/pulp space abscess, severe sepsis, deep abscess, poor response."
+  },
+  "L03": {
+    "firstLine": "Cefalexin/Flucloxacillin",
+    "treatment": "Cellulitis: Cefalexin 500mg 6 hourly × 5 days OR Flucloxacillin 500mg 6 hourly × 5 days. Elevate limb. Severe penicillin allergy: Azithromycin. Severe cellulitis: refer for IV antibiotics.",
+    "referral": "Significant pain/swelling (children), haemorrhagic bullae, gangrene, systemic symptoms, hand/face/scalp involvement, diabetic."
+  },
+  "L08.9": {
+    "firstLine": "Topical antibiotic",
+    "treatment": "Local skin infection: Povidone iodine 5% cream. If spreading or systemic: Cefalexin 500mg 6 hourly × 5 days. Keep clean and dry.",
+    "referral": "Spreading, systemic symptoms, no response."
+  },
+  "L20": {
+    "firstLine": "Emollient + topical steroid",
+    "treatment": "Atopic eczema: Emollient (Emulsifying ointment) + Aqueous cream as soap substitute. Step 2: Hydrocortisone 1% topical 12 hourly × 7 days. Step 3: Betamethasone 0.1% (potent) for severe (avoid face). Itch: Chlorphenamine 4mg at night (max 2 weeks) or Cetirizine 10mg daily.",
+    "referral": "No improvement in 2 weeks, extensive, eczema herpeticum, infants needing >1% hydrocortisone."
+  },
+  "L30.9": {
+    "firstLine": "Emollient + topical steroid",
+    "treatment": "Dermatitis: emollient + topical hydrocortisone 1% 12 hourly × 7 days. Antihistamine for itch. Avoid triggers.",
+    "referral": "No response, extensive, secondary infection."
+  },
+  "L40": {
+    "firstLine": "Coal tar + topical steroid",
+    "treatment": "Psoriasis: Coal tar (LPC 5%) topical 1–4× daily. Betamethasone 0.1% topical 12 hourly (potent). Sun exposure. For severe: refer for methotrexate/biologicals.",
+    "referral": "Severe, joint involvement, HIV-related, no response."
+  },
+  "L50": {
+    "firstLine": "Antihistamine",
+    "treatment": "Urticaria: avoid triggers. Chlorphenamine 4mg oral 6–8 hourly (adults) or 0.1 mg/kg (children). Cetirizine 10mg daily for long-term. Calamine lotion topically. DO NOT use oral corticosteroids.",
+    "referral": "No improvement after 24h, angioedema, anaphylaxis."
+  },
+  "L60": {
+    "firstLine": "Supportive",
+    "treatment": "Nail disorders: depends on cause. Fungal: Fluconazole 200mg weekly × 6 weeks (adults). Trauma: no treatment. Psoriatic: treat psoriasis. Ingrown: warm soaks, avoid tight shoes.",
+    "referral": "Painful, infected, underlying systemic cause."
+  },
+  "L81": {
+    "firstLine": "Cosmetic + sun protection",
+    "treatment": "Pigmentation disorders: sun protection (SPF 30+), cosmetic camouflage. Vitiligo: high potency sunblock, moderate sun exposure. Albinism: SPF 30+, protective clothing, sunglasses.",
+    "referral": "All albinism, vitiligo for specialist, suspected malignancy."
+  },
+  "M15": {
+    "firstLine": "Paracetamol + exercise",
+    "treatment": "Polyarthrosis: Paracetamol 1g 4–6 hourly (max 4g/day) + methyl salicylate ointment. Exercise, weight loss, physiotherapy. Add Ibuprofen 400mg 8 hourly if inflammation (max 7 days).",
+    "referral": "Intractable pain, joint replacement consideration, uncertain diagnosis."
+  },
+  "M17": {
+    "firstLine": "Paracetamol + exercise",
+    "treatment": "Knee osteoarthritis: Paracetamol + exercise + weight loss. Physiotherapy. Walking stick. Ibuprofen short course if inflamed. Intra-articular steroid injection (specialist).",
+    "referral": "Consider joint replacement, intractable pain."
+  },
+  "M19.9": {
+    "firstLine": "Paracetamol + NSAID",
+    "treatment": "Arthrosis: Paracetamol 1g 4–6 hourly + Ibuprofen 400mg 8 hourly (short course). Exercise, weight loss, physiotherapy.",
+    "referral": "Intractable pain, joint replacement consideration."
+  },
+  "M25.5": {
+    "firstLine": "Paracetamol + NSAID",
+    "treatment": "Joint pain: Paracetamol 1g 4–6 hourly. Ibuprofen 400mg 8 hourly with meals if inflamed. Heat/ice. Rest and exercise.",
+    "referral": "Pain >1 week (children), >2 weeks (adults), fever, systemic illness."
+  },
+  "M54.5": {
+    "firstLine": "Paracetamol + NSAID",
+    "treatment": "Low back pain: Paracetamol 1g 4–6 hourly. Ibuprofen 400mg 8 hourly if muscle spasm. Avoid bed rest — stay active. Physiotherapy. Weight loss.",
+    "referral": "Neurological signs (numbness, weakness, bladder/bowel loss), red flags (weight loss, cancer history, age >50 with new pain)."
+  },
+  "M75.1": {
+    "firstLine": "Rest + NSAID",
+    "treatment": "Rotator cuff syndrome: rest, ice, Paracetamol, NSAID (Ibuprofen). Physiotherapy with range-of-motion and strengthening. Subacromial steroid injection (specialist).",
+    "referral": "Persistent >6 weeks, weakness, suspected tear."
+  },
+  "M79.1": {
+    "firstLine": "Paracetamol + heat",
+    "treatment": "Myalgia: Paracetamol 1g 4–6 hourly. Heat. Rest. Hydration. Treat underlying cause (viral, medication, thyroid).",
+    "referral": "Persistent >2 weeks, weakness, systemic symptoms, rhabdomyolysis."
+  },
+  "N30": {
+    "firstLine": "Single-dose antibiotic",
+    "treatment": "Cystitis: Gentamicin IM 160mg single dose OR Fosfomycin 3g single dose OR Nitrofurantoin 100mg 6 hourly × 5 days (pregnancy-safe). Increase oral fluids. Send MSU for MC&S.",
+    "referral": "Pregnant, men, women beyond reproductive age, recurrent, sepsis."
+  },
+  "N39.0": {
+    "firstLine": "Single-dose antibiotic",
+    "treatment": "UTI: Uncomplicated: Gentamicin IM 160mg single dose. Complicated: Ciprofloxacin 500mg 12 hourly × 7 days. Pregnancy: Fosfomycin 3g single dose OR Nitrofurantoin 100mg 6 hourly × 5 days.",
+    "referral": "Pregnancy, men, children ≤3 months, sepsis, recurrent."
+  },
+  "N18": {
+    "firstLine": "BP + protein control",
+    "treatment": "CKD: Enalapril 5mg 12 hourly (titrate to 10mg 12 hourly) to reduce proteinuria. BP target <140/90. Statin if indicated. Avoid nephrotoxics (NSAIDs, tenofovir). Furosemide 20–80mg for fluid overload. Monitor K+ and creatinine.",
+    "referral": "eGFR <60, uncontrolled BP, hyperkalaemia, anaemia, dialysis consideration."
+  },
+  "N20": {
+    "firstLine": "Analgesia + hydration",
+    "treatment": "Kidney stones: Morphine 5–10mg IM for severe colic. Hydration (2–3 L/day). Strain urine for stone analysis. NSAIDs contraindicated (renal risk). Refer for urology.",
+    "referral": "All <19 years, pregnant, morbidly obese, polycystic kidney disease, metabolic disorders, multiple stones, recurrent."
+  },
+  "N40": {
+    "firstLine": "Refer to urology",
+    "treatment": "BPH: refer for urology assessment. Urinary retention: insert urethral catheter, refer urgently. Avoid anticholinergics and decongestants.",
+    "referral": "All suspected BPH — refer for assessment."
+  },
+  "N80": {
+    "firstLine": "Analgesia + hormonal",
+    "treatment": "Endometriosis: NSAID (Ibuprofen 400mg 8 hourly) for pain. Combined oral contraceptive for symptom control. GnRH analogues (specialist). Refer for surgical assessment.",
+    "referral": "All suspected — gynaecology referral."
+  },
+  "N91": {
+    "firstLine": "Investigate cause",
+    "treatment": "Amenorrhoea: exclude pregnancy, thyroid, hyperprolactinaemia, PCOS. Lifestyle (weight, exercise). Combined oral contraceptive for cycle regulation. Refer for specialist workup.",
+    "referral": "Primary amenorrhoea >16y, secondary >6 months, suspected PCOS, infertility."
+  },
+  "N92": {
+    "firstLine": "Hormonal + NSAID",
+    "treatment": "Menorrhagia: Combined oral contraceptive (30mcg EE) × 3–6 months. Ibuprofen 400mg 8 hourly during menses. Ferrous sulfate if anaemic. Tranexamic acid 1g 8 hourly during menses.",
+    "referral": "Severe anaemia, suspected fibroids, no response, >45y with new bleeding."
+  },
+  "O10": {
+    "firstLine": "Methyldopa",
+    "treatment": "Chronic hypertension in pregnancy: Methyldopa 250mg 8 hourly, titrate to max 750mg 8 hourly. Do NOT use ACE-inhibitors, ARBs, or thiazides. Baseline bloods, urine protein. Refer for specialist antenatal care.",
+    "referral": "All cases — high-risk obstetric care."
+  },
+  "O13": {
+    "firstLine": "Methyldopa + monitoring",
+    "treatment": "Gestational hypertension (no severe features): Methyldopa 250mg 8 hourly, titrate. Weekly BP + urine protein + fetal monitoring. Education on warning signs.",
+    "referral": "Severe features (BP >160/110, symptoms, abnormal labs) — urgent referral."
+  },
+  "O14": {
+    "firstLine": "Magnesium sulfate (severe)",
+    "treatment": "Pre-eclampsia without severe features: admit/monitor. With severe features: Magnesium sulfate 4g IV loading over 20 min + 10g IM (5g each buttock), then 5g IM every 4 hours. Nifedipine 10mg oral for BP ≥160/110. Insert Foley, monitor urine output hourly.",
+    "referral": "All cases — urgent referral to high-risk obstetric unit."
+  },
+  "O15": {
+    "firstLine": "Magnesium sulfate",
+    "treatment": "Eclampsia: Magnesium sulfate 4g IV loading + 10g IM, then 5g IM every 4 hours. Left lateral position. Oxygen. Nifedipine for BP. Calcium gluconate 10% IV if magnesium toxicity (respiratory depression).",
+    "referral": "All cases — urgent transfer to high-risk obstetric unit."
+  },
+  "O20": {
+    "firstLine": "Urgent assessment",
+    "treatment": "Bleeding in early pregnancy: monitor vitals, IV fluids if shock. Anti-D immunoglobulin 50mcg IM within 72h for Rh-negative women (surgical management).",
+    "referral": "All cases — urgent assessment to exclude ectopic/miscarriage."
+  },
+  "O24": {
+    "firstLine": "Insulin (specialist)",
+    "treatment": "Diabetes in pregnancy: insulin is first-line (metformin may be added by specialist). Target fasting <5.3 mmol/L, 1h post-meal <7.8. Close monitoring of fetal growth. Refer to combined obstetric/diabetes clinic.",
+    "referral": "All cases — specialist antenatal care."
+  },
+  "O80": {
+    "firstLine": "Routine intrapartum care",
+    "treatment": "Normal delivery: monitor partogram. Oxytocin 10 units IM after delivery (PPH prevention). Vitamin K 1mg IM for neonate. Chloramphenicol eye ointment for neonate. Delayed cord clamping (1 min).",
+    "referral": "Prolonged labour, fetal distress, PPH, retained placenta."
+  },
+  "P07": {
+    "firstLine": "Kangaroo care + feeding",
+    "treatment": "Low birth weight: kangaroo mother care, exclusive breastfeeding (or expressed breastmilk). Monitor weight, temperature, glucose. Vitamin K 1mg IM at birth. Refer if <1.5kg or unstable.",
+    "referral": "All <1.5kg, unstable, feeding difficulties, jaundice."
+  },
+  "P59": {
+    "firstLine": "Phototherapy",
+    "treatment": "Neonatal jaundice: assess level (transcutaneous or serum bilirubin). Phototherapy if above treatment threshold. Ensure adequate feeding (breastfeed 8–12× daily). Exclude haemolytic causes.",
+    "referral": "Jaundice <24h of life, jaundice >2 weeks, bilirubin near exchange threshold, pallor, poor feeding."
+  },
+  "R05": {
+    "firstLine": "Symptomatic",
+    "treatment": "Cough: identify and treat cause. Viral URTI: supportive. Post-infectious: honey, fluids. If >3 weeks: exclude TB, asthma, post-nasal drip, GORD. Avoid cough suppressants in children.",
+    "referral": "Chronic cough >3 weeks, haemoptysis, weight loss, dyspnoea."
+  },
+  "R07.4": {
+    "firstLine": "ECG + Troponin",
+    "treatment": "Chest pain: exclude life-threatening causes (ACS, PE, aortic dissection, pneumothorax). If suspected ACS: Aspirin 150mg chewed, nitrates SL, urgent referral. ECG.",
+    "referral": "All suspected ACS, PE, aortic dissection — urgent."
+  },
+  "R10": {
+    "firstLine": "Assess cause",
+    "treatment": "Abdominal pain: history + examination to exclude surgical abdomen. If renal/biliary colic: Morphine 5–10mg IM. Hyoscine butylbromide 10mg 6 hourly for cramps (max 3 days).",
+    "referral": "Severe pain, acute abdomen, bloody stools, mass, non-diarrhoeal bleeding."
+  },
+  "R11": {
+    "firstLine": "Supportive + anti-emetic",
+    "treatment": "Nausea/vomiting: hydration. Children: ORS small frequent volumes. Adults: Metoclopramide 10mg oral/IM 8 hourly. Exclude pregnancy.",
+    "referral": "Severe dehydration, shock, jaundice, sepsis signs, projectile vomiting (infants), blood in vomit."
+  },
+  "R42": {
+    "firstLine": "Symptomatic + assess cause",
+    "treatment": "Dizziness: exclude serious causes (stroke, cardiac arrhythmia, vertigo). If vertigo: Betahistine 16mg 8 hourly. Prochlorperazine 5mg oral for acute vertigo.",
+    "referral": "New focal neurology, cardiac cause, syncope."
+  },
+  "R50": {
+    "firstLine": "Paracetamol + investigate",
+    "treatment": "Fever: identify cause. Paracetamol 15 mg/kg (children) or 1g (adults) 6 hourly for distress. Hydration. Test for malaria if in endemic area. No empirical antibiotics (except infants <2 months with severe features).",
+    "referral": "Fever >2 days with no cause, warning signs (meningitis, sepsis, malaria), infants <2 months."
+  },
+  "R51": {
+    "firstLine": "Paracetamol + assess cause",
+    "treatment": "Headache: Paracetamol 1g 4–6 hourly. Exclude serious causes (meningitis, SAH, tumour, hypertensive emergency). Tension headache: lifestyle + relaxation.",
+    "referral": "Meningitis signs, sudden severe headache, neurological signs, headache >1 week in adults, children >3 days."
+  },
+  "R53": {
+    "firstLine": "Investigate cause",
+    "treatment": "Malaise/fatigue: FBC, glucose, thyroid, HIV test. Treat underlying cause (anaemia, infection, hypothyroidism, depression). Lifestyle (sleep, exercise, diet).",
+    "referral": "Persistent >4 weeks, weight loss, fever, lymphadenopathy."
+  },
+  "R73": {
+    "firstLine": "Lifestyle + metformin",
+    "treatment": "Elevated blood glucose: lifestyle modification (diet, exercise, weight loss). If confirmed diabetes: Metformin 500mg daily, titrate. Repeat fasting glucose.",
+    "referral": "Confirmed diabetes, HbA1c >7%, complications."
+  },
+  "S00": {
+    "firstLine": "Wound care + tetanus",
+    "treatment": "Superficial head injury: clean wound, chlorhexidine 0.05%, dress. Tetanus toxoid if not immunised within 5y. Paracetamol for pain. Observe for concussion.",
+    "referral": "Loss of consciousness, vomiting, focal neurology, deep wound, suspected skull fracture."
+  },
+  "S06": {
+    "firstLine": "Emergency — refer",
+    "treatment": "Intracranial injury: airway, breathing, circulation. Do NOT give sedatives unless intubated. IV Sodium chloride 0.9% if hypotensive. Urgent referral.",
+    "referral": "All cases — urgent neurosurgical referral."
+  },
+  "S52": {
+    "firstLine": "Immobilise + analgesia",
+    "treatment": "Forearm fracture: immobilise with backslab/splint. Analgesia (Paracetamol + Ibuprofen, or Morphine if severe). Refer for X-ray and orthopaedic assessment.",
+    "referral": "All fractures — orthopaedic referral."
+  },
+  "S61": {
+    "firstLine": "Wound care + antibiotics",
+    "treatment": "Hand wound: clean thoroughly, chlorhexidine 0.05%, dress. Antibiotics (Cefalexin 500mg 6 hourly × 5 days OR Amoxicillin/clavulanic acid 875/125mg 12 hourly × 5 days). Tetanus toxoid. X-ray for foreign body/fracture.",
+    "referral": "All hand wounds — hand surgery referral."
+  },
+  "S72": {
+    "firstLine": "Immobilise + analgesia",
+    "treatment": "Femur fracture: immobilise (traction, splint). Morphine 5–10mg IM for pain. IV fluids if shock. Urgent referral.",
+    "referral": "All cases — urgent orthopaedic referral."
+  },
+  "S82": {
+    "firstLine": "Immobilise + analgesia",
+    "treatment": "Lower leg fracture: immobilise with backslab. Analgesia. Elevate. Refer for X-ray and orthopaedic assessment. Assess for compartment syndrome (pain, pallor, paraesthesia, paralysis, pulselessness).",
+    "referral": "All cases — orthopaedic referral. Urgent if open fracture."
+  },
+  "S93": {
+    "firstLine": "RICE + analgesia",
+    "treatment": "Ankle sprain: Rest, Ice, Compression, Elevation. Paracetamol 1g 6 hourly + Ibuprofen 400mg 8 hourly. Crutches if unable to weight bear. X-ray to exclude fracture (Ottawa rules).",
+    "referral": "Severe pain, unable to weight bear, suspected fracture, no improvement."
+  },
+  "T14": {
+    "firstLine": "Assess + treat",
+    "treatment": "Unspecified injury: assess mechanism, examine fully. Clean wounds, immobilise fractures, analgesia. Tetanus toxoid if not immunised within 5y.",
+    "referral": "Moderate/severe injuries — refer after stabilisation."
+  },
+  "T78.4": {
+    "firstLine": "Antihistamine",
+    "treatment": "Allergy unspecified: Cetirizine 10mg daily (or Chlorphenamine 4mg 6–8 hourly). Avoid allergen. If anaphylaxis: Adrenaline 0.5mg IM, oxygen, IV fluids, hydrocortisone 200mg IV, promethazine 25mg IM.",
+    "referral": "Anaphylaxis, severe angioedema, poor response."
+  },
+  "Z00.0": {
+    "firstLine": "Routine exam",
+    "treatment": "General adult medical examination: BP, weight, BMI, glucose, HIV test, TB screen. Age-appropriate screening (cervical, breast, prostate). Lifestyle counselling. Vaccinations.",
+    "referral": "Abnormal findings on screening."
+  },
+  "Z11": {
+    "firstLine": "Screening",
+    "treatment": "Screening for infectious diseases: HIV test, TB screen, STI screen, hepatitis B/C. Vaccinate if susceptible. Counselling.",
+    "referral": "Positive results — refer for treatment."
+  },
+  "Z21": {
+    "firstLine": "ART continuation",
+    "treatment": "Asymptomatic HIV: initiate TLD (TDF+3TC+DTG) once daily. Cotrimoxazole prophylaxis if CD4 <200. Viral load at 3 and 10 months, then annually. TB screen at every visit.",
+    "referral": "Same as B20."
+  },
+  "Z23": {
+    "firstLine": "Vaccination",
+    "treatment": "Immunisation: follow EPI schedule. BCG at birth, OPV, RV, Hexavalent (DTaP-IPV-HB-Hib), PCV, Measles/Rubella, Tdap. Catch-up doses for missed vaccines. Report AEFIs.",
+    "referral": "Anaphylaxis, severe AEFI."
+  },
+  "Z30": {
+    "firstLine": "Contraceptive counselling",
+    "treatment": "Contraceptive management: offer choice (COC, POP, DMPA, implant, IUCD, condoms). Screen for contraindications. Educate on correct use and side effects. Emergency contraception if needed.",
+    "referral": "Difficult insertion, complications, sterilisation requests."
+  },
+  "Z34": {
+    "firstLine": "Antenatal care",
+    "treatment": "Supervision of normal pregnancy: booking visit (bloods, BP, urine), monthly until 28 weeks, then 2-weekly to 36, then weekly. Folic acid 5mg daily (1st trimester), Ferrous sulfate + Calcium. Tdap between 26–34 weeks. Screen for HIV, syphilis, anaemia.",
+    "referral": "Any complication, high-risk pregnancy."
+  },
+  "Z38": {
+    "firstLine": "Routine newborn care",
+    "treatment": "Liveborn infant: dry, warm, skin-to-skin. Vitamin K 1mg IM. Chloramphenicol 1% eye ointment. BCG + OPV0. Initiate breastfeeding within 1 hour. Apgar score.",
+    "referral": "Any abnormality, prematurity, respiratory distress, jaundice."
+  },
+  "Z71": {
+    "firstLine": "Counselling",
+    "treatment": "Counselling: provide supportive counselling. Screen for depression, anxiety, substance use. Refer to social worker if needed.",
+    "referral": "Severe mental health issues, abuse, suicidal ideation."
+  },
+  "Z76.0": {
+    "firstLine": "Repeat prescription",
+    "treatment": "Issue of repeat prescription: review medicine list, adherence, side effects. Provide 28-day supply (or up to 6 months for stable chronic conditions). Book follow-up.",
+    "referral": "Poor adherence, new symptoms, medicine side effects."
+  }
+}

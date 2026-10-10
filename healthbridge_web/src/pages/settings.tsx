@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../lib/firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, onSnapshot } from 'firebase/firestore';
 import Layout from '../components/Layout';
 
 export default function Settings() {
@@ -10,8 +10,10 @@ export default function Settings() {
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('profile');
-  
-  // State for Admin Data
+  const [error, setError] = useState('');
+  const [info, setInfo] = useState('');
+  const [saving, setSaving] = useState(false);
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -36,7 +38,7 @@ export default function Settings() {
     confirmPassword: '',
   });
 
-  // 1. Protect page & Get current user ID
+  // 1. Auth guard + grab uid
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
@@ -44,109 +46,119 @@ export default function Settings() {
         return;
       }
       setUserId(user.uid);
+      setFormData((prev) => ({
+        ...prev,
+        email: prev.email || user.email || '',
+      }));
       setLoading(false);
     });
     return () => unsubscribe();
   }, [router]);
 
-  // 2. Load Admin data from Firestore 'users' collection
+  // 2. Live-load profile from Firestore
   useEffect(() => {
     if (!userId || loading) return;
 
-    const fetchProfile = async () => {
-      try {
-        const docRef = doc(db, 'users', userId);
-        const docSnap = await getDoc(docRef);
-        
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setFormData(prev => ({
-            ...prev,
-            fullName: data.displayName || '',
-            email: data.email || '',
-            phone: data.phoneNumber || '',
-            role: data.role || 'Administrator',
-            clinicName: data.clinicName || 'Health-Bridge Medical Center',
-            clinicAddress: data.clinicAddress || '123 Medical Street, Johannesburg, 2000',
-            timezone: data.timezone || 'Africa/Johannesburg',
-            dateFormat: data.dateFormat || 'DD/MM/YYYY',
-            language: data.language || 'English',
-            notifications: data.notifications ?? true,
-            emailAlerts: data.emailAlerts ?? true,
-            smsAlerts: data.smsAlerts ?? false,
-            appointmentReminders: data.appointmentReminders ?? true,
-            weeklyReport: data.weeklyReport ?? true,
-            twoFactorAuth: data.twoFactorAuth ?? false,
-          }));
-        }
-      } catch (error) {
-        console.error("Error loading profile:", error);
-      }
-    };
+    const unsub = onSnapshot(
+      doc(db, 'users', userId),
+      (snap) => {
+        if (!snap.exists()) return;
+        const data = snap.data();
 
-    fetchProfile();
+        setFormData((prev) => ({
+          ...prev,
+          fullName: data.displayName || prev.fullName,
+          email: data.email || prev.email,
+          phone: data.phoneNumber || prev.phone,
+          role: data.role || prev.role,
+          clinicName: data.clinicName || prev.clinicName,
+          clinicAddress: data.clinicAddress || prev.clinicAddress,
+          timezone: data.timezone || prev.timezone,
+          dateFormat: data.dateFormat || prev.dateFormat,
+          language: data.language || prev.language,
+          notifications: data.notifications ?? prev.notifications,
+          emailAlerts: data.emailAlerts ?? prev.emailAlerts,
+          smsAlerts: data.smsAlerts ?? prev.smsAlerts,
+          appointmentReminders:
+            data.appointmentReminders ?? prev.appointmentReminders,
+          weeklyReport: data.weeklyReport ?? prev.weeklyReport,
+          twoFactorAuth: data.twoFactorAuth ?? prev.twoFactorAuth,
+        }));
+      },
+      (err) => setError('Failed to load profile: ' + err.message)
+    );
+
+    return () => unsub();
   }, [userId, loading]);
 
-  // 3. Handle Input Changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.checked,
-    });
+  const handleToggleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: checked }));
+
+    if (!userId) return;
+    try {
+      await setDoc(doc(db, 'users', userId), { [name]: checked }, { merge: true });
+    } catch (err: any) {
+      setError('Failed to save preference: ' + err.message);
+    }
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordData({
-      ...passwordData,
-      [e.target.name]: e.target.value,
-    });
+    setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
   };
 
-  // 4. Save Data to Firestore
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userId) return;
 
-    try {
-      await setDoc(doc(db, 'users', userId), {
-        displayName: formData.fullName,
-        email: formData.email,
-        phoneNumber: formData.phone,
-        role: formData.role,
-        clinicName: formData.clinicName,
-        clinicAddress: formData.clinicAddress,
-        timezone: formData.timezone,
-        dateFormat: formData.dateFormat,
-        language: formData.language,
-        notifications: formData.notifications,
-        emailAlerts: formData.emailAlerts,
-        smsAlerts: formData.smsAlerts,
-        appointmentReminders: formData.appointmentReminders,
-        weeklyReport: formData.weeklyReport,
-        twoFactorAuth: formData.twoFactorAuth,
-      }, { merge: true }); // merge: true ensures we don't delete the 'role' or 'uid' fields
+    setSaving(true);
+    setError('');
+    setInfo('');
 
-      alert('Settings saved successfully!');
-    } catch (error) {
-      console.error("Error saving settings:", error);
-      alert('Failed to save settings. Please try again.');
+    try {
+      await setDoc(
+        doc(db, 'users', userId),
+        {
+          displayName: formData.fullName,
+          email: formData.email,
+          phoneNumber: formData.phone,
+          // role is intentionally NOT saved — it is read-only
+          clinicName: formData.clinicName,
+          clinicAddress: formData.clinicAddress,
+          timezone: formData.timezone,
+          dateFormat: formData.dateFormat,
+          language: formData.language,
+          notifications: formData.notifications,
+          emailAlerts: formData.emailAlerts,
+          smsAlerts: formData.smsAlerts,
+          appointmentReminders: formData.appointmentReminders,
+          weeklyReport: formData.weeklyReport,
+          twoFactorAuth: formData.twoFactorAuth,
+          updatedAt: new Date().toISOString(),
+        },
+        { merge: true }
+      );
+      setInfo('Settings saved successfully.');
+    } catch (err: any) {
+      setError('Failed to save settings: ' + err.message);
+    } finally {
+      setSaving(false);
     }
   };
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert('New passwords do not match!');
+      setError('New passwords do not match.');
       return;
     }
-    alert('Password changed successfully! (Note: Firebase Password change requires re-authentication)');
+    setInfo('Password change requires re-authentication — coming soon.');
     setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
   };
 
@@ -158,12 +170,29 @@ export default function Settings() {
   ];
 
   if (loading) {
-    return <div style={{ display: 'flex', justifyContent: 'center', padding: '50px' }}>Loading settings...</div>;
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '50px' }}>
+        Loading settings...
+      </div>
+    );
   }
 
   return (
     <Layout>
       <div style={styles.container}>
+        {error && (
+          <div style={styles.errorBanner}>
+            <span>⚠️ {error}</span>
+            <button onClick={() => setError('')} style={styles.bannerClose}>×</button>
+          </div>
+        )}
+        {info && (
+          <div style={styles.infoBanner}>
+            <span>✓ {info}</span>
+            <button onClick={() => setInfo('')} style={styles.bannerClose}>×</button>
+          </div>
+        )}
+
         <div style={styles.header}>
           <div>
             <h1 style={styles.pageTitle}>Settings</h1>
@@ -189,7 +218,6 @@ export default function Settings() {
           </div>
 
           <div style={styles.tabContent}>
-            {/* Profile Tab */}
             {activeTab === 'profile' && (
               <form onSubmit={handleSubmit}>
                 <div style={styles.formSection}>
@@ -206,6 +234,7 @@ export default function Settings() {
                         required
                       />
                     </div>
+
                     <div style={styles.formGroup}>
                       <label style={styles.label}>Email Address</label>
                       <input
@@ -217,6 +246,7 @@ export default function Settings() {
                         required
                       />
                     </div>
+
                     <div style={styles.formGroup}>
                       <label style={styles.label}>Phone Number</label>
                       <input
@@ -227,20 +257,19 @@ export default function Settings() {
                         style={styles.input}
                       />
                     </div>
+
+                    {/* Role — read-only */}
                     <div style={styles.formGroup}>
                       <label style={styles.label}>Role</label>
-                      <select
-                        name="role"
-                        value={formData.role}
-                        onChange={handleInputChange}
-                        style={styles.select}
-                      >
-                        <option>Administrator</option>
-                        <option>Doctor</option>
-                        <option>Nurse</option>
-                        <option>Receptionist</option>
-                        <option>CHW Supervisor</option>
-                      </select>
+                      <div style={styles.readonlyField}>
+                        <span style={styles.readonlyIcon}>🔒</span>
+                        <span style={styles.readonlyText}>
+                          {formData.role || 'Administrator'}
+                        </span>
+                      </div>
+                      <p style={styles.helperText}>
+                        Role is assigned by the system administrator and cannot be changed here.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -270,121 +299,50 @@ export default function Settings() {
                 </div>
 
                 <div style={styles.formActions}>
-                  <button type="submit" style={styles.saveButton}>
-                    Save Changes
+                  <button type="submit" style={styles.saveButton} disabled={saving}>
+                    {saving ? 'Saving…' : 'Save Changes'}
                   </button>
                 </div>
               </form>
             )}
 
-            {/* Notifications Tab */}
             {activeTab === 'notifications' && (
-              <form onSubmit={handleSubmit}>
+              <div>
                 <div style={styles.formSection}>
                   <h3 style={styles.sectionTitle}>Notification Preferences</h3>
-                  
                   <div style={styles.toggleGroup}>
-                    <div style={styles.toggleItem}>
-                      <div>
-                        <p style={styles.toggleLabel}>Push Notifications</p>
-                        <p style={styles.toggleDescription}>Receive notifications in browser</p>
+                    {[
+                      { name: 'notifications', label: 'Push Notifications', desc: 'Receive notifications in browser' },
+                      { name: 'emailAlerts', label: 'Email Alerts', desc: 'Receive email notifications for appointments' },
+                      { name: 'smsAlerts', label: 'SMS Alerts', desc: 'Receive text message reminders' },
+                      { name: 'appointmentReminders', label: 'Appointment Reminders', desc: 'Get reminders for upcoming appointments' },
+                      { name: 'weeklyReport', label: 'Weekly Report', desc: 'Receive weekly performance summary' },
+                    ].map((t) => (
+                      <div key={t.name} style={styles.toggleItem}>
+                        <div>
+                          <p style={styles.toggleLabel}>{t.label}</p>
+                          <p style={styles.toggleDescription}>{t.desc}</p>
+                        </div>
+                        <label className="hb-switch">
+                          <input
+                            type="checkbox"
+                            name={t.name}
+                            checked={(formData as any)[t.name]}
+                            onChange={handleToggleChange}
+                          />
+                          <span className="hb-slider"></span>
+                        </label>
                       </div>
-                      <label style={styles.switch}>
-                        <input
-                          type="checkbox"
-                          name="notifications"
-                          checked={formData.notifications}
-                          onChange={handleCheckboxChange}
-                          style={styles.switchInput}
-                        />
-                        <span style={styles.switchSlider}></span>
-                      </label>
-                    </div>
-
-                    <div style={styles.toggleItem}>
-                      <div>
-                        <p style={styles.toggleLabel}>Email Alerts</p>
-                        <p style={styles.toggleDescription}>Receive email notifications for appointments</p>
-                      </div>
-                      <label style={styles.switch}>
-                        <input
-                          type="checkbox"
-                          name="emailAlerts"
-                          checked={formData.emailAlerts}
-                          onChange={handleCheckboxChange}
-                          style={styles.switchInput}
-                        />
-                        <span style={styles.switchSlider}></span>
-                      </label>
-                    </div>
-
-                    <div style={styles.toggleItem}>
-                      <div>
-                        <p style={styles.toggleLabel}>SMS Alerts</p>
-                        <p style={styles.toggleDescription}>Receive text message reminders</p>
-                      </div>
-                      <label style={styles.switch}>
-                        <input
-                          type="checkbox"
-                          name="smsAlerts"
-                          checked={formData.smsAlerts}
-                          onChange={handleCheckboxChange}
-                          style={styles.switchInput}
-                        />
-                        <span style={styles.switchSlider}></span>
-                      </label>
-                    </div>
-
-                    <div style={styles.toggleItem}>
-                      <div>
-                        <p style={styles.toggleLabel}>Appointment Reminders</p>
-                        <p style={styles.toggleDescription}>Get reminders for upcoming appointments</p>
-                      </div>
-                      <label style={styles.switch}>
-                        <input
-                          type="checkbox"
-                          name="appointmentReminders"
-                          checked={formData.appointmentReminders}
-                          onChange={handleCheckboxChange}
-                          style={styles.switchInput}
-                        />
-                        <span style={styles.switchSlider}></span>
-                      </label>
-                    </div>
-
-                    <div style={styles.toggleItem}>
-                      <div>
-                        <p style={styles.toggleLabel}>Weekly Report</p>
-                        <p style={styles.toggleDescription}>Receive weekly performance summary</p>
-                      </div>
-                      <label style={styles.switch}>
-                        <input
-                          type="checkbox"
-                          name="weeklyReport"
-                          checked={formData.weeklyReport}
-                          onChange={handleCheckboxChange}
-                          style={styles.switchInput}
-                        />
-                        <span style={styles.switchSlider}></span>
-                      </label>
-                    </div>
+                    ))}
                   </div>
                 </div>
-
-                <div style={styles.formActions}>
-                  <button type="submit" style={styles.saveButton}>
-                    Save Changes
-                  </button>
-                </div>
-              </form>
+              </div>
             )}
 
-            {/* Preferences Tab */}
             {activeTab === 'preferences' && (
               <form onSubmit={handleSubmit}>
                 <div style={styles.formSection}>
                   <h3 style={styles.sectionTitle}>Display Preferences</h3>
-                  
                   <div style={styles.formGrid}>
                     <div style={styles.formGroup}>
                       <label style={styles.label}>Timezone</label>
@@ -401,7 +359,6 @@ export default function Settings() {
                         <option>America/New_York</option>
                       </select>
                     </div>
-
                     <div style={styles.formGroup}>
                       <label style={styles.label}>Date Format</label>
                       <select
@@ -415,7 +372,6 @@ export default function Settings() {
                         <option>YYYY-MM-DD</option>
                       </select>
                     </div>
-
                     <div style={styles.formGroup}>
                       <label style={styles.label}>Language</label>
                       <select
@@ -433,35 +389,33 @@ export default function Settings() {
                     </div>
                   </div>
                 </div>
-
                 <div style={styles.formActions}>
-                  <button type="submit" style={styles.saveButton}>
-                    Save Changes
+                  <button type="submit" style={styles.saveButton} disabled={saving}>
+                    {saving ? 'Saving…' : 'Save Changes'}
                   </button>
                 </div>
               </form>
             )}
 
-            {/* Security Tab */}
             {activeTab === 'security' && (
               <div>
                 <div style={styles.formSection}>
                   <h3 style={styles.sectionTitle}>Security Settings</h3>
-                  
                   <div style={styles.toggleItem}>
                     <div>
                       <p style={styles.toggleLabel}>Two-Factor Authentication</p>
-                      <p style={styles.toggleDescription}>Add an extra layer of security to your account</p>
+                      <p style={styles.toggleDescription}>
+                        Add an extra layer of security to your account
+                      </p>
                     </div>
-                    <label style={styles.switch}>
+                    <label className="hb-switch">
                       <input
                         type="checkbox"
                         name="twoFactorAuth"
                         checked={formData.twoFactorAuth}
-                        onChange={handleCheckboxChange}
-                        style={styles.switchInput}
+                        onChange={handleToggleChange}
                       />
-                      <span style={styles.switchSlider}></span>
+                      <span className="hb-slider"></span>
                     </label>
                   </div>
                 </div>
@@ -476,7 +430,6 @@ export default function Settings() {
                         name="currentPassword"
                         value={passwordData.currentPassword}
                         onChange={handlePasswordChange}
-                        placeholder="Enter current password"
                         style={styles.input}
                       />
                     </div>
@@ -487,7 +440,6 @@ export default function Settings() {
                         name="newPassword"
                         value={passwordData.newPassword}
                         onChange={handlePasswordChange}
-                        placeholder="Enter new password"
                         style={styles.input}
                       />
                     </div>
@@ -498,7 +450,6 @@ export default function Settings() {
                         name="confirmPassword"
                         value={passwordData.confirmPassword}
                         onChange={handlePasswordChange}
-                        placeholder="Confirm new password"
                         style={styles.input}
                       />
                     </div>
@@ -508,29 +459,6 @@ export default function Settings() {
                       </button>
                     </div>
                   </form>
-                </div>
-
-                <div style={styles.formSection}>
-                  <h3 style={styles.sectionTitle}>Session Management</h3>
-                  <div style={styles.sessionInfo}>
-                    <div style={styles.sessionItem}>
-                      <div>
-                        <p style={styles.sessionDevice}>Chrome on Windows</p>
-                        <p style={styles.sessionLocation}>Johannesburg, South Africa</p>
-                        <p style={styles.sessionTime}>Last active: Today, 14:30</p>
-                      </div>
-                      <button style={styles.revokeButton}>Revoke</button>
-                    </div>
-                    <div style={styles.sessionItem}>
-                      <div>
-                        <p style={styles.sessionDevice}>Safari on iPhone</p>
-                        <p style={styles.sessionLocation}>Johannesburg, South Africa</p>
-                        <p style={styles.sessionTime}>Last active: Yesterday, 19:45</p>
-                      </div>
-                      <button style={styles.revokeButton}>Revoke</button>
-                    </div>
-                  </div>
-                  <button style={styles.revokeAllButton}>Revoke All Other Sessions</button>
                 </div>
               </div>
             )}
@@ -548,9 +476,7 @@ const styles = {
     fontFamily: "'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
     minHeight: '100vh',
   },
-  header: {
-    marginBottom: '28px',
-  },
+  header: { marginBottom: '28px' },
   pageTitle: {
     fontSize: '26px',
     fontWeight: 'bold' as const,
@@ -595,15 +521,9 @@ const styles = {
     borderBottom: '2px solid #2563eb',
     marginBottom: '-1px',
   },
-  tabIcon: {
-    fontSize: '16px',
-  },
-  tabContent: {
-    padding: '32px',
-  },
-  formSection: {
-    marginBottom: '32px',
-  },
+  tabIcon: { fontSize: '16px' },
+  tabContent: { padding: '32px' },
+  formSection: { marginBottom: '32px' },
   sectionTitle: {
     fontSize: '18px',
     fontWeight: '600' as const,
@@ -615,9 +535,7 @@ const styles = {
     gridTemplateColumns: 'repeat(2, 1fr)',
     gap: '20px',
   },
-  formGroup: {
-    marginBottom: '20px',
-  },
+  formGroup: { marginBottom: '20px' },
   label: {
     display: 'block',
     fontSize: '14px',
@@ -662,11 +580,7 @@ const styles = {
     cursor: 'pointer',
     transition: 'backgroundColor 0.2s',
   },
-  toggleGroup: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    gap: '16px',
-  },
+  toggleGroup: { display: 'flex', flexDirection: 'column' as const, gap: '16px' },
   toggleItem: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -685,75 +599,65 @@ const styles = {
     color: '#666',
     margin: '4px 0 0',
   },
-  switch: {
-    position: 'relative' as const,
-    display: 'inline-block',
-    width: '50px',
-    height: '26px',
+
+  // Read-only role field
+  readonlyField: {
+    width: '100%',
+    padding: '10px 12px',
+    border: '1px solid #e5e7eb',
+    borderRadius: '8px',
+    fontSize: '14px',
+    backgroundColor: '#f9fafb',
+    color: '#4b5563',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    cursor: 'not-allowed',
   },
-  switchInput: {
-    opacity: 0,
-    width: 0,
-    height: 0,
+  readonlyIcon: {
+    fontSize: '13px',
+    opacity: 0.6,
   },
-  switchSlider: {
-    position: 'absolute' as const,
-    cursor: 'pointer',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: '#ccc',
-    transition: '0.3s',
-    borderRadius: '34px',
+  readonlyText: {
+    fontWeight: '500' as const,
+    color: '#374151',
   },
-  sessionInfo: {
-    marginBottom: '20px',
+  helperText: {
+    fontSize: '11px',
+    color: '#9ca3af',
+    margin: '4px 0 0',
   },
-  sessionItem: {
+
+  // Banners
+  errorBanner: {
+    backgroundColor: '#fee2e2',
+    color: '#991b1b',
+    padding: '10px 14px',
+    borderRadius: '8px',
+    marginBottom: '16px',
+    fontSize: '13px',
+    border: '1px solid #fecaca',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '16px',
-    backgroundColor: '#f9fafb',
-    borderRadius: '10px',
-    marginBottom: '12px',
   },
-  sessionDevice: {
-    fontSize: '14px',
-    fontWeight: '600' as const,
-    margin: 0,
-    color: '#1a1a2e',
-  },
-  sessionLocation: {
-    fontSize: '12px',
-    color: '#666',
-    margin: '4px 0 0',
-  },
-  sessionTime: {
-    fontSize: '11px',
-    color: '#888',
-    margin: '2px 0 0',
-  },
-  revokeButton: {
-    backgroundColor: 'transparent',
-    color: '#ef4444',
-    border: '1px solid #ef4444',
-    padding: '6px 12px',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '12px',
-    transition: 'all 0.2s',
-  },
-  revokeAllButton: {
-    backgroundColor: 'transparent',
-    color: '#ef4444',
-    border: '1px solid #ef4444',
-    padding: '8px 16px',
+  infoBanner: {
+    backgroundColor: '#d1fae5',
+    color: '#065f46',
+    padding: '10px 14px',
     borderRadius: '8px',
-    cursor: 'pointer',
+    marginBottom: '16px',
     fontSize: '13px',
-    transition: 'all 0.2s',
-    width: '100%',
+    border: '1px solid #86efac',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  bannerClose: {
+    background: 'none',
+    border: 'none',
+    fontSize: '18px',
+    cursor: 'pointer',
+    lineHeight: 1,
   },
 };

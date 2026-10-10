@@ -19,15 +19,12 @@ class _PatientAppointmentsScreenState
   bool _isSubmitting = false;
 
   // ============================================================
-  // REQUEST APPOINTMENT (unchanged from before)
+  // REQUEST APPOINTMENT
   // ============================================================
   void _showRequestAppointmentDialog(String patientUid) {
     final TextEditingController locationController = TextEditingController();
     DateTime selectedDate = DateTime.now().add(const Duration(days: 7));
     TimeOfDay selectedTime = const TimeOfDay(hour: 10, minute: 0);
-
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final String patientName = authProvider.user?.displayName ?? 'Patient';
 
     showDialog(
       context: context,
@@ -117,11 +114,37 @@ class _PatientAppointmentsScreenState
                                 setState(() => _isSubmitting = true);
 
                                 try {
+                                  // ---- FIX: fetch the REAL patient name ----
+                                  final patientDoc = await FirebaseFirestore
+                                      .instance
+                                      .collection('patients')
+                                      .doc(patientUid)
+                                      .get();
+
+                                  final realName =
+                                      (patientDoc.data()?['name'] as String?)
+                                              ?.trim() ??
+                                          '';
+
+                                  final authProvider =
+                                      Provider.of<AuthProvider>(context,
+                                          listen: false);
+                                  final authName =
+                                      authProvider.user?.displayName
+                                              ?.trim() ??
+                                          '';
+
+                                  final finalName = realName.isNotEmpty
+                                      ? realName
+                                      : (authName.isNotEmpty
+                                          ? authName
+                                          : 'Unknown Patient');
+
                                   await FirebaseFirestore.instance
                                       .collection('appointment_requests')
                                       .add({
                                     'patientId': patientUid,
-                                    'patientName': patientName,
+                                    'patientName': finalName,
                                     'requestedDate':
                                         selectedDate.toIso8601String(),
                                     'requestedTime':
@@ -263,7 +286,6 @@ class _PatientAppointmentsScreenState
                 ),
               ],
 
-              // ----- CHW's clinical notes (visible to patient) -----
               if (appt.chwNotes != null && appt.chwNotes!.isNotEmpty) ...[
                 const SizedBox(height: 16),
                 Container(
@@ -311,7 +333,6 @@ class _PatientAppointmentsScreenState
                 ),
               ],
 
-              // ----- Follow-up -----
               if (appt.followUpRequired != null &&
                   appt.nextFollowUpDate != null) ...[
                 const SizedBox(height: 12),
@@ -341,7 +362,6 @@ class _PatientAppointmentsScreenState
                 ),
               ],
 
-              // ----- Missed reason -----
               if (appt.missedReason != null) ...[
                 const SizedBox(height: 12),
                 Container(
@@ -446,7 +466,6 @@ class _PatientAppointmentsScreenState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // ---------- UPCOMING & ACTIVE ----------
                   const Text(
                     '📅 Upcoming',
                     style: TextStyle(
@@ -491,7 +510,6 @@ class _PatientAppointmentsScreenState
 
                   const SizedBox(height: 24),
 
-                  // ---------- PENDING REQUESTS ----------
                   const Text(
                     '⏳ Pending Requests',
                     style: TextStyle(
@@ -527,7 +545,6 @@ class _PatientAppointmentsScreenState
 
                   const SizedBox(height: 24),
 
-                  // ---------- DECLINED ----------
                   const Text(
                     '❌ Declined Requests',
                     style: TextStyle(
@@ -566,7 +583,6 @@ class _PatientAppointmentsScreenState
 
                   const SizedBox(height: 24),
 
-                  // ---------- HISTORY ----------
                   const Text(
                     '📜 History',
                     style: TextStyle(
@@ -632,7 +648,6 @@ class _PatientAppointmentsScreenState
     );
   }
 
-  // UPCOMING — includes "en route" indicator
   Widget _upcomingCard(Appointment appt) {
     return InkWell(
       onTap: () => _showDetailsDialog(appt),
@@ -751,7 +766,6 @@ class _PatientAppointmentsScreenState
     );
   }
 
-  // HISTORY — read-only, with reason for missed
   Widget _historyCard(Appointment appt) {
     return InkWell(
       onTap: () => _showDetailsDialog(appt),

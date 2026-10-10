@@ -28,10 +28,35 @@ class _RequestsScreenState extends State<RequestsScreen> {
     final chwId = authProvider.user?.uid ?? '';
     final chwName = authProvider.user?.displayName ?? 'CHW';
 
+    // ---- FIX: don't trust requestData['patientName'] blindly ----
+    String patientName = (requestData['patientName'] as String?)?.trim() ?? '';
+
+    if (patientName.isEmpty ||
+        patientName == 'Patient' ||
+        patientName == 'Unknown Patient' ||
+        patientName == 'Unknown') {
+      try {
+        final patientDoc = await FirebaseFirestore.instance
+            .collection('patients')
+            .doc(requestData['patientId'])
+            .get();
+        final realName = (patientDoc.data()?['name'] as String?)?.trim() ?? '';
+        if (realName.isNotEmpty) {
+          patientName = realName;
+        }
+      } catch (_) {
+        // leave as-is; falls back below
+      }
+    }
+
+    if (patientName.isEmpty) {
+      patientName = 'Unknown Patient';
+    }
+
     final appointment = Appointment(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       patientId: requestData['patientId'],
-      patientName: requestData['patientName'],
+      patientName: patientName,
       chwId: chwId,
       chwName: chwName,
       dateTime: DateTime.parse(requestData['requestedDate']),
@@ -96,7 +121,6 @@ class _RequestsScreenState extends State<RequestsScreen> {
                     const SizedBox(height: 16),
                     const Divider(height: 1),
 
-                    // Reason options
                     ..._rejectionReasons.map((reason) {
                       return RadioListTile<String>(
                         contentPadding: EdgeInsets.zero,
@@ -110,7 +134,6 @@ class _RequestsScreenState extends State<RequestsScreen> {
                       );
                     }),
 
-                    // Custom reason text field (only shown if "Other" is selected)
                     if (selectedReason == 'Other') ...[
                       const SizedBox(height: 8),
                       TextField(
@@ -128,7 +151,6 @@ class _RequestsScreenState extends State<RequestsScreen> {
 
                     const SizedBox(height: 20),
 
-                    // Buttons
                     Row(
                       children: [
                         Expanded(
@@ -150,7 +172,6 @@ class _RequestsScreenState extends State<RequestsScreen> {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {
-                              // Validate
                               if (selectedReason == null) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -194,7 +215,6 @@ class _RequestsScreenState extends State<RequestsScreen> {
       },
     );
 
-    // User confirmed → save to Firestore
     if (result == true && selectedReason != null) {
       final finalReason = selectedReason == 'Other'
           ? customController.text.trim()

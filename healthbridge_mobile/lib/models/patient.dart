@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Patient {
   final String id;
   final String name;
@@ -6,7 +8,7 @@ class Patient {
   final String address;
   final String condition;      // Human-readable condition name
   final String? icd10Code;     // e.g. "I10", "E11.9"
-  final String saIdNumber;     // NEW — South African ID number (13 digits)
+  final String saIdNumber;     // South African ID number (13 digits)
   final String status;         // 'Stable', 'Needs Follow-up', 'Critical'
   final String notes;
   final String assignedChwId;
@@ -20,7 +22,7 @@ class Patient {
     required this.address,
     required this.condition,
     this.icd10Code,
-    this.saIdNumber = '',      // NEW — defaults to empty string
+    this.saIdNumber = '',
     required this.status,
     required this.notes,
     required this.assignedChwId,
@@ -57,9 +59,21 @@ class Patient {
       status: map['status'] ?? 'Stable',
       notes: map['notes'] ?? '',
       assignedChwId: map['assignedChwId'] ?? '',
-      createdAt: DateTime.parse(
-        map['createdAt'] ?? DateTime.now().toIso8601String(),
-      ),
+      createdAt: _parseDate(map['createdAt']),
     );
+  }
+
+  /// Handles all the ways `createdAt` can arrive from Firestore:
+  /// - Timestamp (from FieldValue.serverTimestamp or DateTime.now())
+  /// - ISO8601 String
+  /// - null / missing
+  static DateTime _parseDate(dynamic value) {
+    if (value == null) return DateTime.now();
+    if (value is DateTime) return value;
+    if (value is Timestamp) return value.toDate();
+    if (value is String) {
+      return DateTime.tryParse(value) ?? DateTime.now();
+    }
+    return DateTime.now();
   }
 }

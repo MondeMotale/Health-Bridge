@@ -38,10 +38,20 @@ export async function createAuthUserWithoutSessionSwitch(
 /**
  * Sends the "set your password" email via Firebase's password reset flow.
  * Runs on the primary app — the admin's session is untouched.
+ *
+ * NOTE: `continueUrl` must always be a real string (never undefined),
+ * because Firebase's `sendPasswordResetEmail` requires `url: string`.
+ * We fall back to the production URL during SSR / build time when
+ * `window` isn't available.
  */
 export async function sendPatientInvite(email: string): Promise<void> {
+  const FALLBACK_URL =
+    'https://health-bridge-git-main-mondemotale.vercel.app';
+
   const continueUrl =
-    typeof window !== 'undefined' ? `${window.location.origin}/login` : undefined;
+    typeof window !== 'undefined'
+      ? `${window.location.origin}/login`
+      : `${FALLBACK_URL}/login`;
 
   await sendPasswordResetEmail(primaryAuth, email, {
     url: continueUrl,

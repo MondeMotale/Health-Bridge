@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -45,7 +46,6 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
 
   Future<void> _initAgora() async {
     try {
-      // 1. Ask for microphone permission
       final micStatus = await Permission.microphone.request();
       if (!micStatus.isGranted) {
         if (mounted) {
@@ -55,15 +55,12 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
         return;
       }
 
-      // 2. Create the engine
       _engine = createAgoraRtcEngine();
       await _engine!.initialize(RtcEngineContext(
         appId: AgoraConfig.appId,
-        // Logging — helps you debug in the terminal
         logConfig: const LogConfig(level: LogLevel.logLevelInfo),
       ));
 
-      // 3. Register event handlers BEFORE join
       _engine!.registerEventHandler(
         RtcEngineEventHandler(
           onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
@@ -91,34 +88,34 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
               setState(() => _errorMessage = '$err — $msg');
             }
           },
-          onLeaveChannel: (RtcConnection connection, RtcStats stats) {
-            debugPrint('[Agora] onLeaveChannel');
-          },
         ),
       );
 
-      // 4. Configure the channel — audio-only communication
       await _engine!.enableAudio();
       await _engine!.setChannelProfile(
         ChannelProfileType.channelProfileCommunication,
       );
-      // CRITICAL: set the client role to broadcaster so we actually publish
       await _engine!.setClientRole(
         role: ClientRoleType.clientRoleBroadcaster,
       );
-      // Route audio through the speaker by default
-      await _engine!.setDefaultAudioRouteToSpeakerphone(true);
 
-      // 5. Join the channel
+      // Only set speakerphone on mobile. On Web it's not supported and
+      // throws AgoraRtcException(-4).
+      if (!kIsWeb) {
+        try {
+          await _engine!.setDefaultAudioRouteToSpeakerphone(true);
+        } catch (e) {
+          debugPrint('[Agora] speakerphone setup skipped: $e');
+        }
+      }
+
       debugPrint('[Agora] joinChannel: channel=${widget.channelName} uid=${widget.uid}');
       await _engine!.joinChannel(
         token: widget.token,
         channelId: widget.channelName,
         uid: widget.uid,
         options: const ChannelMediaOptions(
-          // Explicitly publish our microphone
           publishMicrophoneTrack: true,
-          // Explicitly subscribe to remote audio
           autoSubscribeAudio: true,
           autoSubscribeVideo: false,
           publishCameraTrack: false,
@@ -151,9 +148,9 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
     if (_callEnded) return;
     _callEnded = true;
     _timer?.cancel();
-    await _callService.endCall(widget.callId);
-    await _engine?.leaveChannel();
-    await _engine?.release();
+    try { await _callService.endCall(widget.callId); } catch (_) {}
+    try { await _engine?.leaveChannel(); } catch (_) {}
+    try { await _engine?.release(); } catch (_) {}
     _engine = null;
     if (mounted) Navigator.pop(context);
   }
@@ -184,6 +181,10 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.call_end, color: Colors.red),
+          onPressed: _endCall,
+        ),
       ),
       body: Center(
         child: Padding(

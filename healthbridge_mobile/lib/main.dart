@@ -6,13 +6,15 @@ import 'auth/login_screen.dart';
 import 'auth/auth_provider.dart';
 import 'firebase_options.dart';
 import 'chw/main_navigation.dart';
-import 'patient/patient_main_navigation.dart'; // <--- ADDED THIS IMPORT
+import 'patient/patient_main_navigation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => AuthProvider(),
@@ -28,24 +30,23 @@ class HealthBridgeApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Health-Bridge',
-      // ADDED: Named routes so we can navigate easily when logging out
       routes: {
         '/login': (context) => const LoginScreen(),
         '/main': (context) => const MainNavigation(),
-        '/patient_home': (context) => const PatientMainNavigation(), // <--- NOW WORKS
+        '/patient_home': (context) => const PatientMainNavigation(),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: const Color(0xFFF5F7FA),
         fontFamily: GoogleFonts.inter().fontFamily,
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF1E3A8A), // Changed to Dark Navy
+          backgroundColor: Color(0xFF1E3A8A),
           foregroundColor: Colors.white,
           elevation: 0,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF1E3A8A), // Changed to Dark Navy
+            backgroundColor: const Color(0xFF1E3A8A),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           ),
         ),

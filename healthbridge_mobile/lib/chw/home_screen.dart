@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../services/firestore_service.dart';
 import '../../services/appointment_service.dart';
 import '../../auth/auth_provider.dart';
@@ -61,69 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
         debugPrint("Error loading stats: $e");
       }
     }
-  }
-
-  // ============================================================
-  // ONE-TIME BACKFILL — remove after running once
-  // ============================================================
-  Future<void> _backfillPatientNames() async {
-    final firestore = FirebaseFirestore.instance;
-    final messenger = ScaffoldMessenger.of(context);
-    messenger.showSnackBar(
-      const SnackBar(content: Text('Backfilling patient names...')),
-    );
-
-    int fixed = 0;
-    const badNames = {'Patient', 'Unknown Patient', 'Unknown', ''};
-
-    // ---- 1. Fix appointments ----
-    final appts = await firestore.collection('appointments').get();
-    for (final doc in appts.docs) {
-      final data = doc.data();
-      final name = (data['patientName'] as String?)?.trim() ?? '';
-      final patientId = data['patientId'] as String?;
-      if (badNames.contains(name) &&
-          patientId != null &&
-          patientId.isNotEmpty) {
-        try {
-          final pDoc =
-              await firestore.collection('patients').doc(patientId).get();
-          final realName = (pDoc.data()?['name'] as String?)?.trim() ?? '';
-          if (realName.isNotEmpty && !badNames.contains(realName)) {
-            await doc.reference.update({'patientName': realName});
-            fixed++;
-          }
-        } catch (_) {}
-      }
-    }
-
-    // ---- 2. Fix appointment_requests ----
-    final reqs = await firestore.collection('appointment_requests').get();
-    for (final doc in reqs.docs) {
-      final data = doc.data();
-      final name = (data['patientName'] as String?)?.trim() ?? '';
-      final patientId = data['patientId'] as String?;
-      if (badNames.contains(name) &&
-          patientId != null &&
-          patientId.isNotEmpty) {
-        try {
-          final pDoc =
-              await firestore.collection('patients').doc(patientId).get();
-          final realName = (pDoc.data()?['name'] as String?)?.trim() ?? '';
-          if (realName.isNotEmpty && !badNames.contains(realName)) {
-            await doc.reference.update({'patientName': realName});
-            fixed++;
-          }
-        } catch (_) {}
-      }
-    }
-
-    messenger.showSnackBar(
-      SnackBar(
-        content: Text('Done. Fixed $fixed documents.'),
-        backgroundColor: Colors.green,
-      ),
-    );
   }
 
   // ============================================================
@@ -675,44 +611,26 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    Row(
-                      children: [
-                        ElevatedButton.icon(
-                          onPressed: _backfillPatientNames,
-                          icon: const Icon(Icons.build, size: 16),
-                          label: const Text('Fix Names'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.orange,
-                            foregroundColor: Colors.white,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ReportsScreen(),
                           ),
+                        );
+                      },
+                      icon: const Icon(Icons.description, size: 16),
+                      label: const Text('Report'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: const Color(0xFF1E3A8A),
+                        elevation: 0,
+                        side: const BorderSide(color: Color(0xFF1E3A8A)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        const SizedBox(width: 8),
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ReportsScreen(),
-                              ),
-                            );
-                          },
-                          icon: const Icon(Icons.description, size: 16),
-                          label: const Text('Report'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: const Color(0xFF1E3A8A),
-                            elevation: 0,
-                            side: const BorderSide(color: Color(0xFF1E3A8A)),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ],
                 ),

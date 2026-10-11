@@ -11,6 +11,7 @@ import '../../models/referral.dart';
 import '../../models/appointment.dart';
 import '../../auth/auth_provider.dart';
 import 'create_patient.dart';
+import 'patient_emergency_contacts_view.dart';
 
 class PatientsScreen extends StatefulWidget {
   final String initialFilter; // 'all', 'followUp', 'done'
@@ -175,6 +176,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
                 ),
                 const SizedBox(height: 24),
 
+                // ---- Refer Patient ----
                 InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
@@ -216,6 +218,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
                 ),
                 const Divider(height: 24),
 
+                // ---- Book Appointment ----
                 InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
@@ -257,6 +260,58 @@ class _PatientsScreenState extends State<PatientsScreen> {
                 ),
                 const Divider(height: 24),
 
+                // ---- Emergency Contacts (NEW) ----
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => PatientEmergencyContactsView(
+                          patient: patient,
+                          canEdit: true,
+                        ),
+                      ),
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(12),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 4.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFEF4444),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.contact_emergency,
+                              color: Colors.white, size: 24),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text('Emergency Contacts',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16)),
+                              Text(
+                                  'View or edit people to call in emergencies',
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 13)),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const Divider(height: 24),
+
+                // ---- View Treatment Plan ----
                 InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
@@ -298,6 +353,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
                 ),
                 const Divider(height: 24),
 
+                // ---- Delete Patient ----
                 InkWell(
                   onTap: () {
                     Navigator.of(context).pop();

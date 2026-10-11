@@ -40,12 +40,10 @@ class _PatientMainNavigationState extends State<PatientMainNavigation> {
     const PatientProfileScreen(),
   ];
 
-  // --- Convert Firebase UID (string) into a positive int for Agora ---
   int _uidFromString(String firebaseUid) {
     return firebaseUid.hashCode.abs() % 1000000000 + 1;
   }
 
-  // --- Fetch Agora token with the assigned uid ---
   Future<String> _getAgoraToken(String channelName, int uid) async {
     final response = await http.get(
       Uri.parse('${ApiConfig.agoraTokenEndpoint}?channel=$channelName&uid=$uid'),
@@ -54,7 +52,6 @@ class _PatientMainNavigationState extends State<PatientMainNavigation> {
     return data['token'] as String;
   }
 
-  // --- ACCEPT VOICE ---
   Future<void> _acceptVoice(Map<String, dynamic> call) async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final myUid = _uidFromString(authProvider.user?.uid ?? '');
@@ -82,7 +79,6 @@ class _PatientMainNavigationState extends State<PatientMainNavigation> {
     );
   }
 
-  // --- ACCEPT VIDEO ---
   Future<void> _acceptVideo(Map<String, dynamic> call) async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final myUid = _uidFromString(authProvider.user?.uid ?? '');
@@ -110,7 +106,6 @@ class _PatientMainNavigationState extends State<PatientMainNavigation> {
     );
   }
 
-  // --- DECLINE ---
   Future<void> _declineCall(Map<String, dynamic> call) async {
     await _callService.endCall(call['callId']);
     setState(() {
@@ -128,7 +123,6 @@ class _PatientMainNavigationState extends State<PatientMainNavigation> {
       return const Scaffold(body: Center(child: Text('Please log in')));
     }
 
-    // ⭐ Wire up the tab-switching callback used by PatientHomeScreen
     PatientHomeScreen.bottomNavCallback = (index) {
       if (mounted) {
         setState(() => _selectedIndex = index);
@@ -138,16 +132,14 @@ class _PatientMainNavigationState extends State<PatientMainNavigation> {
     return Scaffold(
       body: Stack(
         children: [
-          // --- App content ---
           _pages[_selectedIndex],
 
-          // --- Global incoming-call listener ---
+          // Global incoming-call listener only (SOS banner removed)
           StreamBuilder<Map<String, dynamic>?>(
             stream: _callService.listenForIncomingCalls(patientUid),
             builder: (context, snapshot) {
               final call = snapshot.data;
 
-              // No call, or already handled → hide UI
               if (call == null || call['callId'] == _handledCallId) {
                 if (_activeCall != null) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -157,7 +149,6 @@ class _PatientMainNavigationState extends State<PatientMainNavigation> {
                 return const SizedBox.shrink();
               }
 
-              // New call → fetch caller name once
               if (_activeCall == null ||
                   _activeCall!['callId'] != call['callId']) {
                 WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -173,7 +164,6 @@ class _PatientMainNavigationState extends State<PatientMainNavigation> {
                 return const SizedBox.shrink();
               }
 
-              // Render banner/overlay based on call type
               final callType = call['callType'] ?? 'voice';
               if (callType == 'video') {
                 return IncomingVideoCallOverlay(

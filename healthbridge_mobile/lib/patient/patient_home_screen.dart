@@ -5,9 +5,9 @@ import '../../models/patient.dart';
 import '../../models/appointment.dart';
 import '../../services/firestore_service.dart';
 import '../../auth/auth_provider.dart';
+import 'emergency_services_screen.dart';
 
 class PatientHomeScreen extends StatefulWidget {
-  /// Callback to switch tabs in PatientMainNavigation
   static void Function(int)? bottomNavCallback;
 
   const PatientHomeScreen({super.key});
@@ -24,6 +24,12 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FA),
+      appBar: AppBar(
+        title: const Text('Dashboard'),
+        backgroundColor: const Color(0xFF1E3A8A),
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: patientUid == null
           ? const Center(child: Text('User not logged in'))
           : FutureBuilder<Patient?>(
@@ -47,33 +53,22 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 8),
-
-                        // ---------- GREETING ----------
                         _buildGreeting(firstName),
                         const SizedBox(height: 20),
 
-                        // ---------- NEXT APPOINTMENT (TOMORROW ONLY) ----------
                         _buildNextAppointmentSection(patientUid),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 24),
 
-                        // ---------- QUICK ACTIONS ----------
                         _buildQuickActions(),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 24),
 
-                        // ---------- HEALTH TIP ----------
                         _buildHealthTip(),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 16),
 
-                        // ---------- YOUR HEALTH CONDITION ----------
-                        if (patient != null && patient.condition.isNotEmpty) ...[
+                        if (patient != null && patient.condition.isNotEmpty)
                           _buildConditionCard(patient),
-                          const SizedBox(height: 20),
-                        ],
 
-                        // ---------- YOUR CHW (mini card) ----------
-                        _buildChwPreview(patient),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 20),
                       ],
                     ),
                   ),
@@ -88,7 +83,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     return parts.isNotEmpty ? parts[0] : 'Patient';
   }
 
-  // ---------- GREETING CARD ----------
+  // ---------- GREETING ----------
   Widget _buildGreeting(String firstName) {
     final hour = DateTime.now().hour;
     final greeting = hour < 12
@@ -125,7 +120,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
               Text(
                 '$greeting, $firstName',
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF1A1A2E),
                 ),
@@ -142,7 +137,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     );
   }
 
-  // ---------- NEXT APPOINTMENT (TOMORROW ONLY) ----------
+  // ---------- NEXT APPOINTMENT ----------
   Widget _buildNextAppointmentSection(String patientUid) {
     return StreamBuilder<List<Appointment>>(
       stream: FirestoreService().getAppointmentsForPatient(patientUid),
@@ -157,7 +152,6 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
         final appointments = snapshot.data ?? [];
         final tomorrow = DateTime.now().add(const Duration(days: 1));
 
-        // Filter: appointments happening tomorrow only
         final tomorrowAppointments = appointments.where((a) {
           return a.dateTime.year == tomorrow.year &&
               a.dateTime.month == tomorrow.month &&
@@ -190,14 +184,14 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
 
   Widget _buildEmptyAppointmentCard() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 12,
+            blurRadius: 10,
             offset: const Offset(0, 4),
           ),
         ],
@@ -205,16 +199,16 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
       child: Row(
         children: [
           Container(
-            width: 48,
-            height: 48,
+            width: 44,
+            height: 44,
             decoration: BoxDecoration(
               color: const Color(0xFF10B981).withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(10),
             ),
             child: const Icon(
               Icons.event_available,
               color: Color(0xFF10B981),
-              size: 24,
+              size: 22,
             ),
           ),
           const SizedBox(width: 14),
@@ -294,10 +288,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                     ),
                     const Text(
                       'Tomorrow',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 13,
-                      ),
+                      style: TextStyle(color: Colors.white70, fontSize: 13),
                     ),
                   ],
                 ),
@@ -347,7 +338,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
             color: Color(0xFF1A1A2E),
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 12),
         Row(
           children: [
             Expanded(
@@ -363,8 +354,37 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
               child: _buildActionTile(
                 icon: Icons.chat_bubble_outline,
                 label: 'Messages',
-                color: const Color(0xFF10B981),
+                color: const Color(0xFF1E3A8A),
                 onTap: () => PatientHomeScreen.bottomNavCallback?.call(3),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: _buildActionTile(
+                icon: Icons.medical_services_outlined,
+                label: 'My CHW',
+                color: const Color(0xFF1E3A8A),
+                onTap: () => _showChwSheet(),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _buildActionTile(
+                icon: Icons.emergency,
+                label: 'Emergency',
+                color: const Color(0xFF1E3A8A),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const EmergencyServicesScreen(),
+                    ),
+                  );
+                },
               ),
             ),
           ],
@@ -381,12 +401,12 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(14),
+      borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 14),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 14),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.04),
@@ -398,12 +418,13 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.all(10),
+              width: 44,
+              height: 44,
               decoration: BoxDecoration(
                 color: color.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, color: color, size: 24),
+              child: Icon(icon, color: color, size: 22),
             ),
             const SizedBox(height: 10),
             Text(
@@ -416,6 +437,193 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // ---------- MY CHW (centered dialog) ----------
+  void _showChwSheet() {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final uid = authProvider.user?.uid;
+    if (uid == null) return;
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (ctx) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        insetPadding: const EdgeInsets.all(20),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          width: double.infinity,
+          child: StreamBuilder<List<Map<String, dynamic>>>(
+            stream: FirestoreService().getAssignedChw(uid),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const SizedBox(
+                  height: 120,
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
+              final chwList = snapshot.data ?? [];
+              if (chwList.isEmpty) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.person_off, size: 48, color: Colors.grey),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'No CHW assigned yet',
+                      style: TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'You will be notified once a community health worker is assigned to you.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.grey, fontSize: 13),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: double.infinity,
+                      child: TextButton(
+                        onPressed: () => Navigator.pop(ctx),
+                        child: const Text('Close'),
+                      ),
+                    ),
+                  ],
+                );
+              }
+
+              final chw = chwList.first;
+              final name = chw['displayName'] ?? 'Your CHW';
+              final phone = chw['phoneNumber'] ?? chw['phone'] ?? '';
+              final email = chw['email'] ?? '';
+              final bio = chw['bio'] ?? '';
+
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 56,
+                        height: 56,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFF1E3A8A),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Text(
+                            name.isNotEmpty ? name[0].toUpperCase() : '?',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              name,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF1A1A2E),
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            const Text(
+                              'Your Community Health Worker',
+                              style: TextStyle(
+                                  fontSize: 13, color: Color(0xFF6B7280)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+
+                  if (phone.isNotEmpty)
+                    _chwInfoRow(Icons.phone, 'Phone', phone),
+                  if (email.isNotEmpty)
+                    _chwInfoRow(Icons.email, 'Email', email),
+                  if (bio.isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF5F7FA),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        bio,
+                        style: const TextStyle(
+                            fontSize: 13, color: Color(0xFF6B7280)),
+                      ),
+                    ),
+                  ],
+
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.pop(ctx),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF1E3A8A),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text('Close'),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _chwInfoRow(IconData icon, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: const Color(0xFF6B7280)),
+          const SizedBox(width: 12),
+          Text(
+            '$label: ',
+            style: const TextStyle(
+              color: Color(0xFF6B7280),
+              fontWeight: FontWeight.w500,
+              fontSize: 13,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(
+                color: Color(0xFF1A1A2E),
+                fontWeight: FontWeight.w500,
+                fontSize: 14,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -541,84 +749,6 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  // ---------- CHW PREVIEW ----------
-  Widget _buildChwPreview(Patient? patient) {
-    if (patient == null) return const SizedBox();
-
-    return StreamBuilder<List<Map<String, dynamic>>>(
-      stream: FirestoreService().getAssignedChw(patient.id),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const SizedBox();
-        }
-
-        final chwList = snapshot.data ?? [];
-        if (chwList.isEmpty) return const SizedBox();
-
-        final chw = chwList.first;
-        final name = chw['displayName'] ?? 'Your CHW';
-
-        return Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 44,
-                height: 44,
-                decoration: const BoxDecoration(
-                  color: Color(0xFF1E3A8A),
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Text(
-                    name.isNotEmpty ? name[0].toUpperCase() : '?',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                        color: Color(0xFF1A1A2E),
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    const Text(
-                      'Your Community Health Worker',
-                      style: TextStyle(fontSize: 12, color: Color(0xFF6B7280)),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

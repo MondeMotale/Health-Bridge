@@ -4,12 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../auth/auth_provider.dart';
 import '../../services/call_service.dart';
+import '../../services/emergency_service.dart';
+import '../../models/emergency_alert.dart';
 import '../../config/agora_config.dart';
 import '../../utils/constants.dart';
 import '../../widgets/incoming_call_banner.dart';
 import '../../widgets/incoming_video_call_overlay.dart';
+import '../../widgets/emergency_alert_banner.dart';
 import 'voice_call_screen.dart';
 import 'video_call_screen.dart';
+import 'emergency_alert_detail_screen.dart';
 
 // Import your pages
 import 'home_screen.dart';
@@ -29,10 +33,15 @@ class _MainNavigationState extends State<MainNavigation> {
   int _selectedIndex = 0;
 
   final CallService _callService = CallService();
+  final EmergencyService _emergencyService = EmergencyService();
 
   Map<String, dynamic>? _activeCall;
   String _callerName = 'Unknown';
   String? _handledCallId;
+
+  // Track which emergency alert IDs we've already opened the detail
+  // screen for, so we don't push it twice.
+  final Set<String> _openedAlertIds = {};
 
   final List<Widget> _pages = [
     HomeScreen(),
@@ -48,12 +57,10 @@ class _MainNavigationState extends State<MainNavigation> {
     });
   }
 
-  // --- Convert Firebase UID (string) → positive int for Agora ---
   int _uidFromString(String firebaseUid) {
     return firebaseUid.hashCode.abs() % 1000000000 + 1;
   }
 
-  // --- Fetch Agora token with assigned uid ---
   Future<String> _getAgoraToken(String channelName, int uid) async {
     final response = await http.get(
       Uri.parse('${ApiConfig.agoraTokenEndpoint}?channel=$channelName&uid=$uid'),
@@ -127,6 +134,24 @@ class _MainNavigationState extends State<MainNavigation> {
     });
   }
 
+  // --- OPEN EMERGENCY DETAIL ---
+  void _openEmergencyDetail(EmergencyAlert alert, String chwName) {
+    if (_openedAlertIds.contains(alert.id)) return;
+    _openedAlertIds.add(alert.id);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => EmergencyAlertDetailScreen(
+          alertId: alert.id,
+          chwName: chwName,
+        ),
+      ),
+    ).then((_) {
+      _openedAlertIds.remove(alert.id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -135,6 +160,7 @@ class _MainNavigationState extends State<MainNavigation> {
     }
 
     final String myUid = authProvider.user?.uid ?? '';
+    final String myName = authProvider.user?.displayName ?? 'CHW';
 
     // CHECK USER ROLE (Security check)
     return FutureBuilder<String>(
@@ -160,7 +186,25 @@ class _MainNavigationState extends State<MainNavigation> {
             children: [
               _pages[_selectedIndex],
 
-              // Global incoming-call listener
+              // ---- Emergency alert banner ----
+              StreamBuilder<List<EmergencyAlert>>(
+                stream: _emergencyService.watchActiveAlertsForChw(myUid),
+                builder: (context, alertSnapshot) {
+                  final alerts = alertSnapshot.data ?? [];
+                  if (alerts.isEmpty) return const SizedBox.shrink();
+
+                  // Show the newest alert
+                  final alert = alerts.first;
+
+                  return EmergencyAlertBanner(
+                    patientName: alert.patientName,
+                    timeSince: alert.timeSinceCreated,
+                    onTap: () => _openEmergencyDetail(alert, myName),
+                  );
+                },
+              ),
+
+              // ---- Global incoming-call listener ----
               StreamBuilder<Map<String, dynamic>?>(
                 stream: _callService.listenForIncomingCalls(myUid),
                 builder: (context, callSnapshot) {

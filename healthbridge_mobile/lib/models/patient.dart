@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'emergency_contact.dart';
 
 class Patient {
   final String id;
@@ -13,6 +14,7 @@ class Patient {
   final String notes;
   final String assignedChwId;
   final DateTime createdAt;
+  final List<EmergencyContact> emergencyContacts;
 
   Patient({
     required this.id,
@@ -27,11 +29,9 @@ class Patient {
     required this.notes,
     required this.assignedChwId,
     required this.createdAt,
+    this.emergencyContacts = const [],
   });
 
-  // ============================================================
-  // SERIALIZATION
-  // ============================================================
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -46,29 +46,38 @@ class Patient {
       'notes': notes,
       'assignedChwId': assignedChwId,
       'createdAt': createdAt.toIso8601String(),
+      'emergencyContacts':
+          emergencyContacts.map((c) => c.toMap()).toList(),
     };
   }
 
   factory Patient.fromMap(Map<String, dynamic> map, String documentId) {
+    final rawContacts = map['emergencyContacts'];
+    List<EmergencyContact> contacts = [];
+    if (rawContacts is List) {
+      contacts = rawContacts
+          .whereType<Map>()
+          .map((e) => EmergencyContact.fromMap(Map<String, dynamic>.from(e)))
+          .toList();
+    }
+
     return Patient(
       id: documentId,
-      name: _parseString(map['name']),
-      age: _parseInt(map['age']),
-      phone: _parseString(map['phone']),
-      address: _parseString(map['address']),
-      condition: _parseString(map['condition']),
-      icd10Code: map['icd10Code'] as String?,
-      saIdNumber: _parseString(map['saIdNumber']),
-      status: _parseString(map['status'], fallback: 'Stable'),
-      notes: _parseString(map['notes']),
-      assignedChwId: _parseString(map['assignedChwId']),
+      name: map['name'] ?? '',
+      age: map['age'] ?? 0,
+      phone: map['phone'] ?? '',
+      address: map['address'] ?? '',
+      condition: map['condition'] ?? '',
+      icd10Code: map['icd10Code'],
+      saIdNumber: map['saIdNumber'] ?? '',
+      status: map['status'] ?? 'Stable',
+      notes: map['notes'] ?? '',
+      assignedChwId: map['assignedChwId'] ?? '',
       createdAt: _parseDate(map['createdAt']) ?? DateTime.now(),
+      emergencyContacts: contacts,
     );
   }
 
-  // ============================================================
-  // COPY WITH (useful for edits / optimistic updates)
-  // ============================================================
   Patient copyWith({
     String? id,
     String? name,
@@ -82,6 +91,7 @@ class Patient {
     String? notes,
     String? assignedChwId,
     DateTime? createdAt,
+    List<EmergencyContact>? emergencyContacts,
   }) {
     return Patient(
       id: id ?? this.id,
@@ -96,75 +106,10 @@ class Patient {
       notes: notes ?? this.notes,
       assignedChwId: assignedChwId ?? this.assignedChwId,
       createdAt: createdAt ?? this.createdAt,
+      emergencyContacts: emergencyContacts ?? this.emergencyContacts,
     );
   }
 
-  // ============================================================
-  // EQUALITY (needed for Set, Map keys, List.contains, etc.)
-  // ============================================================
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is Patient &&
-        other.id == id &&
-        other.name == name &&
-        other.age == age &&
-        other.phone == phone &&
-        other.address == address &&
-        other.condition == condition &&
-        other.icd10Code == icd10Code &&
-        other.saIdNumber == saIdNumber &&
-        other.status == status &&
-        other.notes == notes &&
-        other.assignedChwId == assignedChwId &&
-        other.createdAt == createdAt;
-  }
-
-  @override
-  int get hashCode => Object.hash(
-        id,
-        name,
-        age,
-        phone,
-        address,
-        condition,
-        icd10Code,
-        saIdNumber,
-        status,
-        notes,
-        assignedChwId,
-        createdAt,
-      );
-
-  @override
-  String toString() =>
-      'Patient(id: $id, name: $name, status: $status, age: $age)';
-
-  // ============================================================
-  // TYPE-TOLERANT PARSING HELPERS
-  // Every Firestore field could arrive in more than one shape.
-  // These normalize them so `fromMap` never throws.
-  // ============================================================
-
-  /// Accepts String, num, or null. Returns '' for null/missing.
-  static String _parseString(dynamic value, {String fallback = ''}) {
-    if (value == null) return fallback;
-    if (value is String) return value;
-    return value.toString();
-  }
-
-  /// Accepts int, double, numeric String, or null.
-  /// Returns 0 for null/missing/non-numeric.
-  static int _parseInt(dynamic value, {int fallback = 0}) {
-    if (value == null) return fallback;
-    if (value is int) return value;
-    if (value is double) return value.toInt();
-    if (value is String) return int.tryParse(value) ?? fallback;
-    return fallback;
-  }
-
-  /// Accepts Timestamp, DateTime, ISO8601 String, or null.
-  /// Returns null for anything unparseable.
   static DateTime? _parseDate(dynamic value) {
     if (value == null) return null;
     if (value is DateTime) return value;

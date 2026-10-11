@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../auth/auth_provider.dart';
 import '../../services/profile_service.dart';
 import '../../models/user.dart';
+import 'emergency_contacts_screen.dart';
 
 class PatientProfileScreen extends StatefulWidget {
   const PatientProfileScreen({super.key});
@@ -13,7 +14,7 @@ class PatientProfileScreen extends StatefulWidget {
 
 class _PatientProfileScreenState extends State<PatientProfileScreen> {
   final ProfileService _profileService = ProfileService();
-  
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
@@ -66,13 +67,16 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
       );
 
       await _profileService.saveProfile(updatedProfile);
-      
+
       if (mounted) {
         setState(() {
           _isEditing = false;
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile updated successfully!'), backgroundColor: Colors.green),
+          const SnackBar(
+            content: Text('Profile updated successfully!'),
+            backgroundColor: Colors.green,
+          ),
         );
       }
     }
@@ -131,7 +135,9 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                   ),
                   child: Center(
                     child: Text(
-                      _nameController.text.isNotEmpty ? _nameController.text[0].toUpperCase() : '?',
+                      _nameController.text.isNotEmpty
+                          ? _nameController.text[0].toUpperCase()
+                          : '?',
                       style: const TextStyle(
                         fontSize: 48,
                         fontWeight: FontWeight.bold,
@@ -152,9 +158,19 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
 
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.email, color: Color(0xFF6B7280)),
-                title: const Text('Email Address', style: TextStyle(color: Color(0xFF6B7280))),
-                subtitle: Text(authProvider.user?.email ?? 'No email', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                leading:
+                    const Icon(Icons.email, color: Color(0xFF6B7280)),
+                title: const Text(
+                  'Email Address',
+                  style: TextStyle(color: Color(0xFF6B7280)),
+                ),
+                subtitle: Text(
+                  authProvider.user?.email ?? 'No email',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
               const SizedBox(height: 16),
 
@@ -178,6 +194,75 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                 icon: Icons.description,
                 maxLines: 3,
               ),
+              const SizedBox(height: 16),
+
+              // ----- EMERGENCY CONTACTS ENTRY -----
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const EmergencyContactsScreen(),
+                    ),
+                  );
+                },
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color:
+                          const Color(0xFFEF4444).withValues(alpha: 0.3),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFEF4444)
+                              .withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Icon(
+                          Icons.contact_emergency,
+                          color: Color(0xFFEF4444),
+                        ),
+                      ),
+                      const SizedBox(width: 14),
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Emergency Contacts',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                color: Color(0xFF1A1A2E),
+                              ),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              'People we can call if you need help',
+                              style: TextStyle(
+                                color: Color(0xFF6B7280),
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(
+                        Icons.chevron_right,
+                        color: Color(0xFF9CA3AF),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
 
               const SizedBox(height: 30),
 
@@ -187,16 +272,22 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                   height: 44,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/patient_home');
+                      Navigator.pushReplacementNamed(
+                          context, '/patient_home');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF1E3A8A),
                       foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                       elevation: 0,
                       side: const BorderSide(color: Color(0xFF1E3A8A)),
                     ),
-                    child: const Text('Back to Dashboard', style: TextStyle(fontSize: 14)),
+                    child: const Text(
+                      'Back to Dashboard',
+                      style: TextStyle(fontSize: 14),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -213,11 +304,16 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                     }
                   },
                   icon: const Icon(Icons.logout, size: 18),
-                  label: const Text('Log Out', style: TextStyle(fontSize: 14)),
+                  label: const Text(
+                    'Log Out',
+                    style: TextStyle(fontSize: 14),
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFEF4444),
                     foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     elevation: 0,
                   ),
                 ),
@@ -239,7 +335,13 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(color: Color(0xFF6B7280), fontWeight: FontWeight.w500)),
+        Text(
+          label,
+          style: const TextStyle(
+            color: Color(0xFF6B7280),
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
@@ -261,7 +363,10 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
               borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(color: Color(0xFF1E3A8A)),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 16,
+            ),
           ),
           style: TextStyle(
             fontWeight: _isEditing ? FontWeight.normal : FontWeight.w500,

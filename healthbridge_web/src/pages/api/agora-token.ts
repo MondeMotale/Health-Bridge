@@ -1,8 +1,30 @@
 ﻿// @ts-ignore
 import { RtcTokenBuilder } from 'agora-token';
 
+// CORS headers — applied to every response so the Flutter Web app
+// (running on localhost or a different domain) can fetch this endpoint.
+// `*` is fine here because the endpoint only mints short-lived Agora tokens
+// which are useless without the App Certificate.
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
 export default function handler(req: any, res: any) {
-  // Read secrets from environment variables (set in Vercel)
+  // ---- 1. Handle CORS preflight ----
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204, CORS_HEADERS);
+    res.end();
+    return;
+  }
+
+  // ---- 2. Apply CORS headers to every response ----
+  Object.entries(CORS_HEADERS).forEach(([key, value]) => {
+    res.setHeader(key, value as string);
+  });
+
+  // ---- 3. Read secrets from environment variables (set in Vercel) ----
   const appId = process.env.AGORA_APP_ID;
   const appCertificate = process.env.AGORA_APP_CERTIFICATE;
 

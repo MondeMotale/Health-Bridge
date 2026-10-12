@@ -4,13 +4,15 @@ class EmergencyAlert {
   final String id;
   final String patientId;
   final String patientName;
-  final String? chwId;              // filled by Cloud Function
+  final String? chwId;
   final String? chwName;
   final double latitude;
   final double longitude;
-  final String? address;             // reverse-geocoded (optional, Phase 3)
+  final String? address;
   final String status;
   // 'active' | 'responding' | 'resolved' | 'false_alarm' | 'cancelled'
+  final String? responseType;
+  // 'coming' | 'help_sent' | null
   final DateTime createdAt;
   final DateTime? respondedAt;
   final DateTime? resolvedAt;
@@ -26,6 +28,7 @@ class EmergencyAlert {
     required this.longitude,
     this.address,
     this.status = 'active',
+    this.responseType,
     required this.createdAt,
     this.respondedAt,
     this.resolvedAt,
@@ -33,22 +36,26 @@ class EmergencyAlert {
   });
 
   Map<String, dynamic> toMap() => {
-    'id': id,
-    'patientId': patientId,
-    'patientName': patientName,
-    'chwId': chwId,
-    'chwName': chwName,
-    'latitude': latitude,
-    'longitude': longitude,
-    'address': address,
-    'status': status,
-    'createdAt': createdAt.toIso8601String(),
-    'respondedAt': respondedAt?.toIso8601String(),
-    'resolvedAt': resolvedAt?.toIso8601String(),
-    'resolutionNotes': resolutionNotes,
-  };
+        'id': id,
+        'patientId': patientId,
+        'patientName': patientName,
+        'chwId': chwId,
+        'chwName': chwName,
+        'latitude': latitude,
+        'longitude': longitude,
+        'address': address,
+        'status': status,
+        'responseType': responseType,
+        'createdAt': createdAt.toIso8601String(),
+        'respondedAt': respondedAt?.toIso8601String(),
+        'resolvedAt': resolvedAt?.toIso8601String(),
+        'resolutionNotes': resolutionNotes,
+      };
 
-  factory EmergencyAlert.fromMap(Map<String, dynamic> map, String documentId) {
+  factory EmergencyAlert.fromMap(
+    Map<String, dynamic> map,
+    String documentId,
+  ) {
     return EmergencyAlert(
       id: documentId,
       patientId: map['patientId'] ?? '',
@@ -59,6 +66,7 @@ class EmergencyAlert {
       longitude: (map['longitude'] as num?)?.toDouble() ?? 0.0,
       address: map['address'],
       status: map['status'] ?? 'active',
+      responseType: map['responseType'],
       createdAt: _parseDate(map['createdAt']) ?? DateTime.now(),
       respondedAt: _parseDate(map['respondedAt']),
       resolvedAt: _parseDate(map['resolvedAt']),
@@ -76,6 +84,7 @@ class EmergencyAlert {
     double? longitude,
     String? address,
     String? status,
+    String? responseType,
     DateTime? createdAt,
     DateTime? respondedAt,
     DateTime? resolvedAt,
@@ -91,6 +100,7 @@ class EmergencyAlert {
       longitude: longitude ?? this.longitude,
       address: address ?? this.address,
       status: status ?? this.status,
+      responseType: responseType ?? this.responseType,
       createdAt: createdAt ?? this.createdAt,
       respondedAt: respondedAt ?? this.respondedAt,
       resolvedAt: resolvedAt ?? this.resolvedAt,
@@ -99,9 +109,9 @@ class EmergencyAlert {
   }
 
   bool get isActive => status == 'active' || status == 'responding';
-  bool get isResolved => status == 'resolved' || status == 'cancelled' || status == 'false_alarm';
+  bool get isResolved =>
+      status == 'resolved' || status == 'cancelled' || status == 'false_alarm';
 
-  /// Time since alert was created, human-readable.
   String get timeSinceCreated {
     final diff = DateTime.now().difference(createdAt);
     if (diff.inMinutes < 1) return 'just now';

@@ -5,6 +5,7 @@ import '../../models/emergency_alert.dart';
 import '../../models/emergency_contact.dart';
 import '../../services/emergency_service.dart';
 import '../../auth/auth_provider.dart';
+import '../../widgets/centered_toast.dart';
 
 class EmergencyAlertDetailScreen extends StatefulWidget {
   final String alertId;
@@ -35,21 +36,36 @@ class _EmergencyAlertDetailScreenState
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not dial $phone')),
+      showCenterToast(
+        context,
+        message: 'Could not dial $phone',
+        color: const Color(0xFFEF4444),
+        icon: Icons.error_outline,
       );
     }
   }
 
   Future<void> _openInMaps(double lat, double lng) async {
-    final uri = Uri.parse(
+    // Try the native geo: scheme first (Android maps app)
+    final geoUri = Uri.parse('geo:$lat,$lng?q=$lat,$lng');
+    if (await canLaunchUrl(geoUri)) {
+      await launchUrl(geoUri, mode: LaunchMode.externalApplication);
+      return;
+    }
+    // Fallback: universal Google Maps web URL
+    final webUri = Uri.parse(
       'https://www.google.com/maps/search/?api=1&query=$lat,$lng',
     );
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } else if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Could not open Maps')),
+    if (await canLaunchUrl(webUri)) {
+      await launchUrl(webUri, mode: LaunchMode.externalApplication);
+      return;
+    }
+    if (mounted) {
+      showCenterToast(
+        context,
+        message: 'Could not open Maps',
+        color: const Color(0xFFEF4444),
+        icon: Icons.error_outline,
       );
     }
   }
@@ -57,22 +73,35 @@ class _EmergencyAlertDetailScreenState
   // ============================================================
   // ACTIONS
   // ============================================================
-  Future<void> _markResponding() async {
+  Future<void> _markResponding(String responseType) async {
     if (_isProcessing) return;
     setState(() => _isProcessing = true);
     try {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       final chwName =
           widget.chwName ?? authProvider.user?.displayName ?? 'CHW';
-      await _service.markResponding(widget.alertId, chwName);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('You are responding. Patient notified.'),
-            backgroundColor: Color(0xFFF59E0B),
-          ),
-        );
-      }
+
+      await _service.markResponding(
+        widget.alertId,
+        chwName,
+        responseType: responseType,
+      );
+
+      if (!mounted) return;
+      final msg = responseType == 'coming'
+          ? 'Patient notified you are on the way'
+          : 'Patient notified that help is being sent';
+      showCenterToast(
+        context,
+        message: msg,
+        color: responseType == 'coming'
+            ? const Color(0xFFF59E0B)
+            : const Color(0xFF3B82F6),
+        icon: responseType == 'coming'
+            ? Icons.directions_run
+            : Icons.local_hospital,
+        duration: const Duration(seconds: 3),
+      );
     } finally {
       if (mounted) setState(() => _isProcessing = false);
     }
@@ -130,12 +159,11 @@ class _EmergencyAlertDetailScreenState
                   ElevatedButton(
                     onPressed: () {
                       if (notesCtrl.text.trim().isEmpty) {
-                        ScaffoldMessenger.of(ctx).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                'Please add a short note before resolving'),
-                            backgroundColor: Colors.red,
-                          ),
+                        showCenterToast(
+                          ctx,
+                          message: 'Please add a short note before resolving',
+                          color: const Color(0xFFEF4444),
+                          icon: Icons.error_outline,
                         );
                         return;
                       }
@@ -172,11 +200,12 @@ class _EmergencyAlertDetailScreenState
         notes: notesCtrl.text.trim(),
       );
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Emergency resolved'),
-            backgroundColor: Color(0xFF10B981),
-          ),
+        showCenterToast(
+          context,
+          message: 'Emergency resolved',
+          color: const Color(0xFF10B981),
+          icon: Icons.check_circle,
+          duration: const Duration(seconds: 3),
         );
         Navigator.pop(context);
       }
@@ -227,29 +256,17 @@ class _EmergencyAlertDetailScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ---------- 1. HEADER (patient name + status) ----------
                 _buildHeaderCard(alert),
-
                 const SizedBox(height: 16),
-
-                // ---------- 2. LOCATION (with Navigate button) ----------
                 _buildLocationCard(alert),
-
                 const SizedBox(height: 16),
-
-                // ---------- 3. EMERGENCY CONTACTS ----------
                 _buildEmergencyContactsSection(alert),
-
                 const SizedBox(height: 24),
 
-                // ---------- 4. ACTION BUTTONS (centered, not full-width) ----------
                 if (!isResolved)
-                  Center(
-                    child: _buildActionButton(alert),
-                  ),
+                  _buildActionButtons(alert),
 
-                if (isResolved)
-                  _buildResolvedSummary(alert),
+                if (isResolved) _buildResolvedSummary(alert),
 
                 const SizedBox(height: 30),
               ],
@@ -269,21 +286,32 @@ class _EmergencyAlertDetailScreenState
         alert.status == 'cancelled' ||
         alert.status == 'false_alarm';
 
-    final statusColor = isResponding
-        ? const Color(0xFFF59E0B)
-        : isResolved
-            ? const Color(0xFF6B7280)
-            : const Color(0xFFEF4444);
+    // Color based on response type
+    Color statusColor;
+    if (isResponding) {
+      statusColor = alert.responseType == 'help_sent'
+          ? const Color(0xFF3B82F6) // blue
+          : const Color(0xFFF59E0B); // orange
+    } else if (isResolved) {
+      statusColor = const Color(0xFF6B7280);
+    } else {
+      statusColor = const Color(0xFFEF4444);
+    }
 
-    final statusLabel = isResponding
-        ? 'You are responding'
-        : alert.status == 'resolved'
-            ? 'Resolved'
-            : alert.status == 'cancelled'
-                ? 'Cancelled by patient'
-                : alert.status == 'false_alarm'
-                    ? 'False alarm'
-                    : 'Active emergency';
+    String statusLabel;
+    if (isResponding) {
+      statusLabel = alert.responseType == 'help_sent'
+          ? 'Help sent'
+          : 'You are responding';
+    } else if (alert.status == 'resolved') {
+      statusLabel = 'Resolved';
+    } else if (alert.status == 'cancelled') {
+      statusLabel = 'Cancelled by patient';
+    } else if (alert.status == 'false_alarm') {
+      statusLabel = 'False alarm';
+    } else {
+      statusLabel = 'Active emergency';
+    }
 
     return Container(
       width: double.infinity,
@@ -291,9 +319,7 @@ class _EmergencyAlertDetailScreenState
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border(
-          left: BorderSide(color: statusColor, width: 5),
-        ),
+        border: Border(left: BorderSide(color: statusColor, width: 5)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -349,10 +375,7 @@ class _EmergencyAlertDetailScreenState
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 5,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
               color: statusColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(20),
@@ -402,11 +425,8 @@ class _EmergencyAlertDetailScreenState
                   color: const Color(0xFF1E3A8A).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(
-                  Icons.location_on,
-                  color: Color(0xFF1E3A8A),
-                  size: 20,
-                ),
+                child: const Icon(Icons.location_on,
+                    color: Color(0xFF1E3A8A), size: 20),
               ),
               const SizedBox(width: 10),
               const Text(
@@ -420,7 +440,6 @@ class _EmergencyAlertDetailScreenState
             ],
           ),
           const SizedBox(height: 12),
-
           if (hasLocation) ...[
             Container(
               width: double.infinity,
@@ -439,11 +458,9 @@ class _EmergencyAlertDetailScreenState
               ),
             ),
             const SizedBox(height: 12),
-            // Compact, centered Navigate button
             Center(
               child: ElevatedButton.icon(
-                onPressed: () =>
-                    _openInMaps(alert.latitude, alert.longitude),
+                onPressed: () => _openInMaps(alert.latitude, alert.longitude),
                 icon: const Icon(Icons.navigation, size: 18),
                 label: const Text('Navigate in Google Maps'),
                 style: ElevatedButton.styleFrom(
@@ -503,11 +520,8 @@ class _EmergencyAlertDetailScreenState
                       color: const Color(0xFF1E3A8A).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Icon(
-                      Icons.contact_emergency,
-                      color: Color(0xFF1E3A8A),
-                      size: 20,
-                    ),
+                    child: const Icon(Icons.contact_emergency,
+                        color: Color(0xFF1E3A8A), size: 20),
                   ),
                   const SizedBox(width: 10),
                   const Text(
@@ -526,7 +540,6 @@ class _EmergencyAlertDetailScreenState
                 style: TextStyle(fontSize: 12, color: Color(0xFF6B7280)),
               ),
               const SizedBox(height: 14),
-
               if (snapshot.connectionState == ConnectionState.waiting)
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 12),
@@ -654,11 +667,8 @@ class _EmergencyAlertDetailScreenState
                     color: const Color(0xFF10B981).withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
-                    Icons.phone,
-                    color: Color(0xFF10B981),
-                    size: 18,
-                  ),
+                  child: const Icon(Icons.phone,
+                      color: Color(0xFF10B981), size: 18),
                 ),
               ],
             ),
@@ -669,75 +679,116 @@ class _EmergencyAlertDetailScreenState
   }
 
   // ============================================================
-  // 4. ACTION BUTTON
+  // 4. ACTION BUTTONS
   // ============================================================
-  Widget _buildActionButton(EmergencyAlert alert) {
+  Widget _buildActionButtons(EmergencyAlert alert) {
+    // State: active → two options (coming / help sent)
     if (alert.status == 'active') {
-      return ElevatedButton.icon(
-        onPressed: _isProcessing ? null : _markResponding,
-        icon: _isProcessing
-            ? const SizedBox(
-                width: 18,
-                height: 18,
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 2,
-                ),
-              )
-            : const Icon(Icons.directions_run, size: 20),
-        label: const Text(
-          "I'M RESPONDING",
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 0.5,
+      return Column(
+        children: [
+          const Text(
+            'How are you responding?',
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF6B7280),
+            ),
           ),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFFF59E0B),
-          foregroundColor: Colors.white,
-          elevation: 3,
-          shadowColor: const Color(0xFFF59E0B).withValues(alpha: 0.4),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 28,
-            vertical: 16,
+          const SizedBox(height: 12),
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 12,
+            runSpacing: 10,
+            children: [
+              _responseButton(
+                icon: Icons.directions_run,
+                label: "I'M COMING",
+                color: const Color(0xFFF59E0B),
+                onTap: _isProcessing
+                    ? null
+                    : () => _markResponding('coming'),
+              ),
+              _responseButton(
+                icon: Icons.local_hospital,
+                label: 'HELP SENT',
+                color: const Color(0xFF3B82F6),
+                onTap: _isProcessing
+                    ? null
+                    : () => _markResponding('help_sent'),
+              ),
+            ],
           ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
+          const SizedBox(height: 8),
+          const Text(
+            'Patient will see which option you chose.',
+            style: TextStyle(fontSize: 11, color: Color(0xFF9CA3AF)),
           ),
-        ),
+        ],
       );
     }
 
+    // State: responding → Mark as Resolved
     if (alert.status == 'responding') {
-      return ElevatedButton.icon(
-        onPressed: _isProcessing ? null : _resolve,
-        icon: const Icon(Icons.check_circle, size: 20),
-        label: const Text(
-          'MARK AS RESOLVED',
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 0.5,
+      return Center(
+        child: ElevatedButton.icon(
+          onPressed: _isProcessing ? null : _resolve,
+          icon: const Icon(Icons.check_circle, size: 20),
+          label: const Text(
+            'MARK AS RESOLVED',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 0.5,
+            ),
           ),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF10B981),
-          foregroundColor: Colors.white,
-          elevation: 3,
-          shadowColor: const Color(0xFF10B981).withValues(alpha: 0.4),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 28,
-            vertical: 16,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF10B981),
+            foregroundColor: Colors.white,
+            elevation: 3,
+            shadowColor: const Color(0xFF10B981).withValues(alpha: 0.4),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 28,
+              vertical: 16,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
           ),
         ),
       );
     }
 
     return const SizedBox.shrink();
+  }
+
+  Widget _responseButton({
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback? onTap,
+  }) {
+    return ElevatedButton.icon(
+      onPressed: onTap,
+      icon: Icon(icon, size: 20),
+      label: Text(
+        label,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 0.5,
+        ),
+      ),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        foregroundColor: Colors.white,
+        elevation: 3,
+        shadowColor: color.withValues(alpha: 0.4),
+        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+        ),
+      ),
+    );
   }
 
   // ============================================================
@@ -765,11 +816,8 @@ class _EmergencyAlertDetailScreenState
                   color: const Color(0xFF10B981).withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
-                  Icons.check_circle,
-                  color: Color(0xFF10B981),
-                  size: 22,
-                ),
+                child: const Icon(Icons.check_circle,
+                    color: Color(0xFF10B981), size: 22),
               ),
               const SizedBox(width: 12),
               const Text(

@@ -209,7 +209,6 @@ class EmergencyServicesScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         border: Border(
           left: BorderSide(
-            // All contacts use the standard navy accent — no red
             color: const Color(0xFF1E3A8A),
             width: 4,
           ),
@@ -250,7 +249,6 @@ class EmergencyServicesScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
-                          // Primary badge uses navy, not red
                           color: const Color(0xFF1E3A8A)
                               .withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(20),
@@ -289,37 +287,37 @@ class EmergencyServicesScreen extends StatelessWidget {
   }
 
   Widget _buildNationalRow(BuildContext context, Map<String, String> entry) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      decoration: BoxDecoration(
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Material(
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
-      ),
-      child: ListTile(
-        leading: Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: const Color(0xFF1E3A8A).withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(10),
+        child: ListTile(
+          leading: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: const Color(0xFF1E3A8A).withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(
+              _iconFor(entry['icon']!),
+              color: const Color(0xFF1E3A8A),
+            ),
           ),
-          child: Icon(
-            _iconFor(entry['icon']!),
-            color: const Color(0xFF1E3A8A),
+          title: Text(
+            entry['label']!,
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-        ),
-        title: Text(
-          entry['label']!,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Text(
-          entry['number']!,
-          style: const TextStyle(
-            color: Color(0xFF6B7280),
-            fontWeight: FontWeight.w600,
+          subtitle: Text(
+            entry['number']!,
+            style: const TextStyle(
+              color: Color(0xFF6B7280),
+              fontWeight: FontWeight.w600,
+            ),
           ),
+          trailing: const Icon(Icons.phone, color: Color(0xFF10B981)),
+          onTap: () => _call(context, entry['number']!),
         ),
-        trailing: const Icon(Icons.phone, color: Color(0xFF10B981)),
-        onTap: () => _call(context, entry['number']!),
       ),
     );
   }

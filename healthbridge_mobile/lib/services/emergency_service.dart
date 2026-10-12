@@ -143,6 +143,7 @@ class EmergencyService {
       'longitude': longitude,
       'address': address,
       'status': 'active',
+      'responseType': null,
       'createdAt': FieldValue.serverTimestamp(),
     });
 
@@ -158,10 +159,19 @@ class EmergencyService {
     });
   }
 
-  /// CHW marks "I'm on my way".
-  Future<void> markResponding(String alertId, String chwName) async {
+  /// CHW marks the alert as being responded to.
+  ///
+  /// [responseType] must be either:
+  ///   - 'coming' → CHW is on the way personally
+  ///   - 'help_sent' → CHW has dispatched help (ambulance, family, etc.)
+  Future<void> markResponding(
+    String alertId,
+    String chwName, {
+    required String responseType,
+  }) async {
     await _firestore.collection('emergencyAlerts').doc(alertId).update({
       'status': 'responding',
+      'responseType': responseType, // 'coming' | 'help_sent'
       'respondedAt': FieldValue.serverTimestamp(),
       'chwName': chwName,
     });

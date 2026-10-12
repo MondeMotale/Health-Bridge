@@ -1,4 +1,5 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter/foundation.dart';
 
 class LocationResult {
   final double? latitude;
@@ -12,65 +13,91 @@ class LocationResult {
 
 class LocationService {
   /// Request permission and fetch a position.
-  /// Returns a [LocationResult] — check `.hasLocation` before using.
+  /// Strategy: try high accuracy → low accuracy → last known.
   static Future<LocationResult> fetch() async {
     try {
-      // 1. Is location service on at all?
+      // 1. GPS enabled?
       final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      debugPrint('[Location] serviceEnabled=$serviceEnabled');
       if (!serviceEnabled) {
         return LocationResult(
           error: 'Location services are turned off. Please enable GPS.',
         );
       }
 
-      // 2. Check / request permission
+      // 2. Permission
       LocationPermission permission = await Geolocator.checkPermission();
+      debugPrint('[Location] checkPermission=$permission');
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
+        debugPrint('[Location] after request=$permission');
       }
       if (permission == LocationPermission.denied) {
-        return LocationResult(
-          error: 'Location permission was denied.',
-        );
+        return LocationResult(error: 'Location permission was denied.');
       }
       if (permission == LocationPermission.deniedForever) {
         return LocationResult(
-          error:
-              'Location permission permanently denied. Enable it in Settings.',
+          error: 'Location permission permanently denied. Enable it in Settings.',
         );
       }
 
-      // 3. Try high-accuracy with a 10s timeout
+      // 3. High accuracy (15s timeout)
       try {
         final pos = await Geolocator.getCurrentPosition(
           locationSettings: const LocationSettings(
             accuracy: LocationAccuracy.high,
-            timeLimit: Duration(seconds: 10),
+            timeLimit: Duration(seconds: 15),
           ),
+        );
+        debugPrint(
+          '[Location] high OK: ${pos.latitude}, ${pos.longitude} acc=${pos.accuracy}m',
         );
         return LocationResult(
           latitude: pos.latitude,
           longitude: pos.longitude,
         );
-      } catch (_) {
-        // 4. Fall back to last known
-        final last = await Geolocator.getLastKnownPosition();
-        if (last != null) {
-          return LocationResult(
-            latitude: last.latitude,
-            longitude: last.longitude,
-          );
-        }
+      } catch (e) {
+        debugPrint('[Location] high failed: $e');
+      }
+
+      // 4. Low accuracy (works with approximate permission; ~1km accuracy)
+      try {
+        final pos = await Geolocator.getCurrentPosition(
+          locationSettings: const LocationSettings(
+            accuracy: LocationAccuracy.low,
+            timeLimit: Duration(seconds: 10),
+          ),
+        );
+        debugPrint(
+          '[Location] low OK: ${pos.latitude}, ${pos.longitude} acc=${pos.accuracy}m',
+        );
         return LocationResult(
-          error: 'Could not determine your location. Try again in a moment.',
+          latitude: pos.latitude,
+          longitude: pos.longitude,
+        );
+      } catch (e) {
+        debugPrint('[Location] low failed: $e');
+      }
+
+      // 5. Last known
+      final last = await Geolocator.getLastKnownPosition();
+      debugPrint('[Location] lastKnown=$last');
+      if (last != null) {
+        return LocationResult(
+          latitude: last.latitude,
+          longitude: last.longitude,
         );
       }
+
+      return LocationResult(
+        error: 'Could not determine location. Move to an open area and retry.',
+      );
     } catch (e) {
+      debugPrint('[Location] error: $e');
       return LocationResult(error: 'Location error: $e');
     }
   }
 
-  // Kept for existing call sites.
   static Future<Position?> getCurrentPosition() async {
     final result = await fetch();
     if (!result.hasLocation) return null;

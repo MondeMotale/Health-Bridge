@@ -8,10 +8,8 @@ import 'firebase_options.dart';
 import 'chw/main_navigation.dart';
 import 'patient/patient_main_navigation.dart';
 import 'widgets/global_call_listener.dart';
+import 'patient/services/patient_alert_listener.dart';
 
-/// Global key that gives us access to the app's root Navigator from
-/// anywhere — including widgets mounted above the MaterialApp's own
-/// Navigator (like GlobalCallListener in the builder).
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
@@ -39,7 +37,9 @@ class HealthBridgeApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       builder: (context, child) {
         return GlobalCallListener(
-          child: child ?? const SizedBox.shrink(),
+          child: PatientAlertListener(
+            child: child ?? const SizedBox.shrink(),
+          ),
         );
       },
       routes: {

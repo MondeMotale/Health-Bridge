@@ -67,7 +67,6 @@ export default function HomeBasedCare() {
         );
         setChws(chwsWithPatients);
 
-        // Sync selected CHW
         setSelectedChw((prev: any) => {
           if (!prev) return prev;
           return chwsWithPatients.find((c) => c.id === prev.id) || prev;
@@ -133,7 +132,14 @@ export default function HomeBasedCare() {
 
       setTimeout(async () => {
         try {
-          await sendPasswordResetEmail(auth, newChw.email);
+          const origin =
+            typeof window !== 'undefined'
+              ? window.location.origin
+              : 'https://health-bridge-git-main-mondemotale.vercel.app';
+          await sendPasswordResetEmail(auth, newChw.email, {
+            url: `${origin}/reset-password`,
+            handleCodeInApp: false,
+          });
           alert(`CHW created. Password reset email sent to ${newChw.email}`);
         } catch {
           alert('CHW created, but password reset email failed.');
@@ -157,14 +163,12 @@ export default function HomeBasedCare() {
     }
   };
 
-  // ---- Delete CHW + unassign their patients ----
   const handleDeleteChw = async () => {
     if (!selectedChw) return;
     setDeleting(true);
     try {
       const chwId = selectedChw.uid || selectedChw.id;
 
-      // 1. Unassign all patients that belonged to this CHW
       const q = query(collection(db, 'patients'), where('assignedChwId', '==', chwId));
       const snap = await getDocs(q);
       await Promise.all(
@@ -178,10 +182,8 @@ export default function HomeBasedCare() {
         )
       );
 
-      // 2. Delete the user document
       await deleteDoc(doc(db, 'users', selectedChw.id));
 
-      // 3. Close modal
       setConfirmDelete(false);
       setSelectedChw(null);
     } catch (err) {
@@ -296,7 +298,6 @@ export default function HomeBasedCare() {
           )}
         </div>
 
-        {/* ============ CHW DETAILS MODAL ============ */}
         {selectedChw && (
           <div style={styles.modalOverlay} onClick={() => { setSelectedChw(null); setConfirmDelete(false); }}>
             <div style={styles.detailsModal} onClick={(e) => e.stopPropagation()}>
@@ -369,7 +370,6 @@ export default function HomeBasedCare() {
                 )}
               </div>
 
-              {/* Delete confirmation */}
               {confirmDelete ? (
                 <div style={styles.confirmDeleteBox}>
                   <p style={styles.confirmDeleteText}>
@@ -403,7 +403,6 @@ export default function HomeBasedCare() {
           </div>
         )}
 
-        {/* ADD CHW MODAL */}
         {showAddModal && (
           <div style={styles.modalOverlay} onClick={() => !saving && setShowAddModal(false)}>
             <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
@@ -478,7 +477,6 @@ const styles = {
   detailsCloseBtn: { backgroundColor: '#f3f4f6', color: '#374151', padding: '10px 20px', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '13px' },
   detailsMsgBtn: { backgroundColor: '#2563eb', color: 'white', padding: '10px 18px', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '13px' },
 
-  // Delete styles
   deleteButton: { backgroundColor: '#fff', color: '#dc2626', padding: '10px 18px', border: '1px solid #fecaca', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: '600' as const },
   confirmDeleteBox: { marginTop: '20px', padding: '16px', backgroundColor: '#fef2f2', border: '1px solid #fecaca', borderRadius: '12px' },
   confirmDeleteText: { fontSize: '13px', color: '#7f1d1d', margin: '0 0 12px 0', lineHeight: 1.5 },

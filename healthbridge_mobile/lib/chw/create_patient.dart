@@ -34,9 +34,6 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
   final List<String> _statusOptions = ['Stable', 'Needs Follow-up', 'Critical'];
   bool _isSaving = false;
 
-  // ============================================================
-  // SA ID VALIDATION
-  // ============================================================
   String? _validateSaId(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'Please enter the patient\'s SA ID number';
@@ -110,9 +107,6 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
     }
   }
 
-  // ============================================================
-  // SAVE PATIENT
-  // ============================================================
   Future<void> _savePatient() async {
     if (_formKey.currentState!.validate()) {
       if (_selectedIcd10Code == null) {
@@ -190,8 +184,14 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
         await firestoreService.addPatient(newPatient);
 
         await Future.delayed(const Duration(seconds: 3));
-        await FirebaseAuth.instance
-            .sendPasswordResetEmail(email: _emailController.text.trim());
+        await FirebaseAuth.instance.sendPasswordResetEmail(
+          email: _emailController.text.trim(),
+          actionCodeSettings: ActionCodeSettings(
+            url:
+                'https://health-bridge-git-main-mondemotale.vercel.app/reset-password',
+            handleCodeInApp: false,
+          ),
+        );
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -228,15 +228,12 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Get screen size for full-height sheet
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      // Transparent so blurred content behind is visible
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
-          // ----- BLURRED BACKDROP -----
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
             child: Container(
@@ -244,12 +241,11 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
             ),
           ),
 
-          // ----- FULL-SCREEN SHEET FROM BOTTOM -----
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: screenHeight * 0.95, // 95% of screen height
-              width: double.infinity,       // Full width — no side bezels
+              height: screenHeight * 0.95,
+              width: double.infinity,
               decoration: const BoxDecoration(
                 color: Color(0xFFF5F7FA),
                 borderRadius: BorderRadius.only(
@@ -259,7 +255,6 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
               ),
               child: Column(
                 children: [
-                  // ----- DRAG HANDLE + HEADER (sticky, doesn't scroll) -----
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
                     decoration: const BoxDecoration(
@@ -271,7 +266,6 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                     ),
                     child: Column(
                       children: [
-                        // Drag handle
                         Container(
                           width: 40,
                           height: 4,
@@ -281,7 +275,6 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                             borderRadius: BorderRadius.circular(2),
                           ),
                         ),
-                        // Title + close button
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -303,7 +296,6 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                     ),
                   ),
 
-                  // ----- SCROLLABLE FORM CONTENT -----
                   Expanded(
                     child: Form(
                       key: _formKey,
@@ -312,7 +304,6 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // ----- FULL NAME -----
                             TextFormField(
                               controller: _nameController,
                               decoration: const InputDecoration(
@@ -329,7 +320,6 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                             ),
                             const SizedBox(height: 12),
 
-                            // ----- SA ID NUMBER -----
                             TextFormField(
                               controller: _saIdController,
                               keyboardType: TextInputType.number,
@@ -355,7 +345,6 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                             ),
                             const SizedBox(height: 12),
 
-                            // ----- AGE -----
                             TextFormField(
                               controller: _ageController,
                               keyboardType: TextInputType.number,
@@ -378,7 +367,6 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                             ),
                             const SizedBox(height: 12),
 
-                            // ----- PHONE -----
                             TextFormField(
                               controller: _phoneController,
                               keyboardType: TextInputType.phone,
@@ -400,7 +388,6 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                             ),
                             const SizedBox(height: 12),
 
-                            // ----- EMAIL -----
                             TextFormField(
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
@@ -418,7 +405,6 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                             ),
                             const SizedBox(height: 12),
 
-                            // ----- ADDRESS -----
                             TextFormField(
                               controller: _addressController,
                               decoration: const InputDecoration(
@@ -429,7 +415,6 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                             ),
                             const SizedBox(height: 20),
 
-                            // ----- ICD-10 PICKER -----
                             const Text(
                               'Medical Condition (ICD-10)',
                               style: TextStyle(
@@ -450,7 +435,6 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                             ),
                             const SizedBox(height: 16),
 
-                            // ----- STATUS -----
                             DropdownButtonFormField<String>(
                               initialValue: _selectedStatus,
                               decoration: const InputDecoration(
@@ -467,7 +451,6 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                             ),
                             const SizedBox(height: 12),
 
-                            // ----- NOTES -----
                             TextFormField(
                               controller: _notesController,
                               maxLines: 3,
@@ -479,7 +462,6 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                             ),
                             const SizedBox(height: 24),
 
-                            // ----- ACTION BUTTONS -----
                             Row(
                               children: [
                                 Expanded(

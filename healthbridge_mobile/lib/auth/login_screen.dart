@@ -17,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   bool _obscurePassword = true;
-  String? _localError; // Shown above the form
+  String? _localError;
 
   @override
   void dispose() {
@@ -38,7 +38,14 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _localError = null);
 
     try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: email,
+        actionCodeSettings: ActionCodeSettings(
+          url:
+              'https://health-bridge-git-main-mondemotale.vercel.app/reset-password',
+          handleCodeInApp: false,
+        ),
+      );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -78,7 +85,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
     setState(() => _localError = null);
 
-    // Client-side validation
     if (_emailController.text.trim().isEmpty ||
         _passwordController.text.trim().isEmpty) {
       setState(() {
@@ -87,7 +93,6 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    // Basic email format check
     final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
     if (!emailRegex.hasMatch(_emailController.text.trim())) {
       setState(() {
@@ -104,7 +109,6 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!mounted) return;
 
     if (!success) {
-      // Show the error from AuthProvider in the banner only
       final error = authProvider.errorMessage.isNotEmpty
           ? authProvider.errorMessage
           : 'Login failed. Please check your credentials.';
@@ -114,7 +118,6 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    // Success — check role and navigate
     final role = await authProvider.getCurrentRole();
 
     if (!mounted) return;
@@ -153,7 +156,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // ----- LOGO -----
                 Container(
                   width: 64,
                   height: 64,
@@ -209,7 +211,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // ----- ERROR BANNER -----
                       if (_localError != null) ...[
                         Container(
                           width: double.infinity,
@@ -254,7 +255,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 16),
                       ],
 
-                      // ----- EMAIL -----
                       const Text(
                         'Email Address',
                         style: TextStyle(
@@ -291,7 +291,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 20),
 
-                      // ----- PASSWORD -----
                       const Text(
                         'Password',
                         style: TextStyle(
@@ -358,7 +357,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       const SizedBox(height: 16),
 
-                      // ----- SIGN IN BUTTON -----
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(

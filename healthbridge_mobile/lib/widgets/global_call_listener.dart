@@ -50,9 +50,6 @@ class GlobalCallListenerState extends State<GlobalCallListener> {
     return token;
   }
 
-  // ============================================================
-  // LAUNCH AN OUTGOING CALL — called from chat screen.
-  // ============================================================
   Future<void> launchOutgoingCall({
     required BuildContext context,
     required String receiverId,
@@ -102,6 +99,8 @@ class GlobalCallListenerState extends State<GlobalCallListener> {
         return;
       }
 
+      if (!context.mounted) return;
+
       final nav = navigatorKey.currentState;
       if (nav == null) {
         debugPrint('[Call] navigatorKey has no state — cannot push');
@@ -141,9 +140,6 @@ class GlobalCallListenerState extends State<GlobalCallListener> {
     }
   }
 
-  // ============================================================
-  // INCOMING CALL — receiver taps Accept
-  // ============================================================
   void _acceptVoice(Map<String, dynamic> call) {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final myUid = _uidFromString(authProvider.user?.uid ?? '');
@@ -156,10 +152,7 @@ class GlobalCallListenerState extends State<GlobalCallListener> {
     });
 
     final nav = navigatorKey.currentState;
-    if (nav == null) {
-      debugPrint('[Call] navigatorKey has no state — cannot push');
-      return;
-    }
+    if (nav == null) return;
 
     nav.push(MaterialPageRoute(
       fullscreenDialog: true,
@@ -187,10 +180,7 @@ class GlobalCallListenerState extends State<GlobalCallListener> {
     });
 
     final nav = navigatorKey.currentState;
-    if (nav == null) {
-      debugPrint('[Call] navigatorKey has no state — cannot push');
-      return;
-    }
+    if (nav == null) return;
 
     nav.push(MaterialPageRoute(
       fullscreenDialog: true,
@@ -208,9 +198,8 @@ class GlobalCallListenerState extends State<GlobalCallListener> {
   }
 
   Future<void> _declineCall(Map<String, dynamic> call) async {
-    try {
-      await _callService.endCall(call['callId']);
-    } catch (_) {}
+    // Use declineCall so we write endReason: 'declined'
+    await _callService.declineCall(call['callId']);
     setState(() {
       _activeCall = null;
       _handledCallId = call['callId'];

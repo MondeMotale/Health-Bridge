@@ -12,7 +12,7 @@ import '../../utils/constants.dart';
 class VoiceCallScreen extends StatefulWidget {
   final String channelName;
   final String callWithName;
-  final String token; // pass '' to fetch inside the screen
+  final String token;
   final String callId;
   final int uid;
   final bool isCaller;
@@ -32,6 +32,8 @@ class VoiceCallScreen extends StatefulWidget {
 }
 
 class _VoiceCallScreenState extends State<VoiceCallScreen> {
+  static const int _ringTimeoutSeconds = 30;
+
   RtcEngine? _engine;
   bool _isMuted = false;
   final CallService _callService = CallService();
@@ -41,9 +43,14 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
 
   bool _remoteJoined = false;
   String? _errorMessage;
+  String? _endReason; // 'no_answer' | 'declined' | null
   String _status = 'Connecting…';
   Duration _callDuration = Duration.zero;
+
   Timer? _timer;
+  Timer? _ringCountdown;
+  int _ringSecondsLeft = _ringTimeoutSeconds;
+
   StreamSubscription<Map<String, dynamic>?>? _callSub;
   String _token = '';
 
@@ -74,23 +81,40 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
     _callSub = _callService.watchCall(widget.callId).listen((call) {
       if (call == null) return;
       final status = call['status'];
+      final reason = call['endReason'] as String?;
+
       if (status == 'ended' && !_callEnded) {
-        _cleanup();
+        if (widget.isCaller && !_remoteJoined) {
+          setState(() {
+            _endReason = reason == 'declined' ? 'declined' : 'no_answer';
+            _status = _endReason == 'declined' ? 'Call declined' : 'No answer';
+          });
+          Future.delayed(const Duration(seconds: 2, milliseconds: 500), () {
+            if (mounted) _cleanup();
+          });
+        } else {
+          _cleanup();
+        }
+        return;
       }
+
       if (widget.isCaller && status == 'active' && !_joined) {
+        _cancelRingCountdown();
         _joinChannel();
       }
     });
 
     if (widget.isCaller) {
-      // Caller: wait for the receiver to accept.
-      setState(() => _status = 'Ringing…');
+      setState(() {
+        _status = 'Ringing…';
+        _ringSecondsLeft = _ringTimeoutSeconds;
+      });
+      _startRingCountdown();
       return;
     }
 
     // Receiver: fetch token, answer Firestore, then join.
     setState(() => _status = 'Connecting…');
-
     try {
       if (_token.isEmpty) {
         _token = await _fetchToken();
@@ -104,6 +128,46 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
 
     if (!mounted) return;
     await _joinChannel();
+  }
+
+  void _startRingCountdown() {
+    _ringCountdown?.cancel();
+    _ringCountdown = Timer.periodic(const Duration(seconds: 1), (t) {
+      if (!mounted) {
+        t.cancel();
+        return;
+      }
+      if (_ringSecondsLeft <= 1) {
+        t.cancel();
+        _ringCountdown = null;
+        _onRingTimeout();
+      } else {
+        setState(() => _ringSecondsLeft--);
+      }
+    });
+  }
+
+  void _cancelRingCountdown() {
+    _ringCountdown?.cancel();
+    _ringCountdown = null;
+  }
+
+  Future<void> _onRingTimeout() async {
+    if (_callEnded || _remoteJoined || _endReason != null) return;
+
+    debugPrint('[Call] ring timeout — no answer');
+    _cancelRingCountdown();
+
+    setState(() {
+      _endReason = 'no_answer';
+      _status = 'No answer';
+    });
+
+    await _callService.endCall(widget.callId, reason: 'no_answer');
+    if (!mounted) return;
+
+    await Future.delayed(const Duration(seconds: 2, milliseconds: 500));
+    if (mounted) _cleanup();
   }
 
   Future<void> _joinChannel() async {
@@ -145,11 +209,14 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
         RtcEngineEventHandler(
           onJoinChannelSuccess: (conn, elapsed) {
             debugPrint('[Agora] joined uid=${conn.localUid}');
-            if (mounted) setState(() => _status = 'Ringing…');
+            if (mounted && _status != 'Connected') {
+              setState(() => _status = 'Ringing…');
+            }
           },
           onUserJoined: (conn, remoteUid, elapsed) {
             debugPrint('[Agora] onUserJoined remoteUid=$remoteUid');
             if (!mounted) return;
+            _cancelRingCountdown();
             setState(() {
               _remoteJoined = true;
               _status = 'Connected';
@@ -219,8 +286,10 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
   }
 
   Future<void> _cleanup() async {
+    if (_callEnded && !mounted) return;
     _callEnded = true;
     _timer?.cancel();
+    _cancelRingCountdown();
     try {
       await _engine?.leaveChannel();
     } catch (_) {}
@@ -238,6 +307,7 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
   void dispose() {
     _callSub?.cancel();
     _timer?.cancel();
+    _cancelRingCountdown();
     if (!_callEnded) {
       _callService.endCall(widget.callId);
     }
@@ -253,10 +323,14 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
   }
 
   String get _displayStatus {
+    if (_endReason == 'declined') return 'Call declined';
+    if (_endReason == 'no_answer') return 'No answer';
     if (_errorMessage != null) return 'Call failed';
     if (_remoteJoined) return _formatDuration(_callDuration);
     return _status;
   }
+
+  bool get _isEndingState => _endReason != null;
 
   @override
   Widget build(BuildContext context) {
@@ -269,7 +343,7 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.call_end, color: Colors.red),
-          onPressed: _endCall,
+          onPressed: _isEndingState ? null : _endCall,
         ),
       ),
       body: Center(
@@ -280,7 +354,9 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
             children: [
               CircleAvatar(
                 radius: 60,
-                backgroundColor: const Color(0xFF1E3A8A),
+                backgroundColor: _isEndingState
+                    ? const Color(0xFF6B7280)
+                    : const Color(0xFF1E3A8A),
                 child: Text(
                   widget.callWithName.isNotEmpty
                       ? widget.callWithName[0].toUpperCase()
@@ -302,13 +378,31 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
               const SizedBox(height: 8),
               Text(
                 _displayStatus,
+                textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: _errorMessage != null
+                  color: _errorMessage != null || _isEndingState
                       ? const Color(0xFFEF4444)
                       : Colors.white70,
                   fontSize: 16,
                 ),
               ),
+              if (_isEndingState) ...[
+                const SizedBox(height: 24),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFEF4444).withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    _endReason == 'declined'
+                        ? '${widget.callWithName} declined the call'
+                        : '${widget.callWithName} did not answer',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.white, fontSize: 13),
+                  ),
+                ),
+              ],
               if (_errorMessage != null) ...[
                 const SizedBox(height: 16),
                 Container(
@@ -330,40 +424,41 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
                   ),
               ],
               const SizedBox(height: 40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: _toggleMute,
-                    child: Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: _isMuted ? Colors.white : Colors.white24,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        _isMuted ? Icons.mic_off : Icons.mic,
-                        color: _isMuted ? Colors.black : Colors.white,
+              if (!_isEndingState)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: _toggleMute,
+                      child: Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: _isMuted ? Colors.white : Colors.white24,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          _isMuted ? Icons.mic_off : Icons.mic,
+                          color: _isMuted ? Colors.black : Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 30),
-                  GestureDetector(
-                    onTap: _endCall,
-                    child: Container(
-                      width: 70,
-                      height: 70,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFEF4444),
-                        shape: BoxShape.circle,
+                    const SizedBox(width: 30),
+                    GestureDetector(
+                      onTap: _endCall,
+                      child: Container(
+                        width: 70,
+                        height: 70,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFEF4444),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.call_end,
+                            color: Colors.white, size: 32),
                       ),
-                      child: const Icon(Icons.call_end,
-                          color: Colors.white, size: 32),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
             ],
           ),
         ),

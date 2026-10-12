@@ -16,6 +16,7 @@ class CallService {
       'channelName': channelName,
       'callType': callType,
       'status': 'ringing',
+      'endReason': null,
       'createdAt': FieldValue.serverTimestamp(),
     });
     return docRef.id;
@@ -37,7 +38,7 @@ class CallService {
     });
   }
 
-  // Watch a specific call's data (status, etc.).
+  // Watch a specific call's data (status, endReason, etc.).
   Stream<Map<String, dynamic>?> watchCall(String callId) {
     return _firestore
         .collection('calls')
@@ -51,7 +52,6 @@ class CallService {
     });
   }
 
-  // Look up a caller's display name.
   Future<String> getCallerName(String callerId) async {
     try {
       final userDoc = await _firestore.collection('users').doc(callerId).get();
@@ -71,7 +71,7 @@ class CallService {
     }
   }
 
-  // Receiver accepts → status becomes 'active'.
+  // Receiver accepts.
   Future<void> answerCall(String callId) async {
     await _firestore.collection('calls').doc(callId).update({
       'status': 'active',
@@ -79,11 +79,23 @@ class CallService {
     });
   }
 
-  // Either side ends the call.
-  Future<void> endCall(String callId) async {
+  // Receiver declines.
+  Future<void> declineCall(String callId) async {
     try {
       await _firestore.collection('calls').doc(callId).update({
         'status': 'ended',
+        'endReason': 'declined',
+        'endedAt': FieldValue.serverTimestamp(),
+      });
+    } catch (_) {}
+  }
+
+  // Caller hangs up before answer, or either side ends after connect.
+  Future<void> endCall(String callId, {String? reason}) async {
+    try {
+      await _firestore.collection('calls').doc(callId).update({
+        'status': 'ended',
+        'endReason': reason,
         'endedAt': FieldValue.serverTimestamp(),
       });
     } catch (_) {}

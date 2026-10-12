@@ -32,6 +32,8 @@ class VideoCallScreen extends StatefulWidget {
 }
 
 class _VideoCallScreenState extends State<VideoCallScreen> {
+  static const int _ringTimeoutSeconds = 30;
+
   int? _remoteUid;
   bool _localUserJoined = false;
   RtcEngine? _engine;
@@ -40,9 +42,14 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
   bool _joined = false;
   bool _needsSettings = false;
   String? _errorMessage;
+  String? _endReason;
   String _status = 'Connecting…';
   Duration _callDuration = Duration.zero;
+
   Timer? _timer;
+  Timer? _ringCountdown;
+  int _ringSecondsLeft = _ringTimeoutSeconds;
+
   StreamSubscription<Map<String, dynamic>?>? _callSub;
   String _token = '';
 
@@ -72,21 +79,39 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
     _callSub = _callService.watchCall(widget.callId).listen((call) {
       if (call == null) return;
       final status = call['status'];
+      final reason = call['endReason'] as String?;
+
       if (status == 'ended' && !_callEnded) {
-        _cleanup();
+        if (widget.isCaller && _remoteUid == null) {
+          setState(() {
+            _endReason = reason == 'declined' ? 'declined' : 'no_answer';
+            _status = _endReason == 'declined' ? 'Call declined' : 'No answer';
+          });
+          Future.delayed(const Duration(seconds: 2, milliseconds: 500), () {
+            if (mounted) _cleanup();
+          });
+        } else {
+          _cleanup();
+        }
+        return;
       }
+
       if (widget.isCaller && status == 'active' && !_joined) {
+        _cancelRingCountdown();
         _joinChannel();
       }
     });
 
     if (widget.isCaller) {
-      setState(() => _status = 'Ringing…');
+      setState(() {
+        _status = 'Ringing…';
+        _ringSecondsLeft = _ringTimeoutSeconds;
+      });
+      _startRingCountdown();
       return;
     }
 
     setState(() => _status = 'Connecting…');
-
     try {
       if (_token.isEmpty) {
         _token = await _fetchToken();
@@ -100,6 +125,46 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
 
     if (!mounted) return;
     await _joinChannel();
+  }
+
+  void _startRingCountdown() {
+    _ringCountdown?.cancel();
+    _ringCountdown = Timer.periodic(const Duration(seconds: 1), (t) {
+      if (!mounted) {
+        t.cancel();
+        return;
+      }
+      if (_ringSecondsLeft <= 1) {
+        t.cancel();
+        _ringCountdown = null;
+        _onRingTimeout();
+      } else {
+        setState(() => _ringSecondsLeft--);
+      }
+    });
+  }
+
+  void _cancelRingCountdown() {
+    _ringCountdown?.cancel();
+    _ringCountdown = null;
+  }
+
+  Future<void> _onRingTimeout() async {
+    if (_callEnded || _remoteUid != null || _endReason != null) return;
+
+    debugPrint('[Call] video ring timeout — no answer');
+    _cancelRingCountdown();
+
+    setState(() {
+      _endReason = 'no_answer';
+      _status = 'No answer';
+    });
+
+    await _callService.endCall(widget.callId, reason: 'no_answer');
+    if (!mounted) return;
+
+    await Future.delayed(const Duration(seconds: 2, milliseconds: 500));
+    if (mounted) _cleanup();
   }
 
   Future<void> _joinChannel() async {
@@ -117,7 +182,6 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
       }
     }
 
-    // Request both permissions.
     final micStatus = await Permission.microphone.request();
     final camStatus = await Permission.camera.request();
 
@@ -149,12 +213,13 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
             if (!mounted) return;
             setState(() {
               _localUserJoined = true;
-              _status = 'Ringing…';
+              if (_status != 'Connected') _status = 'Ringing…';
             });
           },
           onUserJoined: (conn, remoteUid, elapsed) {
             debugPrint('[Agora] onUserJoined remoteUid=$remoteUid');
             if (!mounted) return;
+            _cancelRingCountdown();
             setState(() {
               _remoteUid = remoteUid;
               _status = 'Connected';
@@ -172,8 +237,6 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
         ),
       );
 
-      // Enable video + audio, then start preview BEFORE joining so
-      // the local view renders immediately.
       await _engine!.enableVideo();
       await _engine!.enableAudio();
       await _engine!.setChannelProfile(
@@ -181,11 +244,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
       await _engine!.setClientRole(
           role: ClientRoleType.clientRoleBroadcaster);
 
-      // Start preview — this triggers the camera to come on.
       await _engine!.startPreview();
-
-      // The engine is now running — force a rebuild so the local view
-      // mounts and can bind to the camera track.
       if (mounted) setState(() {});
 
       await _engine!.joinChannel(
@@ -223,8 +282,10 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
   }
 
   Future<void> _cleanup() async {
+    if (_callEnded && !mounted) return;
     _callEnded = true;
     _timer?.cancel();
+    _cancelRingCountdown();
     try {
       await _engine?.leaveChannel();
     } catch (_) {}
@@ -242,6 +303,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
   void dispose() {
     _callSub?.cancel();
     _timer?.cancel();
+    _cancelRingCountdown();
     if (!_callEnded) {
       _callService.endCall(widget.callId);
     }
@@ -256,6 +318,15 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
     return '$m:$s';
   }
 
+  String get _displayStatus {
+    if (_endReason == 'declined') return 'Call declined';
+    if (_endReason == 'no_answer') return 'No answer';
+    if (_remoteUid != null) return _formatDuration(_callDuration);
+    return _status;
+  }
+
+  bool get _isEndingState => _endReason != null;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -266,12 +337,11 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
         foregroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.call_end, color: Colors.red),
-          onPressed: _endCall,
+          onPressed: _isEndingState ? null : _endCall,
         ),
       ),
       body: Stack(
         children: [
-          // Remote video — full screen
           Positioned.fill(
             child: _remoteUid != null
                 ? AgoraVideoView(
@@ -285,22 +355,34 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        if (_errorMessage == null)
+                        if (_errorMessage == null && !_isEndingState)
                           const CircularProgressIndicator(color: Colors.white)
                         else
                           const Icon(Icons.error_outline,
                               color: Color(0xFFEF4444), size: 48),
                         const SizedBox(height: 16),
                         Text(
-                          _errorMessage ?? _status,
+                          _errorMessage ??
+                              (_isEndingState ? _displayStatus : _status),
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: _errorMessage != null
+                            color: _errorMessage != null || _isEndingState
                                 ? const Color(0xFFEF4444)
                                 : Colors.white70,
                             fontSize: 15,
                           ),
                         ),
+                        if (_isEndingState) ...[
+                          const SizedBox(height: 8),
+                          Text(
+                            _endReason == 'declined'
+                                ? '${widget.peerName} declined the call'
+                                : '${widget.peerName} did not answer',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                color: Colors.white70, fontSize: 13),
+                          ),
+                        ],
                         if (_needsSettings) ...[
                           const SizedBox(height: 8),
                           TextButton(
@@ -316,8 +398,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                   ),
           ),
 
-          // Status / timer — top center
-          if (_localUserJoined)
+          if (_localUserJoined && !_isEndingState)
             SafeArea(
               child: Align(
                 alignment: Alignment.topCenter,
@@ -331,9 +412,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      _remoteUid != null
-                          ? _formatDuration(_callDuration)
-                          : _status,
+                      _displayStatus,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 14,
@@ -345,9 +424,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
               ),
             ),
 
-          // Local preview — render as soon as the engine exists.
-          // This makes the receiver's camera come on immediately.
-          if (_engine != null)
+          if (_engine != null && !_isEndingState)
             Positioned(
               top: 70,
               right: 16,
@@ -371,28 +448,29 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
               ),
             ),
 
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 40),
-              child: GestureDetector(
-                onTap: _endCall,
-                child: Container(
-                  width: 70,
-                  height: 70,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFEF4444),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.call_end,
-                    color: Colors.white,
-                    size: 32,
+          if (!_isEndingState)
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 40),
+                child: GestureDetector(
+                  onTap: _endCall,
+                  child: Container(
+                    width: 70,
+                    height: 70,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFEF4444),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.call_end,
+                      color: Colors.white,
+                      size: 32,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );

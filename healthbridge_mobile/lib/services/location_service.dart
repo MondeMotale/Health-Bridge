@@ -1,44 +1,93 @@
 import 'package:geolocator/geolocator.dart';
 
-class LocationService {
-  /// Get the current position with high accuracy.
-  /// Falls back to the last known position if GPS fails or times out.
-  /// Returns null if location cannot be determined at all.
-  static Future<Position?> getCurrentPosition() async {
-    try {
-      // Check if location services are enabled at all
-      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) return null;
+class LocationResult {
+  final double? latitude;
+  final double? longitude;
+  final String? error;
 
-      // Check/request permission
+  LocationResult({this.latitude, this.longitude, this.error});
+
+  bool get hasLocation => latitude != null && longitude != null;
+}
+
+class LocationService {
+  /// Request permission and fetch a position.
+  /// Returns a [LocationResult] — check `.hasLocation` before using.
+  static Future<LocationResult> fetch() async {
+    try {
+      // 1. Is location service on at all?
+      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        return LocationResult(
+          error: 'Location services are turned off. Please enable GPS.',
+        );
+      }
+
+      // 2. Check / request permission
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) return null;
       }
-      if (permission == LocationPermission.deniedForever) return null;
+      if (permission == LocationPermission.denied) {
+        return LocationResult(
+          error: 'Location permission was denied.',
+        );
+      }
+      if (permission == LocationPermission.deniedForever) {
+        return LocationResult(
+          error:
+              'Location permission permanently denied. Enable it in Settings.',
+        );
+      }
 
-      // Try high-accuracy with a 10-second timeout
+      // 3. Try high-accuracy with a 10s timeout
       try {
-        final position = await Geolocator.getCurrentPosition(
+        final pos = await Geolocator.getCurrentPosition(
           locationSettings: const LocationSettings(
             accuracy: LocationAccuracy.high,
             timeLimit: Duration(seconds: 10),
           ),
         );
-        return position;
+        return LocationResult(
+          latitude: pos.latitude,
+          longitude: pos.longitude,
+        );
       } catch (_) {
-        // Fall back to last known
-        final lastKnown = await Geolocator.getLastKnownPosition();
-        return lastKnown;
+        // 4. Fall back to last known
+        final last = await Geolocator.getLastKnownPosition();
+        if (last != null) {
+          return LocationResult(
+            latitude: last.latitude,
+            longitude: last.longitude,
+          );
+        }
+        return LocationResult(
+          error: 'Could not determine your location. Try again in a moment.',
+        );
       }
-    } catch (_) {
-      return null;
+    } catch (e) {
+      return LocationResult(error: 'Location error: $e');
     }
   }
 
-  /// Try to reverse-geocode is not available on-device without an API key,
-  /// so we just return a human-friendly lat/lng string for display.
+  // Kept for existing call sites.
+  static Future<Position?> getCurrentPosition() async {
+    final result = await fetch();
+    if (!result.hasLocation) return null;
+    return Position(
+      latitude: result.latitude!,
+      longitude: result.longitude!,
+      timestamp: DateTime.now(),
+      accuracy: 0,
+      altitude: 0,
+      altitudeAccuracy: 0,
+      heading: 0,
+      headingAccuracy: 0,
+      speed: 0,
+      speedAccuracy: 0,
+    );
+  }
+
   static String formatLatLng(double lat, double lng) {
     return '${lat.toStringAsFixed(5)}, ${lng.toStringAsFixed(5)}';
   }

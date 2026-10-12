@@ -21,7 +21,6 @@ class _SosButtonState extends State<SosButton> {
 
   Future<void> _onPressed() async {
     if (_isProcessing) return;
-
     final confirmed = await _showCountdownDialog();
     if (!confirmed) return;
     if (!mounted) return;
@@ -71,11 +70,8 @@ class _SosButtonState extends State<SosButton> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(
-                        Icons.warning_amber_rounded,
-                        color: Colors.white,
-                        size: 64,
-                      ),
+                      const Icon(Icons.warning_amber_rounded,
+                          color: Colors.white, size: 64),
                       const SizedBox(height: 16),
                       const Text(
                         'Sending SOS',
@@ -146,7 +142,6 @@ class _SosButtonState extends State<SosButton> {
           );
         },
       );
-
       return result ?? false;
     } finally {
       ticker?.cancel();
@@ -158,8 +153,7 @@ class _SosButtonState extends State<SosButton> {
     final uid = authProvider.user?.uid;
     if (uid == null) return;
 
-    // ---- Fetch the REAL patient name from Firestore ----
-    // Auth displayName can be empty or literally "Patient".
+    // Get the real patient name
     String name = 'Unknown Patient';
     try {
       final doc = await FirebaseFirestore.instance
@@ -176,12 +170,26 @@ class _SosButtonState extends State<SosButton> {
       name = authProvider.user?.displayName ?? 'Unknown Patient';
     }
 
-    final position = await LocationService.getCurrentPosition();
-    final lat = position?.latitude ?? 0.0;
-    final lng = position?.longitude ?? 0.0;
-    final address = position != null
+    // Fetch location with proper error handling
+    final loc = await LocationService.fetch();
+    final lat = loc.latitude ?? 0.0;
+    final lng = loc.longitude ?? 0.0;
+    final address = loc.hasLocation
         ? LocationService.formatLatLng(lat, lng)
         : null;
+
+    if (!mounted) return;
+
+    // Warn if no location — but STILL send the SOS
+    if (!loc.hasLocation && loc.error != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('SOS sent without location: ${loc.error}'),
+          backgroundColor: const Color(0xFFF59E0B),
+          duration: const Duration(seconds: 5),
+        ),
+      );
+    }
 
     String? alertId;
     try {
@@ -217,7 +225,13 @@ class _SosButtonState extends State<SosButton> {
 
     if (!mounted) return;
 
-    _showSentDialog(alertId: alertId, primary: primary, lat: lat, lng: lng);
+    _showSentDialog(
+      alertId: alertId,
+      primary: primary,
+      lat: lat,
+      lng: lng,
+      hasLocation: loc.hasLocation,
+    );
 
     if (primary != null) {
       await Future.delayed(const Duration(milliseconds: 700));
@@ -225,12 +239,12 @@ class _SosButtonState extends State<SosButton> {
     }
   }
 
-  // ---- Centered "SOS sent" dialog ----
   void _showSentDialog({
     required String alertId,
     required EmergencyContact? primary,
     required double lat,
     required double lng,
+    required bool hasLocation,
   }) {
     final primaryPhone = primary?.phone;
     final primaryName = primary?.name ?? '';
@@ -256,40 +270,29 @@ class _SosButtonState extends State<SosButton> {
                       color: const Color(0xFF10B981).withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
-                      Icons.check_circle,
-                      color: Color(0xFF10B981),
-                      size: 28,
-                    ),
+                    child: const Icon(Icons.check_circle,
+                        color: Color(0xFF10B981), size: 28),
                   ),
                   const SizedBox(width: 14),
                   const Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'SOS sent',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF1A1A2E),
-                          ),
-                        ),
+                        Text('SOS sent',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF1A1A2E))),
                         SizedBox(height: 2),
-                        Text(
-                          'Help is on the way',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xFF6B7280),
-                          ),
-                        ),
+                        Text('Help is on the way',
+                            style: TextStyle(
+                                fontSize: 14, color: Color(0xFF6B7280))),
                       ],
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 20),
-
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
@@ -299,21 +302,20 @@ class _SosButtonState extends State<SosButton> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Your location was shared',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
-                        color: Color(0xFF1A1A2E),
-                      ),
-                    ),
+                    const Text('Your location',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13,
+                            color: Color(0xFF1A1A2E))),
                     const SizedBox(height: 4),
                     Text(
-                      lat != 0.0 || lng != 0.0
+                      hasLocation
                           ? LocationService.formatLatLng(lat, lng)
-                          : 'Location unavailable',
-                      style: const TextStyle(
-                        color: Color(0xFF6B7280),
+                          : 'Not available — CHW has been notified',
+                      style: TextStyle(
+                        color: hasLocation
+                            ? const Color(0xFF6B7280)
+                            : const Color(0xFFF59E0B),
                         fontSize: 12,
                       ),
                     ),
@@ -321,12 +323,9 @@ class _SosButtonState extends State<SosButton> {
                 ),
               ),
               const SizedBox(height: 16),
-
               if (primary != null) ...[
-                const Text(
-                  'If you can, stay on the line with:',
-                  style: TextStyle(fontSize: 13, color: Color(0xFF6B7280)),
-                ),
+                const Text('If you can, stay on the line with:',
+                    style: TextStyle(fontSize: 13, color: Color(0xFF6B7280))),
                 const SizedBox(height: 8),
                 InkWell(
                   onTap: () => _call(primaryPhone!),
@@ -337,9 +336,8 @@ class _SosButtonState extends State<SosButton> {
                       color: const Color(0xFF10B981).withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: const Color(0xFF10B981)
-                            .withValues(alpha: 0.3),
-                      ),
+                          color: const Color(0xFF10B981)
+                              .withValues(alpha: 0.3)),
                     ),
                     child: Row(
                       children: [
@@ -349,63 +347,28 @@ class _SosButtonState extends State<SosButton> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                primaryName,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                              if (primaryRelationship.isNotEmpty)
-                                Text(
-                                  primaryRelationship,
+                              Text(primaryName,
                                   style: const TextStyle(
-                                    color: Color(0xFF6B7280),
-                                    fontSize: 12,
-                                  ),
-                                ),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15)),
+                              if (primaryRelationship.isNotEmpty)
+                                Text(primaryRelationship,
+                                    style: const TextStyle(
+                                        color: Color(0xFF6B7280),
+                                        fontSize: 12)),
                             ],
                           ),
                         ),
-                        const Text(
-                          'Call',
-                          style: TextStyle(
-                            color: Color(0xFF10B981),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        const Text('Call',
+                            style: TextStyle(
+                                color: Color(0xFF10B981),
+                                fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ),
                 ),
                 const SizedBox(height: 16),
-              ] else ...[
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF59E0B).withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Row(
-                    children: [
-                      Icon(Icons.info_outline,
-                          color: Color(0xFFF59E0B), size: 18),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          'You have no emergency contacts yet. Your CHW has been notified.',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF92400E),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
               ],
-
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -418,9 +381,8 @@ class _SosButtonState extends State<SosButton> {
                       if (mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('SOS cancelled'),
-                            backgroundColor: Colors.grey,
-                          ),
+                              content: Text('SOS cancelled'),
+                              backgroundColor: Colors.grey),
                         );
                       }
                     }
@@ -431,8 +393,7 @@ class _SosButtonState extends State<SosButton> {
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                        borderRadius: BorderRadius.circular(10)),
                   ),
                   child: const Text("I'm OK — Cancel SOS"),
                 ),
@@ -473,9 +434,6 @@ class _SosButtonState extends State<SosButton> {
     }
   }
 
-  // ============================================================
-  // BUILD
-  // ============================================================
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -489,32 +447,26 @@ class _SosButtonState extends State<SosButton> {
           elevation: 4,
           shadowColor: const Color(0xFFEF4444).withValues(alpha: 0.4),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
+              borderRadius: BorderRadius.circular(14)),
         ),
         child: _isProcessing
             ? const SizedBox(
                 width: 22,
                 height: 22,
                 child: CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 2.5,
-                ),
+                    color: Colors.white, strokeWidth: 2.5),
               )
             : const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.sos, size: 24, color: Colors.white),
                   SizedBox(width: 10),
-                  Text(
-                    'SEND SOS',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
-                      letterSpacing: 1.0,
-                      color: Colors.white,
-                    ),
-                  ),
+                  Text('SEND SOS',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                          letterSpacing: 1.0,
+                          color: Colors.white)),
                 ],
               ),
       ),

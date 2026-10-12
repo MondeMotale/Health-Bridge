@@ -1,20 +1,18 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../services/chat_service.dart';
-import '../../services/call_service.dart';
 import '../../auth/auth_provider.dart';
-import 'video_call_screen.dart';
-import 'voice_call_screen.dart';
-import '../../config/agora_config.dart';
-import '../../utils/constants.dart';
+import '../../widgets/global_call_listener.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatWithId;
   final String chatWithName;
 
-  const ChatScreen({super.key, required this.chatWithId, required this.chatWithName});
+  const ChatScreen({
+    super.key,
+    required this.chatWithId,
+    required this.chatWithName,
+  });
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -23,14 +21,6 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ChatService _chatService = ChatService();
-  final CallService _callService = CallService();
-
-  /// Convert a Firebase UID (string) into a positive integer UID
-  /// that Agora accepts. Agora requires distinct UIDs per user in
-  /// the same channel, so we hash the string.
-  int _uidFromString(String firebaseUid) {
-    return firebaseUid.hashCode.abs() % 1000000000 + 1;
-  }
 
   void _sendMessage() {
     if (_messageController.text.trim().isEmpty) return;
@@ -56,7 +46,8 @@ class _ChatScreenState extends State<ChatScreen> {
       context: context,
       builder: (ctx) {
         return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           insetPadding: const EdgeInsets.all(24),
           child: Container(
             padding: const EdgeInsets.all(20),
@@ -67,7 +58,11 @@ class _ChatScreenState extends State<ChatScreen> {
               children: [
                 const Text(
                   'Message options',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1A2E)),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1A1A2E),
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -82,7 +77,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 // Delete for me
                 ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: const Icon(Icons.visibility_off, color: Color(0xFF1E3A8A)),
+                  leading: const Icon(
+                    Icons.visibility_off,
+                    color: Color(0xFF1E3A8A),
+                  ),
                   title: const Text('Delete for me'),
                   onTap: () async {
                     Navigator.pop(ctx);
@@ -94,9 +92,14 @@ class _ChatScreenState extends State<ChatScreen> {
                 if (isMine)
                   ListTile(
                     contentPadding: EdgeInsets.zero,
-                    leading: const Icon(Icons.delete_forever, color: Color(0xFFEF4444)),
-                    title: const Text('Delete for everyone',
-                        style: TextStyle(color: Color(0xFFEF4444))),
+                    leading: const Icon(
+                      Icons.delete_forever,
+                      color: Color(0xFFEF4444),
+                    ),
+                    title: const Text(
+                      'Delete for everyone',
+                      style: TextStyle(color: Color(0xFFEF4444)),
+                    ),
                     onTap: () async {
                       Navigator.pop(ctx);
                       await _chatService.deleteForEveryone(messageId);
@@ -112,7 +115,9 @@ class _ChatScreenState extends State<ChatScreen> {
                       backgroundColor: Colors.grey.shade200,
                       foregroundColor: Colors.black87,
                       elevation: 0,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                     child: const Text('Cancel'),
                   ),
@@ -125,76 +130,30 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  // --- Fetch the Agora Token using ApiConfig (now with uid) ---
-  Future<String> _getAgoraToken(String channelName, int uid) async {
-    final response = await http.get(
-      Uri.parse('${ApiConfig.agoraTokenEndpoint}?channel=$channelName&uid=$uid'),
-    );
-    final data = jsonDecode(response.body);
-    return data['token'] as String;
-  }
-
-  // Start Voice Call
-  void _startVoiceCall() async {
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final String currentUserId = authProvider.user?.uid ?? '';
-    final String channelName =
-        _chatService.generateCallChannel(currentUserId, widget.chatWithId);
-
-    final int myUid = _uidFromString(currentUserId);
-    final token = await _getAgoraToken(channelName, myUid);
-
-    final String callId = await _callService.startCall(
-      callerId: currentUserId,
+  // ============================================================
+  // CALL LAUNCHERS — delegate to the global listener.
+  // The listener writes the Firestore call doc, fetches the
+  // Agora token, and opens the call screen on the root navigator.
+  // ============================================================
+  void _startVoiceCall() {
+    final listener =
+        context.findAncestorStateOfType<GlobalCallListenerState>();
+    listener?.launchOutgoingCall(
+      context: context,
       receiverId: widget.chatWithId,
-      channelName: channelName,
+      receiverName: widget.chatWithName,
       callType: 'voice',
     );
-
-    if (!mounted) return;
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => VoiceCallScreen(
-          channelName: channelName,
-          callWithName: widget.chatWithName,
-          token: token,
-          callId: callId,
-          uid: myUid,
-        ),
-      ),
-    );
   }
 
-  // Start Video Call
-  void _startVideoCall() async {
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final String currentUserId = authProvider.user?.uid ?? '';
-    final String channelName =
-        _chatService.generateCallChannel(currentUserId, widget.chatWithId);
-
-    final int myUid = _uidFromString(currentUserId);
-    final token = await _getAgoraToken(channelName, myUid);
-
-    final String callId = await _callService.startCall(
-      callerId: currentUserId,
+  void _startVideoCall() {
+    final listener =
+        context.findAncestorStateOfType<GlobalCallListenerState>();
+    listener?.launchOutgoingCall(
+      context: context,
       receiverId: widget.chatWithId,
-      channelName: channelName,
+      receiverName: widget.chatWithName,
       callType: 'video',
-    );
-
-    if (!mounted) return;
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => VideoCallScreen(
-          channelName: channelName,
-          appId: AgoraConfig.appId,
-          token: token,
-          callId: callId,
-          uid: myUid,
-        ),
-      ),
     );
   }
 
@@ -210,8 +169,14 @@ class _ChatScreenState extends State<ChatScreen> {
         backgroundColor: const Color(0xFF1E3A8A),
         foregroundColor: Colors.white,
         actions: [
-          IconButton(icon: const Icon(Icons.call), onPressed: _startVoiceCall),
-          IconButton(icon: const Icon(Icons.videocam), onPressed: _startVideoCall),
+          IconButton(
+            icon: const Icon(Icons.call),
+            onPressed: _startVoiceCall,
+          ),
+          IconButton(
+            icon: const Icon(Icons.videocam),
+            onPressed: _startVideoCall,
+          ),
         ],
       ),
       body: Column(
@@ -237,14 +202,19 @@ class _ChatScreenState extends State<ChatScreen> {
                     final bool isMe = message['senderId'] == currentUserId;
 
                     return GestureDetector(
-                      onLongPress: () => _showMessageOptions(message, currentUserId),
+                      onLongPress: () =>
+                          _showMessageOptions(message, currentUserId),
                       child: Align(
-                        alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+                        alignment:
+                            isMe ? Alignment.centerRight : Alignment.centerLeft,
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 4),
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 10),
                           decoration: BoxDecoration(
-                            color: isMe ? const Color(0xFF1E3A8A) : Colors.white,
+                            color: isMe
+                                ? const Color(0xFF1E3A8A)
+                                : Colors.white,
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: Text(

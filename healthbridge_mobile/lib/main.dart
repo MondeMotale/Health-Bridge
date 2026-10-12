@@ -7,6 +7,12 @@ import 'auth/auth_provider.dart';
 import 'firebase_options.dart';
 import 'chw/main_navigation.dart';
 import 'patient/patient_main_navigation.dart';
+import 'widgets/global_call_listener.dart';
+
+/// Global key that gives us access to the app's root Navigator from
+/// anywhere — including widgets mounted above the MaterialApp's own
+/// Navigator (like GlobalCallListener in the builder).
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +36,12 @@ class HealthBridgeApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Health-Bridge',
+      navigatorKey: navigatorKey,
+      builder: (context, child) {
+        return GlobalCallListener(
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
       routes: {
         '/login': (context) => const LoginScreen(),
         '/main': (context) => const MainNavigation(),
@@ -47,7 +59,9 @@ class HealthBridgeApp extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF1E3A8A),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
         ),
       ),

@@ -1,17 +1,21 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../config/agora_config.dart';
 import '../../services/call_service.dart';
+import '../../utils/constants.dart';
 
 class VoiceCallScreen extends StatefulWidget {
   final String channelName;
   final String callWithName;
-  final String token;
+  final String token; // pass '' to fetch inside the screen
   final String callId;
   final int uid;
+  final bool isCaller;
 
   const VoiceCallScreen({
     super.key,
@@ -20,6 +24,7 @@ class VoiceCallScreen extends StatefulWidget {
     required this.token,
     required this.callId,
     required this.uid,
+    required this.isCaller,
   });
 
   @override
@@ -31,30 +36,105 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
   bool _isMuted = false;
   final CallService _callService = CallService();
   bool _callEnded = false;
+  bool _joined = false;
+  bool _needsSettings = false;
 
-  bool _connected = false;
   bool _remoteJoined = false;
   String? _errorMessage;
+  String _status = 'Connecting…';
   Duration _callDuration = Duration.zero;
   Timer? _timer;
+  StreamSubscription<Map<String, dynamic>?>? _callSub;
+  String _token = '';
 
   @override
   void initState() {
     super.initState();
-    _initAgora();
+    _token = widget.token;
+    _boot();
   }
 
-  Future<void> _initAgora() async {
+  Future<String> _fetchToken() async {
+    final res = await http.get(
+      Uri.parse(
+        '${ApiConfig.agoraTokenEndpoint}?channel=${widget.channelName}&uid=${widget.uid}',
+      ),
+    );
+    if (res.statusCode != 200) {
+      throw Exception('Token server returned ${res.statusCode}');
+    }
+    final data = jsonDecode(res.body);
+    final t = data['token'];
+    if (t is! String || t.isEmpty) throw Exception('No token');
+    return t;
+  }
+
+  Future<void> _boot() async {
+    // Watch call status — pop if ended remotely.
+    _callSub = _callService.watchCall(widget.callId).listen((call) {
+      if (call == null) return;
+      final status = call['status'];
+      if (status == 'ended' && !_callEnded) {
+        _cleanup();
+      }
+      if (widget.isCaller && status == 'active' && !_joined) {
+        _joinChannel();
+      }
+    });
+
+    if (widget.isCaller) {
+      // Caller: wait for the receiver to accept.
+      setState(() => _status = 'Ringing…');
+      return;
+    }
+
+    // Receiver: fetch token, answer Firestore, then join.
+    setState(() => _status = 'Connecting…');
+
     try {
-      final micStatus = await Permission.microphone.request();
-      if (!micStatus.isGranted) {
+      if (_token.isEmpty) {
+        _token = await _fetchToken();
+      }
+      await _callService.answerCall(widget.callId);
+    } catch (e) {
+      debugPrint('[Call] receiver setup failed: $e');
+      if (mounted) setState(() => _errorMessage = 'Failed to connect: $e');
+      return;
+    }
+
+    if (!mounted) return;
+    await _joinChannel();
+  }
+
+  Future<void> _joinChannel() async {
+    if (_joined || _callEnded) return;
+    _joined = true;
+
+    if (_token.isEmpty) {
+      try {
+        _token = await _fetchToken();
+      } catch (e) {
         if (mounted) {
-          setState(() => _errorMessage =
-              'Microphone permission required. Enable it in your browser/OS settings.');
+          setState(() => _errorMessage = 'Could not fetch token: $e');
         }
         return;
       }
+    }
 
+    final micStatus = await Permission.microphone.request();
+    if (!micStatus.isGranted) {
+      if (mounted) {
+        setState(() {
+          _errorMessage = micStatus.isPermanentlyDenied
+              ? 'Microphone permission permanently denied. Enable in Settings.'
+              : 'Microphone permission is required.';
+          _needsSettings = micStatus.isPermanentlyDenied;
+        });
+      }
+      return;
+    }
+
+    try {
       _engine = createAgoraRtcEngine();
       await _engine!.initialize(RtcEngineContext(
         appId: AgoraConfig.appId,
@@ -63,55 +143,44 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
 
       _engine!.registerEventHandler(
         RtcEngineEventHandler(
-          onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
-            debugPrint('[Agora] onJoinChannelSuccess uid=${connection.localUid}');
-            if (!mounted) return;
-            setState(() => _connected = true);
-            _startTimer();
+          onJoinChannelSuccess: (conn, elapsed) {
+            debugPrint('[Agora] joined uid=${conn.localUid}');
+            if (mounted) setState(() => _status = 'Ringing…');
           },
-          onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
+          onUserJoined: (conn, remoteUid, elapsed) {
             debugPrint('[Agora] onUserJoined remoteUid=$remoteUid');
             if (!mounted) return;
-            setState(() => _remoteJoined = true);
+            setState(() {
+              _remoteJoined = true;
+              _status = 'Connected';
+            });
+            _startTimer();
           },
-          onUserOffline: (
-            RtcConnection connection,
-            int remoteUid,
-            UserOfflineReasonType reason,
-          ) {
+          onUserOffline: (conn, remoteUid, reason) {
             debugPrint('[Agora] onUserOffline remoteUid=$remoteUid');
             _endCall();
           },
-          onError: (ErrorCodeType err, String msg) {
-            debugPrint('[Agora] onError: $err — $msg');
-            if (mounted) {
-              setState(() => _errorMessage = '$err — $msg');
-            }
+          onError: (err, msg) {
+            debugPrint('[Agora] error $err — $msg');
+            if (mounted) setState(() => _errorMessage = '$err — $msg');
           },
         ),
       );
 
       await _engine!.enableAudio();
       await _engine!.setChannelProfile(
-        ChannelProfileType.channelProfileCommunication,
-      );
+          ChannelProfileType.channelProfileCommunication);
       await _engine!.setClientRole(
-        role: ClientRoleType.clientRoleBroadcaster,
-      );
+          role: ClientRoleType.clientRoleBroadcaster);
 
-      // Only set speakerphone on mobile. On Web it's not supported and
-      // throws AgoraRtcException(-4).
       if (!kIsWeb) {
         try {
           await _engine!.setDefaultAudioRouteToSpeakerphone(true);
-        } catch (e) {
-          debugPrint('[Agora] speakerphone setup skipped: $e');
-        }
+        } catch (_) {}
       }
 
-      debugPrint('[Agora] joinChannel: channel=${widget.channelName} uid=${widget.uid}');
       await _engine!.joinChannel(
-        token: widget.token,
+        token: _token,
         channelId: widget.channelName,
         uid: widget.uid,
         options: const ChannelMediaOptions(
@@ -124,9 +193,7 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
       );
     } catch (e) {
       debugPrint('[Agora] init error: $e');
-      if (mounted) {
-        setState(() => _errorMessage = 'Failed to start call: $e');
-      }
+      if (mounted) setState(() => _errorMessage = 'Failed: $e');
     }
   }
 
@@ -147,16 +214,29 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
   Future<void> _endCall() async {
     if (_callEnded) return;
     _callEnded = true;
+    await _callService.endCall(widget.callId);
+    await _cleanup();
+  }
+
+  Future<void> _cleanup() async {
+    _callEnded = true;
     _timer?.cancel();
-    try { await _callService.endCall(widget.callId); } catch (_) {}
-    try { await _engine?.leaveChannel(); } catch (_) {}
-    try { await _engine?.release(); } catch (_) {}
+    try {
+      await _engine?.leaveChannel();
+    } catch (_) {}
+    try {
+      await _engine?.release();
+    } catch (_) {}
     _engine = null;
-    if (mounted) Navigator.pop(context);
+    if (mounted) {
+      final nav = Navigator.of(context);
+      if (nav.canPop()) nav.pop();
+    }
   }
 
   @override
   void dispose() {
+    _callSub?.cancel();
     _timer?.cancel();
     if (!_callEnded) {
       _callService.endCall(widget.callId);
@@ -170,6 +250,12 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
     final m = d.inMinutes.toString().padLeft(2, '0');
     final s = (d.inSeconds % 60).toString().padLeft(2, '0');
     return '$m:$s';
+  }
+
+  String get _displayStatus {
+    if (_errorMessage != null) return 'Call failed';
+    if (_remoteJoined) return _formatDuration(_callDuration);
+    return _status;
   }
 
   @override
@@ -200,30 +286,22 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
                       ? widget.callWithName[0].toUpperCase()
                       : '?',
                   style: const TextStyle(
-                    fontSize: 48,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
               ),
               const SizedBox(height: 20),
               Text(
                 widget.callWithName,
                 style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
               const SizedBox(height: 8),
               Text(
-                _errorMessage != null
-                    ? 'Call failed'
-                    : !_connected
-                        ? 'Connecting…'
-                        : !_remoteJoined
-                            ? 'Ringing…'
-                            : _formatDuration(_callDuration),
+                _displayStatus,
                 style: TextStyle(
                   color: _errorMessage != null
                       ? const Color(0xFFEF4444)
@@ -239,15 +317,17 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
                     color: const Color(0xFFEF4444).withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Text(
-                    _errorMessage!,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 13,
-                    ),
-                  ),
+                  child: Text(_errorMessage!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          color: Colors.white, fontSize: 13)),
                 ),
+                if (_needsSettings)
+                  TextButton(
+                    onPressed: () => openAppSettings(),
+                    child: const Text('Open Settings',
+                        style: TextStyle(color: Colors.white)),
+                  ),
               ],
               const SizedBox(height: 40),
               Row(
@@ -278,11 +358,8 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
                         color: Color(0xFFEF4444),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
-                        Icons.call_end,
-                        color: Colors.white,
-                        size: 32,
-                      ),
+                      child: const Icon(Icons.call_end,
+                          color: Colors.white, size: 32),
                     ),
                   ),
                 ],

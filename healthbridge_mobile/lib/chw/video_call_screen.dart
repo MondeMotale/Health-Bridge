@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../services/call_service.dart';
+import '../../config/agora_config.dart';
+import '../../utils/constants.dart';
 
 class VideoCallScreen extends StatefulWidget {
   final String channelName;
@@ -10,6 +14,8 @@ class VideoCallScreen extends StatefulWidget {
   final String token;
   final String callId;
   final int uid;
+  final bool isCaller;
+  final String peerName;
 
   const VideoCallScreen({
     super.key,
@@ -18,6 +24,8 @@ class VideoCallScreen extends StatefulWidget {
     required this.token,
     required this.callId,
     required this.uid,
+    required this.isCaller,
+    required this.peerName,
   });
 
   @override
@@ -30,30 +38,105 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
   RtcEngine? _engine;
   final CallService _callService = CallService();
   bool _callEnded = false;
+  bool _joined = false;
+  bool _needsSettings = false;
   String? _errorMessage;
-
+  String _status = 'Connecting…';
   Duration _callDuration = Duration.zero;
   Timer? _timer;
+  StreamSubscription<Map<String, dynamic>?>? _callSub;
+  String _token = '';
 
   @override
   void initState() {
     super.initState();
-    _initAgora();
+    _token = widget.token;
+    _boot();
   }
 
-  Future<void> _initAgora() async {
+  Future<String> _fetchToken() async {
+    final res = await http.get(
+      Uri.parse(
+        '${ApiConfig.agoraTokenEndpoint}?channel=${widget.channelName}&uid=${widget.uid}',
+      ),
+    );
+    if (res.statusCode != 200) {
+      throw Exception('Token server returned ${res.statusCode}');
+    }
+    final data = jsonDecode(res.body);
+    final t = data['token'];
+    if (t is! String || t.isEmpty) throw Exception('No token');
+    return t;
+  }
+
+  Future<void> _boot() async {
+    _callSub = _callService.watchCall(widget.callId).listen((call) {
+      if (call == null) return;
+      final status = call['status'];
+      if (status == 'ended' && !_callEnded) {
+        _cleanup();
+      }
+      if (widget.isCaller && status == 'active' && !_joined) {
+        _joinChannel();
+      }
+    });
+
+    if (widget.isCaller) {
+      setState(() => _status = 'Ringing…');
+      return;
+    }
+
+    setState(() => _status = 'Connecting…');
+
     try {
-      final perms = await [Permission.microphone, Permission.camera].request();
-      final micOk = perms[Permission.microphone]?.isGranted ?? false;
-      final camOk = perms[Permission.camera]?.isGranted ?? false;
-      if (!micOk || !camOk) {
+      if (_token.isEmpty) {
+        _token = await _fetchToken();
+      }
+      await _callService.answerCall(widget.callId);
+    } catch (e) {
+      debugPrint('[Call] receiver setup failed: $e');
+      if (mounted) setState(() => _errorMessage = 'Failed to connect: $e');
+      return;
+    }
+
+    if (!mounted) return;
+    await _joinChannel();
+  }
+
+  Future<void> _joinChannel() async {
+    if (_joined || _callEnded) return;
+    _joined = true;
+
+    if (_token.isEmpty) {
+      try {
+        _token = await _fetchToken();
+      } catch (e) {
         if (mounted) {
-          setState(() => _errorMessage =
-              'Microphone and camera permissions are required.');
+          setState(() => _errorMessage = 'Could not fetch token: $e');
         }
         return;
       }
+    }
 
+    // Request both permissions.
+    final micStatus = await Permission.microphone.request();
+    final camStatus = await Permission.camera.request();
+
+    if (!micStatus.isGranted || !camStatus.isGranted) {
+      final permDenied =
+          micStatus.isPermanentlyDenied || camStatus.isPermanentlyDenied;
+      if (mounted) {
+        setState(() {
+          _errorMessage = permDenied
+              ? 'Camera / mic permission permanently denied. Enable in Settings.'
+              : 'Camera and microphone permissions are required.';
+          _needsSettings = permDenied;
+        });
+      }
+      return;
+    }
+
+    try {
       _engine = createAgoraRtcEngine();
       await _engine!.initialize(RtcEngineContext(
         appId: widget.appId,
@@ -62,53 +145,52 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
 
       _engine!.registerEventHandler(
         RtcEngineEventHandler(
-          onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
-            debugPrint('[Agora] joined uid=${connection.localUid}');
+          onJoinChannelSuccess: (conn, elapsed) {
+            debugPrint('[Agora] joined uid=${conn.localUid}');
             if (!mounted) return;
-            setState(() => _localUserJoined = true);
-            _timer?.cancel();
-            _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-              if (mounted) {
-                setState(() =>
-                    _callDuration += const Duration(seconds: 1));
-              }
+            setState(() {
+              _localUserJoined = true;
+              _status = 'Ringing…';
             });
           },
-          onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
-            debugPrint('[Agora] remote joined: $remoteUid');
+          onUserJoined: (conn, remoteUid, elapsed) {
+            debugPrint('[Agora] onUserJoined remoteUid=$remoteUid');
             if (!mounted) return;
-            setState(() => _remoteUid = remoteUid);
+            setState(() {
+              _remoteUid = remoteUid;
+              _status = 'Connected';
+            });
+            _startTimer();
           },
-          onUserOffline: (
-            RtcConnection connection,
-            int remoteUid,
-            UserOfflineReasonType reason,
-          ) {
-            debugPrint('[Agora] remote left: $remoteUid');
+          onUserOffline: (conn, remoteUid, reason) {
+            debugPrint('[Agora] onUserOffline remoteUid=$remoteUid');
             _endCall();
           },
-          onError: (ErrorCodeType err, String msg) {
-            debugPrint('[Agora] error: $err — $msg');
+          onError: (err, msg) {
+            debugPrint('[Agora] error $err — $msg');
             if (mounted) setState(() => _errorMessage = '$err — $msg');
           },
         ),
       );
 
-      // Configure for video 1:1
+      // Enable video + audio, then start preview BEFORE joining so
+      // the local view renders immediately.
       await _engine!.enableVideo();
       await _engine!.enableAudio();
       await _engine!.setChannelProfile(
-        ChannelProfileType.channelProfileCommunication,
-      );
+          ChannelProfileType.channelProfileCommunication);
       await _engine!.setClientRole(
-        role: ClientRoleType.clientRoleBroadcaster,
-      );
+          role: ClientRoleType.clientRoleBroadcaster);
 
-      // Start local preview BEFORE joining so we see ourselves immediately
+      // Start preview — this triggers the camera to come on.
       await _engine!.startPreview();
 
+      // The engine is now running — force a rebuild so the local view
+      // mounts and can bind to the camera track.
+      if (mounted) setState(() {});
+
       await _engine!.joinChannel(
-        token: widget.token,
+        token: _token,
         channelId: widget.channelName,
         uid: widget.uid,
         options: const ChannelMediaOptions(
@@ -125,19 +207,41 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
     }
   }
 
+  void _startTimer() {
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) {
+        setState(() => _callDuration += const Duration(seconds: 1));
+      }
+    });
+  }
+
   Future<void> _endCall() async {
     if (_callEnded) return;
     _callEnded = true;
-    _timer?.cancel();
     await _callService.endCall(widget.callId);
-    await _engine?.leaveChannel();
-    await _engine?.release();
+    await _cleanup();
+  }
+
+  Future<void> _cleanup() async {
+    _callEnded = true;
+    _timer?.cancel();
+    try {
+      await _engine?.leaveChannel();
+    } catch (_) {}
+    try {
+      await _engine?.release();
+    } catch (_) {}
     _engine = null;
-    if (mounted) Navigator.pop(context);
+    if (mounted) {
+      final nav = Navigator.of(context);
+      if (nav.canPop()) nav.pop();
+    }
   }
 
   @override
   void dispose() {
+    _callSub?.cancel();
     _timer?.cancel();
     if (!_callEnded) {
       _callService.endCall(widget.callId);
@@ -158,7 +262,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Video Call'),
+        title: Text('Video Call • ${widget.peerName}'),
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
         leading: IconButton(
@@ -182,11 +286,14 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const CircularProgressIndicator(color: Colors.white),
+                        if (_errorMessage == null)
+                          const CircularProgressIndicator(color: Colors.white)
+                        else
+                          const Icon(Icons.error_outline,
+                              color: Color(0xFFEF4444), size: 48),
                         const SizedBox(height: 16),
                         Text(
-                          _errorMessage ??
-                              'Waiting for the other person to join…',
+                          _errorMessage ?? _status,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: _errorMessage != null
@@ -195,12 +302,22 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                             fontSize: 15,
                           ),
                         ),
+                        if (_needsSettings) ...[
+                          const SizedBox(height: 8),
+                          TextButton(
+                            onPressed: () => openAppSettings(),
+                            child: const Text(
+                              'Open Settings',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ),
           ),
 
-          // Call duration — top center
+          // Status / timer — top center
           if (_localUserJoined)
             SafeArea(
               child: Align(
@@ -208,16 +325,16 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 12),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 6,
-                    ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                     decoration: BoxDecoration(
                       color: Colors.black54,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      _formatDuration(_callDuration),
+                      _remoteUid != null
+                          ? _formatDuration(_callDuration)
+                          : _status,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 14,
@@ -229,38 +346,32 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
               ),
             ),
 
-          // Local preview — top right
-          if (_localUserJoined)
+          // Local preview — render as soon as the engine exists.
+          // This makes the receiver's camera come on immediately.
+          if (_engine != null)
             Positioned(
               top: 70,
               right: 16,
-              child: GestureDetector(
-                onTap: () {
-                  // Toggle camera on/off when tapped
-                  _engine?.muteLocalVideoStream(false);
-                },
-                child: Container(
-                  width: 110,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.white, width: 2),
-                    color: Colors.black,
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: AgoraVideoView(
-                      controller: VideoViewController(
-                        rtcEngine: _engine!,
-                        canvas: const VideoCanvas(uid: 0),
-                      ),
+              child: Container(
+                width: 110,
+                height: 150,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.white, width: 2),
+                  color: Colors.black,
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: AgoraVideoView(
+                    controller: VideoViewController(
+                      rtcEngine: _engine!,
+                      canvas: VideoCanvas(uid: widget.uid),
                     ),
                   ),
                 ),
               ),
             ),
 
-          // End button — bottom center
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(

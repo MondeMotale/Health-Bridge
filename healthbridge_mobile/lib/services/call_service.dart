@@ -3,13 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class CallService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Save the call info so the other user knows to join.
-  // RETURNS the auto-generated callId.
+  // Create a new call doc. Returns the callId.
   Future<String> startCall({
     required String callerId,
     required String receiverId,
     required String channelName,
-    required String callType, // 'video' or 'voice'
+    required String callType,
   }) async {
     final docRef = await _firestore.collection('calls').add({
       'callerId': callerId,
@@ -22,8 +21,7 @@ class CallService {
     return docRef.id;
   }
 
-  // Listen for incoming calls for a specific user.
-  // Emits a map that INCLUDES 'callId'.
+  // Stream incoming ringing calls for a user.
   Stream<Map<String, dynamic>?> listenForIncomingCalls(String userId) {
     return _firestore
         .collection('calls')
@@ -31,15 +29,29 @@ class CallService {
         .where('status', isEqualTo: 'ringing')
         .snapshots()
         .map((snapshot) {
-          if (snapshot.docs.isEmpty) return null;
-          final doc = snapshot.docs.last;
-          final data = doc.data();
-          data['callId'] = doc.id; // <--- inject callId
-          return data;
-        });
+      if (snapshot.docs.isEmpty) return null;
+      final doc = snapshot.docs.last;
+      final data = doc.data();
+      data['callId'] = doc.id;
+      return data;
+    });
   }
 
-  // Look up the caller's display name for the incoming call UI.
+  // Watch a specific call's data (status, etc.).
+  Stream<Map<String, dynamic>?> watchCall(String callId) {
+    return _firestore
+        .collection('calls')
+        .doc(callId)
+        .snapshots()
+        .map((doc) {
+      if (!doc.exists) return null;
+      final data = doc.data()!;
+      data['callId'] = doc.id;
+      return data;
+    });
+  }
+
+  // Look up a caller's display name.
   Future<String> getCallerName(String callerId) async {
     try {
       final userDoc = await _firestore.collection('users').doc(callerId).get();
@@ -47,7 +59,8 @@ class CallService {
         final name = userDoc.data()!['displayName'];
         if (name != null && name.toString().isNotEmpty) return name.toString();
       }
-      final patientDoc = await _firestore.collection('patients').doc(callerId).get();
+      final patientDoc =
+          await _firestore.collection('patients').doc(callerId).get();
       if (patientDoc.exists && patientDoc.data() != null) {
         final name = patientDoc.data()!['name'];
         if (name != null && name.toString().isNotEmpty) return name.toString();
@@ -58,7 +71,7 @@ class CallService {
     }
   }
 
-  // Update the call status when the receiver joins
+  // Receiver accepts → status becomes 'active'.
   Future<void> answerCall(String callId) async {
     await _firestore.collection('calls').doc(callId).update({
       'status': 'active',
@@ -66,11 +79,13 @@ class CallService {
     });
   }
 
-  // End the call (update status)
+  // Either side ends the call.
   Future<void> endCall(String callId) async {
-    await _firestore.collection('calls').doc(callId).update({
-      'status': 'ended',
-      'endedAt': FieldValue.serverTimestamp(),
-    });
+    try {
+      await _firestore.collection('calls').doc(callId).update({
+        'status': 'ended',
+        'endedAt': FieldValue.serverTimestamp(),
+      });
+    } catch (_) {}
   }
 }

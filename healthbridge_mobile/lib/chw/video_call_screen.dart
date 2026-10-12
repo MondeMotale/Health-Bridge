@@ -36,6 +36,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
 
   int? _remoteUid;
   bool _localUserJoined = false;
+  bool _localPreviewReady = false;
   RtcEngine? _engine;
   final CallService _callService = CallService();
   bool _callEnded = false;
@@ -107,10 +108,14 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
         _status = 'Ringing…';
         _ringSecondsLeft = _ringTimeoutSeconds;
       });
+      // Start the camera + preview early so the caller can see
+      // themselves while waiting for the receiver to answer.
+      await _startPreviewOnly();
       _startRingCountdown();
       return;
     }
 
+    // Receiver: fetch token, answer Firestore, then join.
     setState(() => _status = 'Connecting…');
     try {
       if (_token.isEmpty) {
@@ -127,60 +132,10 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
     await _joinChannel();
   }
 
-  void _startRingCountdown() {
-    _ringCountdown?.cancel();
-    _ringCountdown = Timer.periodic(const Duration(seconds: 1), (t) {
-      if (!mounted) {
-        t.cancel();
-        return;
-      }
-      if (_ringSecondsLeft <= 1) {
-        t.cancel();
-        _ringCountdown = null;
-        _onRingTimeout();
-      } else {
-        setState(() => _ringSecondsLeft--);
-      }
-    });
-  }
-
-  void _cancelRingCountdown() {
-    _ringCountdown?.cancel();
-    _ringCountdown = null;
-  }
-
-  Future<void> _onRingTimeout() async {
-    if (_callEnded || _remoteUid != null || _endReason != null) return;
-
-    debugPrint('[Call] video ring timeout — no answer');
-    _cancelRingCountdown();
-
-    setState(() {
-      _endReason = 'no_answer';
-      _status = 'No answer';
-    });
-
-    await _callService.endCall(widget.callId, reason: 'no_answer');
-    if (!mounted) return;
-
-    await Future.delayed(const Duration(seconds: 2, milliseconds: 500));
-    if (mounted) _cleanup();
-  }
-
-  Future<void> _joinChannel() async {
-    if (_joined || _callEnded) return;
-    _joined = true;
-
-    if (_token.isEmpty) {
-      try {
-        _token = await _fetchToken();
-      } catch (e) {
-        if (mounted) {
-          setState(() => _errorMessage = 'Could not fetch token: $e');
-        }
-        return;
-      }
-    }
+  /// Initialize the engine and start local preview WITHOUT joining the channel.
+  /// Used by the caller while waiting for the receiver to answer.
+  Future<void> _startPreviewOnly() async {
+    if (_engine != null || _callEnded) return;
 
     final micStatus = await Permission.microphone.request();
     final camStatus = await Permission.camera.request();
@@ -244,9 +199,82 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
       await _engine!.setClientRole(
           role: ClientRoleType.clientRoleBroadcaster);
 
+      // Start preview — this brings the camera on and enables the
+      // local view to render.
       await _engine!.startPreview();
-      if (mounted) setState(() {});
 
+      if (mounted) {
+        setState(() => _localPreviewReady = true);
+      }
+    } catch (e) {
+      debugPrint('[Agora] preview init error: $e');
+      if (mounted) setState(() => _errorMessage = 'Failed: $e');
+    }
+  }
+
+  void _startRingCountdown() {
+    _ringCountdown?.cancel();
+    _ringCountdown = Timer.periodic(const Duration(seconds: 1), (t) {
+      if (!mounted) {
+        t.cancel();
+        return;
+      }
+      if (_ringSecondsLeft <= 1) {
+        t.cancel();
+        _ringCountdown = null;
+        _onRingTimeout();
+      } else {
+        setState(() => _ringSecondsLeft--);
+      }
+    });
+  }
+
+  void _cancelRingCountdown() {
+    _ringCountdown?.cancel();
+    _ringCountdown = null;
+  }
+
+  Future<void> _onRingTimeout() async {
+    if (_callEnded || _remoteUid != null || _endReason != null) return;
+
+    debugPrint('[Call] video ring timeout — no answer');
+    _cancelRingCountdown();
+
+    setState(() {
+      _endReason = 'no_answer';
+      _status = 'No answer';
+    });
+
+    await _callService.endCall(widget.callId, reason: 'no_answer');
+    if (!mounted) return;
+
+    await Future.delayed(const Duration(seconds: 2, milliseconds: 500));
+    if (mounted) _cleanup();
+  }
+
+  Future<void> _joinChannel() async {
+    if (_joined || _callEnded) return;
+    _joined = true;
+
+    if (_token.isEmpty) {
+      try {
+        _token = await _fetchToken();
+      } catch (e) {
+        if (mounted) {
+          setState(() => _errorMessage = 'Could not fetch token: $e');
+        }
+        return;
+      }
+    }
+
+    // If the caller hasn't run preview-only setup yet (e.g. they
+    // accepted too quickly), initialize the engine now.
+    if (_engine == null) {
+      await _startPreviewOnly();
+      if (_engine == null) return; // permissions failed
+    }
+
+    try {
       await _engine!.joinChannel(
         token: _token,
         channelId: widget.channelName,
@@ -260,8 +288,8 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
         ),
       );
     } catch (e) {
-      debugPrint('[Agora] init error: $e');
-      if (mounted) setState(() => _errorMessage = 'Failed: $e');
+      debugPrint('[Agora] join error: $e');
+      if (mounted) setState(() => _errorMessage = 'Failed to join: $e');
     }
   }
 
@@ -424,7 +452,10 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
               ),
             ),
 
-          if (_engine != null && !_isEndingState)
+          // ---- LOCAL PREVIEW ----
+          // Renders as soon as the engine + preview are ready.
+          // Uses VideoCanvas(uid: 0) so Agora shows OUR OWN video.
+          if (_engine != null && _localPreviewReady && !_isEndingState)
             Positioned(
               top: 70,
               right: 16,
@@ -441,7 +472,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                   child: AgoraVideoView(
                     controller: VideoViewController(
                       rtcEngine: _engine!,
-                      canvas: VideoCanvas(uid: widget.uid),
+                      canvas: const VideoCanvas(uid: 0),
                     ),
                   ),
                 ),

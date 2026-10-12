@@ -345,7 +345,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
               child: _buildActionTile(
                 icon: Icons.calendar_month,
                 label: 'Appointments',
-                color: const Color(0xFF1E3A8A),
+                color: const Color.fromARGB(255, 39, 161, 82),
                 onTap: () => PatientHomeScreen.bottomNavCallback?.call(1),
               ),
             ),
@@ -354,7 +354,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
               child: _buildActionTile(
                 icon: Icons.chat_bubble_outline,
                 label: 'Messages',
-                color: const Color(0xFF1E3A8A),
+                color: const Color.fromARGB(255, 252, 245, 41),
                 onTap: () => PatientHomeScreen.bottomNavCallback?.call(3),
               ),
             ),
@@ -376,7 +376,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
               child: _buildActionTile(
                 icon: Icons.emergency,
                 label: 'Emergency',
-                color: const Color(0xFF1E3A8A),
+                color: const Color.fromARGB(255, 201, 4, 4),
                 onTap: () {
                   Navigator.push(
                     context,

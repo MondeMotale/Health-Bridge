@@ -1,0 +1,49 @@
+name: healthbridge_mobile
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  supabase_flutter: ^2.12.4
+  sqflite: ^2.4.2+1
+  path_provider: ^2.1.5
+  shared_preferences: ^2.5.5
+  image_picker: ^1.2.2
+  geolocator: ^14.0.2
+  url_launcher: ^6.3.2
+  connectivity_plus: ^7.1.1
+  workmanager: ^0.9.0+3
+  intl: ^0.20.2
+  google_fonts: ^8.1.0
+  cached_network_image: ^3.4.1
+  agora_rtc_engine: ^6.5.4
+  permission_handler: ^12.0.1
+  firebase_core: ^4.12.1
+  firebase_auth: ^6.5.6
+  cloud_firestore: ^6.7.1
+  firebase_storage: ^13.4.5
+  provider: ^6.0.5
+  google_sign_in: ^6.1.5
+  firebase_messaging: ^16.5.0 # <--- KEEP IT AT 16.5.0 (NOT 15.1.5)
+  http: ^1.6.0
+  share_plus: ^12.0.1
+  uuid: ^4.6.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/icd10_common.json
+    - assets/treatment_plans.json

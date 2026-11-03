@@ -26,3 +26,6 @@ npm-debug.log*
 
 # Firebase
 .firebase/
+.vercel
+.env*
+firebase-config-files.zip
